@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +31,27 @@ public class CreateAccountActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Check if username exist otheriwse create account.
+
+                User dbData = dbHandler.findUser(username.getText().toString());
+
+                if (dbData == null) {
+                    String dbUsername = username.getText().toString();
+                    String dbPassword = password.getText().toString();
+
+                    User dbUser = new User();
+                    dbUser.setUsername(dbUsername);
+                    dbUser.setPassword(dbPassword);
+
+                    dbHandler.addUser(dbUser);
+                    Toast.makeText(CreateAccountActivity.this,"Account Created!", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
+                else {
+                    Toast.makeText(CreateAccountActivity.this,"Username has been taken.\nPlease try again.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
