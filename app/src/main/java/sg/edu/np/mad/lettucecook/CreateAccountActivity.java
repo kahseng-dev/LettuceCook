@@ -10,8 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import sg.edu.np.mad.lettucecook.Models.DBHandler;
+import sg.edu.np.mad.lettucecook.Models.User;
 
 public class CreateAccountActivity extends AppCompatActivity {
+    DBHandler dbHandler = new DBHandler(this , null, null, 1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +32,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Add new User to SQLite DB
+                // TODO: Check if username exist otheriwse create account.
             }
         });
 
