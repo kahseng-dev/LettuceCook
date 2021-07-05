@@ -1,14 +1,20 @@
 package sg.edu.np.mad.lettucecook.Models;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class User {
     public int userId;
     public String username;
     public String password;
-    public List<Recipe> favouritesList;
-    public List<Ingredient> shoppingList;
-    public List<Recipe> recipesMade;
+    public ArrayList<Recipe> favouritesList;
+    public ArrayList<Ingredient> shoppingList;
+    public ArrayList<Recipe> recipesMade;
+
+    public User() {
+        favouritesList = new ArrayList<Recipe>();
+        shoppingList = new ArrayList<Ingredient>();
+        recipesMade = new ArrayList<Recipe>();
+    }
 
     public int getUserId() {
         return userId;
@@ -34,27 +40,27 @@ public class User {
         this.password = password;
     }
 
-    public List<Recipe> getFavouritesList() {
+    public ArrayList<Recipe> getFavouritesList() {
         return favouritesList;
     }
 
-    public void setFavouritesList(List<Recipe> favouritesList) {
+    public void setFavouritesList(ArrayList<Recipe> favouritesList) {
         this.favouritesList = favouritesList;
     }
 
-    public List<Ingredient> getShoppingList() {
+    public ArrayList<Ingredient> getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(List<Ingredient> shoppingList) {
+    public void setShoppingList(ArrayList<Ingredient> shoppingList) {
         this.shoppingList = shoppingList;
     }
 
-    public List<Recipe> getRecipesMade() {
+    public ArrayList<Recipe> getRecipesMade() {
         return recipesMade;
     }
 
-    public void setRecipesMade(List<Recipe> recipesMade) {
+    public void setRecipesMade(ArrayList<Recipe> recipesMade) {
         this.recipesMade = recipesMade;
     }
 }

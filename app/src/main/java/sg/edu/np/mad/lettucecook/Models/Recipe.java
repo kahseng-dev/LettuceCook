@@ -1,6 +1,7 @@
 package sg.edu.np.mad.lettucecook.Models;
 
-import java.util.List;
+
+import java.util.ArrayList;
 
 public class Recipe {
     public int recipeId;
@@ -8,8 +9,8 @@ public class Recipe {
     public String category;
     public String origin;
     public String instructions;
-    public List<String> tags;
-    public List<Ingredient> ingredientsList;
+    public ArrayList<String> tags;
+    public ArrayList<Ingredient> ingredientsList;
 
     public int getRecipeId() {
         return recipeId;
@@ -51,19 +52,19 @@ public class Recipe {
         this.instructions = instructions;
     }
 
-    public List<String> getTags() {
+    public ArrayList<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
 
-    public List<Ingredient> getIngredientsList() {
+    public ArrayList<Ingredient> getIngredientsList() {
         return ingredientsList;
     }
 
-    public void setIngredientsList(List<Ingredient> ingredientsList) {
+    public void setIngredientsList(ArrayList<Ingredient> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 }
