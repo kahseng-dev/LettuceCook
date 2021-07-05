@@ -5,13 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import sg.edu.np.mad.lettucecook.Models.DBHandler;
+import sg.edu.np.mad.lettucecook.Models.User;
 
 public class CreateAccountActivity extends AppCompatActivity {
+    DBHandler dbHandler = new DBHandler(this , null, null, 1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +31,27 @@ public class CreateAccountActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Add new User to SQLite DB
+
+                User dbData = dbHandler.findUser(username.getText().toString());
+
+                if (dbData == null) {
+                    String dbUsername = username.getText().toString();
+                    String dbPassword = password.getText().toString();
+
+                    User dbUser = new User();
+                    dbUser.setUsername(dbUsername);
+                    dbUser.setPassword(dbPassword);
+
+                    dbHandler.addUser(dbUser);
+                    Toast.makeText(CreateAccountActivity.this,"Account Created!", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
+                else {
+                    Toast.makeText(CreateAccountActivity.this,"Username has been taken.\nPlease try again.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
