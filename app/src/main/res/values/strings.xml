@@ -7,8 +7,11 @@
     <color name="light_green">#A9DBB8</color>
     <color name="dark_green">#419D78</color>
 
-    <!-- Login Page strings-->
+    <!-- Login and Create Page strings-->
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="createAccountButtonText">Create Account</string>
+    <string name="createAccountText">No Account? Create one here!</string>
+    <string name="loginAccountText">Have an Account? Login here!</string>
 </resources>
