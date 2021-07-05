@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -71,8 +72,8 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public User findUser(String username) {
-        String query = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_USERNAME +
-                "=\"" + username + "\"";
+        String query = "SELECT * FROM " + TABLE_USERS +
+                        " WHERE " + COLUMN_USERNAME + "=\"" + username + "\"";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -80,8 +81,9 @@ public class DBHandler extends SQLiteOpenHelper {
         User user = new User();
 
         if (cursor.moveToFirst()) {
-            user.setUsername(cursor.getString(0));
-            user.setPassword(cursor.getString(1));
+            user.setUserId(cursor.getInt(0));
+            user.setUsername(cursor.getString(1));
+            user.setPassword(cursor.getString(2));
             cursor.close();
         }
 
