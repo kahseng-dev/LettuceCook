@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".CreateAccountActivity">
 
     <TextView
-        android:id="@+id/loginUsernameText"
+        android:id="@+id/createUsernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -18,24 +18,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/inputLoginUsername"
+        android:id="@+id/inputCreateUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="24dp"
-        android:autoText="false"
         android:ems="10"
         android:hint="@string/username"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/loginPasswordText"
+        app:layout_constraintBottom_toTopOf="@+id/createPasswordText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginUsernameText" />
+        app:layout_constraintTop_toBottomOf="@+id/createUsernameText" />
 
     <TextView
-        android:id="@+id/loginPasswordText"
+        android:id="@+id/createPasswordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -43,10 +42,10 @@
         android:text="@string/password"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLoginUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/inputCreateUsername" />
 
     <EditText
-        android:id="@+id/inputLoginPassword"
+        android:id="@+id/inputCreatePassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -54,32 +53,32 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="@string/password"
-        android:inputType="textPassword"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginPasswordText" />
+        app:layout_constraintTop_toBottomOf="@+id/createPasswordText" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/createAccountButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="128dp"
-        android:text="@string/login"
+        android:text="@string/createAccountButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLoginPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/inputCreatePassword" />
 
     <TextView
-        android:id="@+id/createAccountLink"
+        android:id="@+id/loginAccountLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/createAccountText"
+        android:text="@string/loginAccountText"
         android:textColor="@color/dark_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+        app:layout_constraintTop_toBottomOf="@+id/createAccountButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
