@@ -2,10 +2,7 @@
     <!-- General strings-->
     <string name="app_name">LettuceCook</string>
 
-    <!-- App Theme Colors -->
-    <color name="white_opaque">#FFFFFFFF</color>
-    <color name="light_green">#A9DBB8</color>
-    <color name="dark_green">#419D78</color>
+
 
     <!-- Login and Create Page strings-->
     <string name="username">Username</string>
