@@ -8,9 +8,10 @@
     tools:context=".RecipeDetails">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -20,7 +21,7 @@
 
             <ImageView
                 android:id="@+id/mealThumbnail"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="250dp"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
@@ -116,7 +117,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/mealCategoryText" />
 
             <TextView
-                android:id="@+id/instructionList"
+                android:id="@+id/instructionsText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -141,7 +142,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/altDrinkText" />
 
             <TextView
-                android:id="@+id/tagList"
+                android:id="@+id/tagText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -163,7 +164,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/instructionList" />
+                app:layout_constraintTop_toBottomOf="@+id/instructionsText" />
 
             <TextView
                 android:id="@+id/ingredientMeasureList"
@@ -186,7 +187,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tagList" />
+                app:layout_constraintTop_toBottomOf="@+id/tagText" />
 
             <TextView
                 android:id="@+id/sourceLink"
@@ -209,7 +210,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/sourceLabel"
-                app:layout_constraintTop_toBottomOf="@+id/tagList" />
+                app:layout_constraintTop_toBottomOf="@+id/tagText" />
 
             <TextView
                 android:id="@+id/dateModifiedText"
@@ -221,7 +222,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/sourceLink"
                 app:layout_constraintTop_toBottomOf="@+id/dateModifiedLabel" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ytRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sourceLink" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
