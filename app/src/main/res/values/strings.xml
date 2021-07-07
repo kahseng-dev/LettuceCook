@@ -2,8 +2,6 @@
     <!-- General strings-->
     <string name="app_name">LettuceCook</string>
 
-
-
     <!-- Login and Create Page strings-->
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -11,4 +9,16 @@
     <string name="createAccountButtonText">Create Account</string>
     <string name="createAccountText">No Account? Create one here!</string>
     <string name="loginAccountText">Have an Account? Login here!</string>
+
+    <!-- Recipe Details strings-->
+    <string name="mealLabel">Meal Name</string>
+    <string name="categoryLabel">Category</string>
+    <string name="areaLabel">Area</string>
+    <string name="altDrinkLabel">Drink Alternate</string>
+    <string name="instructionLabel">Instructions</string>
+    <string name="tagLabel">Tags</string>
+    <string name="ingredientLabel">Ingredients</string>
+    <string name="sourceLabel">Source</string>
+    <string name="dateModifiedLabel">Date Modified</string>
+
 </resources>
