@@ -1,6 +1,7 @@
 package sg.edu.np.mad.lettucecook;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,16 +25,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import sg.edu.np.mad.lettucecook.Models.YoutubeAdapter;
 import sg.edu.np.mad.lettucecook.Models.YoutubeVideo;
 
-public class RecipeDetails extends AppCompatActivity {
-    TextView mealName, mealCategory, areaText, instructionsText, altDrinkText, tagText, sourceLink, dateModifiedText;
-    RecyclerView recyclerView;
+public class RecipeDetailsActivity extends AppCompatActivity {
+    TextView mealName, mealCategory, areaText, instructionsText, ingredientText, altDrinkText, tagText, sourceLink, dateModifiedText;
+    RecyclerView ytRecyclerView;
     ImageView mealThumbnail;
-    Vector<YoutubeVideo> youtubeVideos = new Vector<YoutubeVideo>();
+    Vector<YoutubeVideo> youtubeVideos = new Vector<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +48,16 @@ public class RecipeDetails extends AppCompatActivity {
         mealCategory = findViewById(R.id.mealCategoryText);
         areaText = findViewById(R.id.areaText);
         instructionsText = findViewById(R.id.instructionsText);
+        ingredientText = findViewById(R.id.ingredientText);
         altDrinkText = findViewById(R.id.altDrinkText);
         tagText = findViewById(R.id.tagText);
         sourceLink = findViewById(R.id.sourceLink);
         dateModifiedText = findViewById(R.id.dateModifiedText);
 
         // Youtube Video Guides Recycler View
-        recyclerView = findViewById(R.id.ytRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ytRecyclerView = findViewById(R.id.ytRecyclerView);
+        ytRecyclerView.setHasFixedSize(true);
+        ytRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Instantiate the RequestQueue.9
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -91,11 +94,19 @@ public class RecipeDetails extends AppCompatActivity {
                         sourceLink.setText(source);
                         dateModifiedText.setText(dateModified);
 
-                        // TODO: GET INGREDIENT LIST
-
                         youtubeVideos.add(new YoutubeVideo(meal.getString("strYoutube")));
                         YoutubeAdapter videoAdapter = new YoutubeAdapter(youtubeVideos);
-                        recyclerView.setAdapter(videoAdapter);
+                        ytRecyclerView.setAdapter(videoAdapter);
+
+                        for (int num = 1; num < 20; num++) {
+                            String ingredient = meal.getString("strIngredient" + num);
+                            String measure = meal.getString("strMeasure" + num);
+                            if (!(ingredient.equals("null") || ingredient.equals(""))) {
+                                if (!(measure.equals("null") || measure.equals(""))) {
+                                    ingredientText.append(ingredient + " of " + measure + "\n\n");
+                                }
+                            }
+                        }
                     }
                 } catch(JSONException e) {
                     e.printStackTrace();
@@ -104,7 +115,7 @@ public class RecipeDetails extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mealCategory.setText("Unavailable");
+                error.printStackTrace();
             }
         });
 

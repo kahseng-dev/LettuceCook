@@ -1,6 +1,5 @@
 package sg.edu.np.mad.lettucecook.Models;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.VideoVie
     }
 
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ytrecyclerview, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube_recyclerview, parent, false);
         return new VideoViewHolder(view);
     }
 
