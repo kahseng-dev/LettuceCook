@@ -39,13 +39,15 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ApiMealViewHolder holder, int position) {
         ApiMeal meal = data.get(position);
+        String area = meal.getStrArea();
+        String category = meal.getStrCategory();
         Picasso
                 .with(mContext)
                 .load(meal.getStrMealThumb())
                 .into(holder.thumbnail);
         holder.name.setText(meal.getStrMeal());
-        holder.area.setText(meal.getStrArea());
-        holder.category.setText(meal.getStrCategory());
+        if (area != null) holder.area.setText(area);
+        if (category != null) holder.category.setText(category);
     }
 
     @Override
