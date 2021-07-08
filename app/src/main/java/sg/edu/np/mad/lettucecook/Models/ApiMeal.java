@@ -31,6 +31,12 @@ public class ApiMeal {
 
     private String dateModified;
 
+    public ApiMeal(String idMeal, String strMeal, String strMealThumb) {
+        this.idMeal = idMeal;
+        this.strMeal = strMeal;
+        this.strMealThumb = strMealThumb;
+    }
+
     public ApiMeal(String idMeal, String strMeal, String strDrinkAlternate, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String[] arrIngredients, String[] arrMeasures, String strSource, String strImageSource, String strCreativeCommonsConfirmed, String dateModified) {
         this.idMeal = idMeal;
         this.strMeal = strMeal;
