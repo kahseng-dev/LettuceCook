@@ -2,7 +2,7 @@
     <!-- General strings-->
     <string name="app_name">LettuceCook</string>
 
-    <!-- Login and Create Page strings-->
+    <!-- Login and Create Activity strings-->
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -10,7 +10,13 @@
     <string name="createAccountText">No Account? Create one here!</string>
     <string name="loginAccountText">Have an Account? Login here!</string>
 
-    <!-- Recipe Details strings-->
+    <!-- Browse Activity strings-->
+    <string-array name="browse_types">
+        <item name="category">Category</item>
+        <item name="area">Area</item>
+    </string-array>
+
+    <!-- Recipe Details Activity strings-->
     <string name="mealLabel">Meal Name</string>
     <string name="categoryLabel">Category</string>
     <string name="areaLabel">Area</string>
@@ -19,7 +25,6 @@
     <string name="tagLabel">Tags</string>
     <string name="ingredientLabel">Ingredients</string>
     <string name="sourceLabel">Source</string>
-    <string name="dateModifiedLabel">Date Modified</string>
     <string name="addShoppingList">Add to Shopping List</string>
-
+    <string name="dateModifiedLabel">Date Modified</string>
 </resources>
