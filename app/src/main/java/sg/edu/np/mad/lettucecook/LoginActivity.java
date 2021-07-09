@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +36,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isValidCredentials(username.getText().toString(), password.getText().toString())) {
+                    User dbUser = dbHandler.findUser(username.getText().toString());
+
+                    // Store Logged in User ID
                     Intent intent = new Intent (LoginActivity.this, MainActivity.class);
+                    intent.putExtra("UserId", dbUser.getUserId());
                     startActivity(intent);
                     Toast.makeText(LoginActivity.this, "Successful Login!", Toast.LENGTH_SHORT).show();
                 }
@@ -66,11 +69,32 @@ public class LoginActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.browse:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
+
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            browseIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(browseIntent);
                         overridePendingTransition(0, 0);
                         return true;
 
                     case R.id.login:
+                        return true;
+
+                    case R.id.shoppingList:
+                        Intent shoppingListIntent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            shoppingListIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(shoppingListIntent);
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;

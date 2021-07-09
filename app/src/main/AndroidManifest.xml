@@ -11,17 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LettuceCook">
-        <activity android:name=".RecipeDetailsActivity" >
+        <activity android:name=".ShoppingListActivity" />
+
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".CreateAccountActivity"
+            android:parentActivityName=".LoginActivity"/>
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".RecipeDetailsActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
-
 </manifest>

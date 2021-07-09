@@ -9,4 +9,9 @@
         android:id="@+id/browse"
         android:title="Browse"
         android:icon="@drawable/ic_browse" />
+
+    <item
+        android:id="@+id/shoppingList"
+        android:title="Shopping List"
+        android:icon="@drawable/ic_shopping_list" />
 </menu>
