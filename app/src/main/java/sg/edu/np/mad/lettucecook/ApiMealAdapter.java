@@ -1,6 +1,8 @@
 package sg.edu.np.mad.lettucecook;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,7 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ApiMealViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         ApiMeal meal = data.get(position);
         String area = meal.getStrArea();
         String category = meal.getStrCategory();
@@ -48,6 +51,12 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         holder.name.setText(meal.getStrMeal());
         if (area != null) holder.area.setText(area);
         if (category != null) holder.category.setText(category);
+
+        holder.thumbnail.setOnClickListener(view -> {
+            Intent intent = new Intent(context, RecipeDetailsActivity.class);
+            intent.putExtra("mealId", meal.getIdMeal());
+            context.startActivity(intent);
+        });
     }
 
     @Override
