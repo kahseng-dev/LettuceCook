@@ -11,4 +11,9 @@
     <string name="createAccountButtonText">Create Account</string>
     <string name="createAccountText">No Account? Create one here!</string>
     <string name="loginAccountText">Have an Account? Login here!</string>
+    
+    <string-array name="browse_types">
+        <item name="category">Category</item>
+        <item name="area">Area</item>
+    </string-array>
 </resources>
