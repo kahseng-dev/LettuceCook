@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import android.util.Log;
 import android.view.View;
@@ -98,7 +100,16 @@ public class MainActivity extends AppCompatActivity {
                             meals = apiMealJson.mergeIntoJSONArray(_meals);
                             Log.v("Meal", String.valueOf(meals.get(0)));
 
-                            ApiMealAdapter mAdapter = new ApiMealAdapter(meals, MainActivity.this);
+                            Bundle extras = getIntent().getExtras();
+                            ApiMealAdapter mAdapter;
+
+                            if (getIntent().hasExtra("UserId")) {
+                                int userId = extras.getInt("UserId");
+                                mAdapter = new ApiMealAdapter(meals, userId,MainActivity.this);
+                            }
+
+                            else mAdapter = new ApiMealAdapter(meals,MainActivity.this);
+
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
 
                             browseRV.setLayoutManager(mLayoutManager);
@@ -124,7 +135,28 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.login:
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            loginIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(loginIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+
+                    case R.id.shoppingList:
+                        Intent shoppingListIntent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            shoppingListIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(shoppingListIntent);
                         overridePendingTransition(0, 0);
                         return true;
                 }

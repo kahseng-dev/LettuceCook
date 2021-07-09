@@ -25,5 +25,6 @@
     <string name="tagLabel">Tags</string>
     <string name="ingredientLabel">Ingredients</string>
     <string name="sourceLabel">Source</string>
+    <string name="addShoppingList">Add to Shopping List</string>
     <string name="dateModifiedLabel">Date Modified</string>
 </resources>

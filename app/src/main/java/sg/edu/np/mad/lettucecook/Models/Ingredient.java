@@ -1,12 +1,22 @@
 package sg.edu.np.mad.lettucecook.Models;
 
 public class Ingredient {
+    public int mealId;
     public String ingredientName;
     public String measure;
 
-    public Ingredient(String ingredientName, String measure) {
+    public Ingredient(int mealId, String ingredientName, String measure) {
+        this.mealId = mealId;
         this.ingredientName = ingredientName;
         this.measure = measure;
+    }
+
+    public int getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(int mealId) {
+        this.mealId = mealId;
     }
 
     public String getIngredientName() {

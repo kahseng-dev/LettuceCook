@@ -3,6 +3,7 @@ package sg.edu.np.mad.lettucecook;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,17 @@ import sg.edu.np.mad.lettucecook.Models.ApiMeal;
 
 public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     ArrayList<ApiMeal> data;
+    int userId;
     Context mContext;
 
     public ApiMealAdapter(ArrayList<ApiMeal> input, Context mContext) {
         this.data = input;
+        this.mContext = mContext;
+    }
+
+    public ApiMealAdapter(ArrayList<ApiMeal> input, int userId,Context mContext) {
+        this.data = input;
+        this.userId = userId;
         this.mContext = mContext;
     }
 
@@ -40,7 +48,6 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ApiMealViewHolder holder, int position) {
-        Context context = holder.itemView.getContext();
         ApiMeal meal = data.get(position);
         String area = meal.getStrArea();
         String category = meal.getStrCategory();
@@ -53,9 +60,12 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         if (category != null) holder.category.setText(category);
 
         holder.thumbnail.setOnClickListener(view -> {
-            Intent intent = new Intent(context, RecipeDetailsActivity.class);
+            Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
             intent.putExtra("mealId", meal.getIdMeal());
-            context.startActivity(intent);
+            if (userId != 0) {
+                intent.putExtra("UserId", userId);
+            }
+            mContext.startActivity(intent);
         });
     }
 
