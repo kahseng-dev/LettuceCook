@@ -61,11 +61,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         // Instantiate the RequestQueue.9
         RequestQueue queue = Volley.newRequestQueue(this);
+        Bundle extras = getIntent().getExtras();
         String url ="https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
-        String id = "52772";
+        String mealId = extras.getString("mealId");
 
         // Request a object response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest (Request.Method.GET, url + id, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest (Request.Method.GET, url + mealId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
