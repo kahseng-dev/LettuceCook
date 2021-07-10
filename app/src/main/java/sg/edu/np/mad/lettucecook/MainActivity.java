@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,7 +19,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,8 +45,10 @@ public class MainActivity extends AppCompatActivity {
     int browseType;
     Spinner browseTypeSpinner;
     Spinner browseTypeChoiceSpinner;
-    Button browseButton;
+    Button browseButton, featuredButton;
     RecyclerView browseRV;
+    ImageView featuredImage;
+    TextView featuredName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +59,44 @@ public class MainActivity extends AppCompatActivity {
         browseTypeChoiceSpinner = findViewById(R.id.main_browse_type_choice_spinner);
         browseButton = findViewById(R.id.main_browse_button);
         browseRV = findViewById(R.id.main_browse_rv);
+        featuredButton = findViewById(R.id.featured_meal_button);
 
         fillSpinner(browseTypeSpinner, getResources().getStringArray(R.array.browse_types));
+
+        featuredButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                featuredImage = (ImageView) findViewById(R.id.featured_image);
+                featuredImage .setVisibility(View.VISIBLE);
+                featuredName = (TextView) findViewById(R.id.featured_meal_text);
+                featuredName.setVisibility(View.VISIBLE);
+
+                String query = "random.php";
+                apiMealService.getMeals(query, new VolleyResponseListener() {
+
+                    @Override
+                    public void onError(String message) {
+                        Log.v(TAG, message);
+                    }
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray _meals = response.getJSONArray("meals");
+                            meals = apiMealJson.mergeIntoJSONArray(_meals);
+
+                            Picasso.with(MainActivity.this)
+                                    .load(meals.get(0).getStrMealThumb())
+                                    .into(featuredImage);
+                            featuredName.setText(meals.get(0).getStrMeal());
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
 
         browseTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
