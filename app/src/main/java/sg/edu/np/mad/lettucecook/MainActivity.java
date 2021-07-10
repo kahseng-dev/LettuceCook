@@ -1,5 +1,6 @@
 package sg.edu.np.mad.lettucecook;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,7 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +30,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import sg.edu.np.mad.lettucecook.Models.ApiMeal;
 
@@ -136,7 +144,16 @@ public class MainActivity extends AppCompatActivity {
                             meals = apiMealJson.mergeIntoJSONArray(_meals);
                             Log.v("Meal", String.valueOf(meals.get(0)));
 
-                            ApiMealAdapter mAdapter = new ApiMealAdapter(meals, MainActivity.this);
+                            Bundle extras = getIntent().getExtras();
+                            ApiMealAdapter mAdapter;
+
+                            if (getIntent().hasExtra("UserId")) {
+                                int userId = extras.getInt("UserId");
+                                mAdapter = new ApiMealAdapter(meals, userId,MainActivity.this);
+                            }
+
+                            else mAdapter = new ApiMealAdapter(meals,MainActivity.this);
+
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
 
                             browseRV.setLayoutManager(mLayoutManager);
@@ -149,7 +166,48 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-}
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setSelectedItemId(R.id.browse);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.browse:
+                        return true;
+
+                    case R.id.login:
+                        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            loginIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(loginIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+
+                    case R.id.shoppingList:
+                        Intent shoppingListIntent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            shoppingListIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(shoppingListIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
 
     private void fillSpinner(Spinner spinner, String[] items) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
