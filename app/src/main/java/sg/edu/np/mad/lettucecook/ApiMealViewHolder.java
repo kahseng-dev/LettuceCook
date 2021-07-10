@@ -12,9 +12,9 @@ public class ApiMealViewHolder extends RecyclerView.ViewHolder {
 
     public ApiMealViewHolder(View itemView) {
         super(itemView);
-        this.thumbnail = itemView.findViewById(R.id.api_meal_thumbnail);
-        this.name = itemView.findViewById(R.id.api_meal_name);
-        this.area = itemView.findViewById(R.id.api_meal_area);
-        this.category = itemView.findViewById(R.id.api_meal_category);
+        this.thumbnail = itemView.findViewById(R.id.featured_meal_thumbnail);
+        this.name = itemView.findViewById(R.id.featured_meal_name);
+        this.area = itemView.findViewById(R.id.featured_meal_area);
+        this.category = itemView.findViewById(R.id.featured_meal_category);
     }
 }
