@@ -30,19 +30,18 @@ public class ShoppingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
         setTitle("Shopping List");
+        RecyclerView recyclerView = findViewById(R.id.shoppingListRV);
+        LinearLayoutManager mLayoutManger = new LinearLayoutManager(this);
 
         if (getIntent().hasExtra("UserId")) {
             Bundle extras = getIntent().getExtras();
             int userId = extras.getInt("UserId");
             ingredientList = dbHandler.getShoppingList(userId);
+            ShoppingListAdapter sAdapter = new ShoppingListAdapter(ingredientList, this, userId);
+            recyclerView.setLayoutManager(mLayoutManger);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(sAdapter);
         }
-
-        RecyclerView recyclerView = findViewById(R.id.shoppingListRV);
-        ShoppingListAdapter sAdapter = new ShoppingListAdapter(ingredientList);
-        LinearLayoutManager mLayoutManger = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(mLayoutManger);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(sAdapter);
 
         // TODO: DO SOMETHING IF DATABASE IS EMPTY
 

@@ -198,4 +198,16 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return shoppingList;
     }
+
+    public void deleteShoppingItem(int userId, Ingredient ingredient) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "DELETE FROM " + TABLE_SHOPPING_LIST +
+                " WHERE " + USER_COLUMN_ID + "=\"" + userId + "\"" +
+                " AND " + SHOPPING_LIST_COLUMN_MEALID + "=\"" + ingredient.getMealId() + "\"" +
+                " AND " + SHOPPING_LIST_COLUMN_INGREDIENTNAME + "=\"" + ingredient.getIngredientName() + "\"";
+
+        db.execSQL(query);
+        db.close();
+    }
 }
