@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,13 +13,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -39,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     static final String TAG = "MainActivity";
 
     ArrayList<ApiMeal> meals;
-    ApiMealService apiMealService = new ApiMealService(MainActivity.this);
+    ApiService apiService = new ApiService(MainActivity.this);
     ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
 
     int browseType;
@@ -62,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         fillSpinner(browseTypeSpinner, getResources().getStringArray(R.array.browse_types));
 
-
         featuredImage = findViewById(R.id.featured_image);
         featuredImage .setVisibility(View.VISIBLE);
         featuredName = findViewById(R.id.featured_meal_text);
@@ -71,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         createRecipeButton = findViewById(R.id.create_recipe_button);
 
         String query = "random.php";
-        apiMealService.getMeals(query, new VolleyResponseListener() {
+        apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
 
             @Override
             public void onError(String message) {
@@ -112,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 browseType = i;
                 String query = i == 0 ? "list.php?c=list" : "list.php?a=list";
-                apiMealService.getMeals(query, new VolleyResponseListener() {
+                apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Log.v(TAG, message);
@@ -140,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String filter = browseTypeChoiceSpinner.getSelectedItem().toString();
                 String query = "filter.php?" + (browseType == 0 ? "c=" : "a=") + filter;
-                apiMealService.getMeals(query, new VolleyResponseListener() {
+                apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Log.v(TAG, message);

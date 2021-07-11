@@ -113,6 +113,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:textSize="18sp"
+                android:text="-"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -164,6 +165,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:textSize="18sp"
+                android:text="-"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tagLabel" />
@@ -183,8 +185,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/instructionsText" />
 
-            <TextView
-                android:id="@+id/ingredientText"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ingredientsRV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -201,7 +203,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ingredientText" />
+                app:layout_constraintTop_toBottomOf="@+id/ingredientsRV" />
 
             <TextView
                 android:id="@+id/dateModifiedLabel"
@@ -220,6 +222,7 @@
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
+                android:text="-"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateModifiedLabel" />
@@ -242,6 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:textSize="18sp"
+                android:text="-"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sourceLabel" />
 
