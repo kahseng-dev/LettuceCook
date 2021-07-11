@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     int browseType;
     Spinner browseTypeSpinner;
     Spinner browseTypeChoiceSpinner;
-    Button browseButton, featuredButton;
+    Button browseButton, createRecipeButton;
     RecyclerView browseRV;
     ImageView featuredImage;
     TextView featuredName;
@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         featuredImage .setVisibility(View.VISIBLE);
         featuredName = findViewById(R.id.featured_meal_text);
         featuredName.setVisibility(View.VISIBLE);
+
+        createRecipeButton = findViewById(R.id.create_recipe_button);
 
         String query = "random.php";
         apiMealService.getMeals(query, new VolleyResponseListener() {
@@ -130,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
-                return;
             }
         });
 
@@ -213,6 +214,14 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                 }
                 return false;
+            }
+        });
+
+        createRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CreateRecipe.class);
+                startActivity(intent);
             }
         });
     }

@@ -79,6 +79,14 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="10dp" />
 
+            <Button
+                android:id="@+id/create_recipe_button"
+                android:layout_below="@+id/main_browse_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Create Recipe" />
+
         </RelativeLayout>
 
     </ScrollView>
