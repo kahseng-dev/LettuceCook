@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <EditText
+        android:id="@+id/edit_ingredient_name"
+        android:maxLines="1"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/round_light_green"
+        android:hint="Ingredient Name"
+        android:paddingLeft="10dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+    </EditText>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_light_green">
+        <EditText
+            android:id="@+id/edit_ingredient_measure"
+            android:maxLines="1"
+            android:background="@drawable/round_light_green"
+            android:hint="Measure"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:layout_width="150dp"
+            android:layout_height="40dp">
+        </EditText>
+    </FrameLayout>
+
+
+
+    <ImageView
+        android:id="@+id/image_remove"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="5dp"
+        android:layout_gravity="center_vertical"
+        android:tint="@color/black"
+        android:src="@drawable/ic_close">
+    </ImageView>
+</LinearLayout>
