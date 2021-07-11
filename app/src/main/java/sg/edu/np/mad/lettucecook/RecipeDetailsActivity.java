@@ -1,16 +1,26 @@
 package sg.edu.np.mad.lettucecook;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +42,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -44,7 +56,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     ImageView mealThumbnail;
     TextView mealName, mealCategory, areaText, instructionsText, ingredientText, altDrinkText, tagText, sourceLink, dateModifiedText;
     RecyclerView ytRecyclerView;
-    Button addToShoppingList;
+    Button addToShoppingList, addRecipeWidget;
     Vector<YoutubeVideo> youtubeVideos = new Vector<>();
 
     @Override
@@ -75,11 +87,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         // Instantiate the RequestQueue.9
         RequestQueue queue = Volley.newRequestQueue(this);
         Bundle extras = getIntent().getExtras();
-        String url ="https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
+        String url = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
         String mealId = extras.getString("mealId");
 
         // Request a object response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest (Request.Method.GET, url + mealId, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url + mealId, null, new Response.Listener<JSONObject>() {
+
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -142,7 +155,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                             }
                         }
                     }
-                } catch(JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -155,7 +168,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(request);
-
     }
 
     private class LoadImage extends AsyncTask<String, Void, Bitmap> {

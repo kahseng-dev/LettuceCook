@@ -59,42 +59,44 @@ public class MainActivity extends AppCompatActivity {
         browseTypeChoiceSpinner = findViewById(R.id.main_browse_type_choice_spinner);
         browseButton = findViewById(R.id.main_browse_button);
         browseRV = findViewById(R.id.main_browse_rv);
-        featuredButton = findViewById(R.id.featured_meal_button);
 
         fillSpinner(browseTypeSpinner, getResources().getStringArray(R.array.browse_types));
 
-        featuredButton.setOnClickListener(new View.OnClickListener() {
+
+        featuredImage = findViewById(R.id.featured_image);
+        featuredImage .setVisibility(View.VISIBLE);
+        featuredName = findViewById(R.id.featured_meal_text);
+        featuredName.setVisibility(View.VISIBLE);
+
+        String query = "random.php";
+        apiMealService.getMeals(query, new VolleyResponseListener() {
+
             @Override
-            public void onClick(View v) {
-                featuredImage = (ImageView) findViewById(R.id.featured_image);
-                featuredImage .setVisibility(View.VISIBLE);
-                featuredName = (TextView) findViewById(R.id.featured_meal_text);
-                featuredName.setVisibility(View.VISIBLE);
+            public void onError(String message) {
+                Log.v(TAG, message);
+            }
 
-                String query = "random.php";
-                apiMealService.getMeals(query, new VolleyResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray _meals = response.getJSONArray("meals");
+                    meals = apiMealJson.mergeIntoJSONArray(_meals);
 
-                    @Override
-                    public void onError(String message) {
-                        Log.v(TAG, message);
-                    }
+                    Picasso.with(MainActivity.this)
+                            .load(meals.get(0).getStrMealThumb())
+                            .into(featuredImage);
+                    featuredName.setText(meals.get(0).getStrMeal());
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray _meals = response.getJSONArray("meals");
-                            meals = apiMealJson.mergeIntoJSONArray(_meals);
+                    featuredImage.setOnClickListener(view -> {
+                        Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
+                        intent.putExtra("mealId", meals.get(0).getIdMeal());
 
-                            Picasso.with(MainActivity.this)
-                                    .load(meals.get(0).getStrMealThumb())
-                                    .into(featuredImage);
-                            featuredName.setText(meals.get(0).getStrMeal());
+                        MainActivity.this.startActivity(intent);
+                    });
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
