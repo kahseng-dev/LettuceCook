@@ -1,7 +1,11 @@
 package sg.edu.np.mad.lettucecook;
 
 import android.content.Context;
+import android.util.Log;
 
+import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -11,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import sg.edu.np.mad.lettucecook.Models.ApiMeal;
 
@@ -21,9 +27,9 @@ public class ApiService {
         this.context = context;
     }
 
-    public void get(ApiURL URL, String query, JSONObject json, VolleyResponseListener listener) {
+    public void get(ApiURL URL, String query, VolleyResponseListener listener) {
         JsonObjectRequest request = new JsonObjectRequest
-                (Request.Method.GET, URL.toString() + query, json, new Response.Listener<JSONObject>() {
+                (URL.toString() + query, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -40,6 +46,32 @@ public class ApiService {
                         error.printStackTrace();
                     }
                 });
+        VolleySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    public void getIngredient(ApiURL URL, String query, VolleyResponseListener listener) {
+        JsonObjectRequest request = new JsonObjectRequest
+                ( URL.toString() + query, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            listener.onResponse(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, error -> {
+                    // TODO: Handle error
+                    error.printStackTrace();
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("X-Api-Key", "TXyvRpCPgwhOIpFhfB4L3Q==vVHI825lte4zHJ3a");
+                return headers;
+            }
+        };
         VolleySingleton.getInstance(context).addToRequestQueue(request);
     }
 }

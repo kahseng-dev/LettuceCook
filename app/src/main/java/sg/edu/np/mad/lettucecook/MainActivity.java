@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         createRecipeButton = findViewById(R.id.create_recipe_button);
 
         String query = "random.php";
-        apiService.get(ApiURL.MealDB, query, null, new VolleyResponseListener() {
+        apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
 
             @Override
             public void onError(String message) {
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 browseType = i;
                 String query = i == 0 ? "list.php?c=list" : "list.php?a=list";
-                apiService.get(ApiURL.MealDB, query, null, new VolleyResponseListener() {
+                apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Log.v(TAG, message);
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String filter = browseTypeChoiceSpinner.getSelectedItem().toString();
                 String query = "filter.php?" + (browseType == 0 ? "c=" : "a=") + filter;
-                apiService.get(ApiURL.MealDB, query, null, new VolleyResponseListener() {
+                apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Log.v(TAG, message);

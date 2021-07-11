@@ -56,7 +56,7 @@ public class CreateRecipe extends AppCompatActivity {
         createRecipeButton = findViewById(R.id.createRecipeButton);
 
         String areaQuery = "list.php?a=list";
-        apiService.get(ApiURL.MealDB, areaQuery, null, new VolleyResponseListener() {
+        apiService.get(ApiURL.MealDB, areaQuery, new VolleyResponseListener() {
             @Override
             public void onError(String message) {
                 Log.v(TAG, message);
@@ -77,7 +77,7 @@ public class CreateRecipe extends AppCompatActivity {
         });
 
         String categoryQuery = "list.php?c=list";
-        apiService.get(ApiURL.MealDB, categoryQuery, null, new VolleyResponseListener() {
+        apiService.get(ApiURL.MealDB, categoryQuery, new VolleyResponseListener() {
             @Override
             public void onError(String message) {
                 Log.v(TAG, message);
