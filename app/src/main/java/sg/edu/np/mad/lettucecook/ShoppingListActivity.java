@@ -9,10 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -30,17 +34,43 @@ public class ShoppingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
         setTitle("Shopping List");
+
         RecyclerView recyclerView = findViewById(R.id.shoppingListRV);
+        ImageView cartIcon = findViewById(R.id.shoppingCartIcon);
+        TextView shoppingListText = findViewById(R.id.shoppingListText);
+
         LinearLayoutManager mLayoutManger = new LinearLayoutManager(this);
 
         if (getIntent().hasExtra("UserId")) {
             Bundle extras = getIntent().getExtras();
             int userId = extras.getInt("UserId");
             ingredientList = dbHandler.getShoppingList(userId);
-            ShoppingListAdapter sAdapter = new ShoppingListAdapter(ingredientList, this, userId);
-            recyclerView.setLayoutManager(mLayoutManger);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(sAdapter);
+
+            if (ingredientList.size() == 0) {
+                recyclerView.setVisibility(View.INVISIBLE);
+                cartIcon.setVisibility(View.VISIBLE);
+                shoppingListText.setVisibility(View.VISIBLE);
+                String emptyShoppingList = "Your shopping list is empty! Please add some!";
+                shoppingListText.setText(emptyShoppingList);
+            }
+
+            else {
+                recyclerView.setVisibility(View.VISIBLE);
+                cartIcon.setVisibility(View.INVISIBLE);
+                shoppingListText.setVisibility(View.INVISIBLE);
+                ShoppingListAdapter sAdapter = new ShoppingListAdapter(ingredientList, this, userId);
+                recyclerView.setLayoutManager(mLayoutManger);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(sAdapter);
+            }
+        }
+
+        else {
+            recyclerView.setVisibility(View.INVISIBLE);
+            cartIcon.setVisibility(View.VISIBLE);
+            shoppingListText.setVisibility(View.VISIBLE);
+            String notLoggedInMessage = "Please Sign In to view your shopping items!";
+            shoppingListText.setText(notLoggedInMessage);
         }
 
         // TODO: DO SOMETHING IF DATABASE IS EMPTY
