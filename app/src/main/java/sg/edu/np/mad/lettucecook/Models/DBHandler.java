@@ -115,6 +115,30 @@ public class DBHandler extends SQLiteOpenHelper {
         return user;
     }
 
+    public User getDetails(int userId) {
+        String query = "SELECT * FROM " + TABLE_USERS +
+                " WHERE " + USER_COLUMN_ID + "=\"" + userId + "\"";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        User user = new User();
+
+        if (cursor.moveToFirst()) {
+            user.setUserId(cursor.getInt(0));
+            user.setUsername(cursor.getString(1));
+            user.setPassword(cursor.getString(2));
+            cursor.close();
+        }
+
+        else {
+            user = null;
+        }
+
+        db.close();
+        return user;
+    }
+
     public void addItemToShoppingList(int userId, Ingredient ingredient) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -173,5 +197,17 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
         return shoppingList;
+    }
+
+    public void deleteShoppingItem(int userId, Ingredient ingredient) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "DELETE FROM " + TABLE_SHOPPING_LIST +
+                " WHERE " + USER_COLUMN_ID + "=\"" + userId + "\"" +
+                " AND " + SHOPPING_LIST_COLUMN_MEALID + "=\"" + ingredient.getMealId() + "\"" +
+                " AND " + SHOPPING_LIST_COLUMN_INGREDIENTNAME + "=\"" + ingredient.getIngredientName() + "\"";
+
+        db.execSQL(query);
+        db.close();
     }
 }

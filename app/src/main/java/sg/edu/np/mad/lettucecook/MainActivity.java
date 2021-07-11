@@ -93,7 +93,13 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
                         intent.putExtra("mealId", meals.get(0).getIdMeal());
 
-                        MainActivity.this.startActivity(intent);
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            intent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(intent);
                     });
 
                 } catch (JSONException e) {
@@ -181,16 +187,16 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.browse:
                         return true;
 
-                    case R.id.login:
-                        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                    case R.id.account:
+                        Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
 
                         if (getIntent().hasExtra("UserId")) {
                             Bundle extras = getIntent().getExtras();
                             int userId = extras.getInt("UserId");
-                            loginIntent.putExtra("UserId", userId);
+                            accountIntent.putExtra("UserId", userId);
                         }
 
-                        startActivity(loginIntent);
+                        startActivity(accountIntent);
                         overridePendingTransition(0, 0);
                         return true;
 

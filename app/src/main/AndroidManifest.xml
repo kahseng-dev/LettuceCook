@@ -18,8 +18,9 @@
         <activity
             android:name=".CreateAccountActivity"
             android:parentActivityName=".LoginActivity" />
-        <activity
-            android:name=".MainActivity"
+        <activity android:name=".AccountActivity" />
+
+        <activity android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -44,5 +45,4 @@
 
         <activity android:name=".IngredientsActivity"></activity>
     </application>
-
 </manifest>
