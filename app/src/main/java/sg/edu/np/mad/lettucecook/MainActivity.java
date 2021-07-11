@@ -66,9 +66,9 @@ public class MainActivity extends AppCompatActivity {
         featuredButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                featuredImage = (ImageView) findViewById(R.id.featured_image);
+                featuredImage = findViewById(R.id.featured_image);
                 featuredImage .setVisibility(View.VISIBLE);
-                featuredName = (TextView) findViewById(R.id.featured_meal_text);
+                featuredName = findViewById(R.id.featured_meal_text);
                 featuredName.setVisibility(View.VISIBLE);
 
                 String query = "random.php";
@@ -89,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
                                     .load(meals.get(0).getStrMealThumb())
                                     .into(featuredImage);
                             featuredName.setText(meals.get(0).getStrMeal());
+
+                            featuredImage.setOnClickListener(view -> {
+                                Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
+                                intent.putExtra("mealId", meals.get(0).getIdMeal());
+
+                                Intent widgetIntent = new Intent(MainActivity.this, OpenAppWidget.class);
+                                widgetIntent.putExtra("mealId", meals.get(0).getIdMeal());
+
+                                MainActivity.this.startActivity(intent);
+                            });
 
                         } catch (JSONException e) {
                             e.printStackTrace();
