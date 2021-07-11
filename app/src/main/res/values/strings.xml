@@ -2,13 +2,14 @@
     <!-- General strings-->
     <string name="app_name">LettuceCook</string>
 
-    <!-- Login and Create Activity strings-->
+    <!-- Account Activity strings-->
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="createAccountButtonText">Create Account</string>
     <string name="createAccountText">No Account? Create one here!</string>
     <string name="loginAccountText">Have an Account? Login here!</string>
+    <string name="account">Account</string>
 
     <!-- Browse Activity strings-->
     <string-array name="browse_types">

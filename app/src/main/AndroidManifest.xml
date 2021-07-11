@@ -17,6 +17,8 @@
         <activity
             android:name=".CreateAccountActivity"
             android:parentActivityName=".LoginActivity" />
+        <activity android:name=".AccountActivity" />
+
         <activity android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
@@ -30,7 +32,6 @@
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ShoppingListActivity" />
 
-
         <receiver android:name=".OpenAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -41,5 +42,4 @@
                 android:resource="@xml/recipe_add_widget_info" />
         </receiver>
     </application>
-
 </manifest>
