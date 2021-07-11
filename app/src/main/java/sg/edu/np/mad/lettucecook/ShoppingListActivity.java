@@ -67,16 +67,16 @@ public class ShoppingListActivity extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
 
-                    case R.id.login:
-                        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                    case R.id.account:
+                        Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
 
                         if (getIntent().hasExtra("UserId")) {
                             Bundle extras = getIntent().getExtras();
                             int userId = extras.getInt("UserId");
-                            loginIntent.putExtra("UserId", userId);
+                            accountIntent.putExtra("UserId", userId);
                         }
 
-                        startActivity(loginIntent);
+                        startActivity(accountIntent);
                         overridePendingTransition(0, 0);
                         return true;
 
