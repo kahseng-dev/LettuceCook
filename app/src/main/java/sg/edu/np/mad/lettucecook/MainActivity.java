@@ -91,7 +91,13 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
                         intent.putExtra("mealId", meals.get(0).getIdMeal());
 
-                        MainActivity.this.startActivity(intent);
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            intent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(intent);
                     });
 
                 } catch (JSONException e) {
