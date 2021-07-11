@@ -16,4 +16,9 @@
 
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="ThemeOverlay.LettuceCook.AppWidgetContainer" parent="">
+        <item name="appWidgetBackgroundColor">@color/dark_green</item>
+        <item name="appWidgetTextColor">@color/white</item>
+    </style>
 </resources>
