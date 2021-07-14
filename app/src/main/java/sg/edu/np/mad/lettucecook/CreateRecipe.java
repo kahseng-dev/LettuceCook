@@ -27,11 +27,15 @@ import sg.edu.np.mad.lettucecook.Models.CreatedIngredient;
 public class CreateRecipe extends AppCompatActivity {
     static final String TAG = "CreateRecipe";
 
+    // Initiate arrays
     ArrayList<ApiMeal> meals;
     ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
+
+    // Initiate API meal
     ApiService apiService = new ApiService(CreateRecipe.this);
     ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
 
+    // Initiate Spinner, Layout, Button, EditTexts & Strings
     Spinner recipeAreaSpinner, recipeCategorySpinner;
 
     LinearLayout layoutList;
@@ -43,18 +47,22 @@ public class CreateRecipe extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_recipe);
+        setContentView(R.layout.activity_create_recipe); // Set ContentView of Activity
 
+        // Find Spinner IDs
         recipeAreaSpinner = findViewById(R.id.recipeAreaSpinner);
         recipeCategorySpinner = findViewById(R.id.recipeCategorySpinner);
 
+        // Find EditText names and instructions
         recipeName = findViewById(R.id.recipeName);
         recipeInstructions = findViewById(R.id.recipeInstructions);
 
+        // Find buttons and layoutlists
         layoutList = findViewById(R.id.layout_list);
         buttonAdd = findViewById(R.id.addIngredientButton);
         createRecipeButton = findViewById(R.id.createRecipeButton);
 
+        // Set string to call Area list for API
         String areaQuery = "list.php?a=list";
         apiService.get(ApiURL.MealDB, areaQuery, new VolleyResponseListener() {
             @Override
@@ -67,7 +75,7 @@ public class CreateRecipe extends AppCompatActivity {
                 try {
                     JSONArray _filters = response.getJSONArray("meals");
                     String[] filters = apiMealJson.parseFilterArray(_filters);
-                    fillSpinner(recipeAreaSpinner, filters);
+                    fillSpinner(recipeAreaSpinner, filters); // Fill up spinner with response
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -76,6 +84,7 @@ public class CreateRecipe extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) { }
         });
 
+        // Set string to call Category list for API
         String categoryQuery = "list.php?c=list";
         apiService.get(ApiURL.MealDB, categoryQuery, new VolleyResponseListener() {
             @Override
@@ -88,7 +97,7 @@ public class CreateRecipe extends AppCompatActivity {
                 try {
                     JSONArray _filters = response.getJSONArray("meals");
                     String[] filters = apiMealJson.parseFilterArray(_filters);
-                    fillSpinner(recipeCategorySpinner, filters);
+                    fillSpinner(recipeCategorySpinner, filters); // Fill up spinner with response
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -97,6 +106,7 @@ public class CreateRecipe extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) { }
         });
 
+        // Set add button on click
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +114,7 @@ public class CreateRecipe extends AppCompatActivity {
             }
         });
 
+        // Set create recipe on click method
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,26 +140,33 @@ public class CreateRecipe extends AppCompatActivity {
         });
     }
 
+    // Function to validate user input for Create Recipe form
     private boolean checkIfValidAndRead() {
         ingredientList.clear();
         boolean result = true;
 
+        // Loop through according to the number of ingredients in the layoutlist
         for (int i=0; i<layoutList.getChildCount(); i++) {
             View ingredientView = layoutList.getChildAt(i);
 
+            // Find EditText IDs
             EditText editName = ingredientView.findViewById(R.id.edit_ingredient_name);
             EditText editMeasure = ingredientView.findViewById(R.id.edit_ingredient_measure);
 
+            // Create new CreatedIngredient object
             CreatedIngredient ingredient = new CreatedIngredient();
 
+            // Check if both Recipe Name & Recipe Measure inputs are empty
             if (!editName.getText().toString().equals("") && !editMeasure.getText().toString().equals("")) {
                 ingredient.setIngredientName(editName.getText().toString());
                 ingredient.setIngredientMeasure(editMeasure.getText().toString());
             }
             else { result = false; break; }
 
+            // Add ingredient to ingredientList
             ingredientList.add(ingredient);
 
+            // Check if ingredientList is empty
             if (ingredientList.size() == 0) {
                 result = false;
                 Toast.makeText(this, "Add Ingredients First!", Toast.LENGTH_SHORT).show();
@@ -161,6 +179,7 @@ public class CreateRecipe extends AppCompatActivity {
         return result;
     }
 
+    // Function to addView everytime user clicks on click
     public void addView() {
         View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient, null, false);
 
@@ -168,8 +187,9 @@ public class CreateRecipe extends AppCompatActivity {
         EditText editTextMeasure = ingredientView.findViewById(R.id.edit_ingredient_measure);
         ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
 
-        layoutList.addView(ingredientView);
+        layoutList.addView(ingredientView); // Add user view to layout list
 
+        // Set on click to image close
         imageClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,10 +198,12 @@ public class CreateRecipe extends AppCompatActivity {
         });
     }
 
+    // Delete user ingredient function
     public void removeView(View view) {
         layoutList.removeView(view);
     }
 
+    // Fill spinner
     private void fillSpinner(Spinner spinner, String[] items) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 CreateRecipe.this,
