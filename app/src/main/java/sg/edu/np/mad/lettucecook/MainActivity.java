@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initiate find values
         browseTypeSpinner = findViewById(R.id.main_browse_type_spinner);
         browseTypeChoiceSpinner = findViewById(R.id.main_browse_type_choice_spinner);
         browseButton = findViewById(R.id.main_browse_button);
@@ -62,12 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         fillSpinner(browseTypeSpinner, getResources().getStringArray(R.array.browse_types));
 
-
+        // Initiate find featured values
         featuredImage = findViewById(R.id.featured_image);
         featuredImage .setVisibility(View.VISIBLE);
         featuredName = findViewById(R.id.featured_meal_text);
         featuredName.setVisibility(View.VISIBLE);
 
+        // Set query string to random.php for API call
         String query = "random.php";
         apiMealService.getMeals(query, new VolleyResponseListener() {
 
@@ -82,12 +84,17 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray _meals = response.getJSONArray("meals");
                     meals = apiMealJson.mergeIntoJSONArray(_meals);
 
+                    // Make use of Picasso library to set images
                     Picasso.with(MainActivity.this)
                             .load(meals.get(0).getStrMealThumb())
                             .into(featuredImage);
+
+                    // Set featured name text to random meal name
                     featuredName.setText(meals.get(0).getStrMeal());
 
+                    // Set onclick for featured thumbnail
                     featuredImage.setOnClickListener(view -> {
+                        // Intent to another class together with random generated mealId
                         Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
                         intent.putExtra("mealId", meals.get(0).getIdMeal());
 
