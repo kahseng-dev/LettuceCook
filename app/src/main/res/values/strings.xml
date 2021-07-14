@@ -44,4 +44,5 @@
     <!--    Display created recipes strings -->
     <string name="createdRecipeTitle">Your Recipes</string>
     <string name="createdRecipeName">Ingredient Measurement</string>
+    <string name="calories">calories</string>
 </resources>

@@ -19,13 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import sg.edu.np.mad.lettucecook.Models.ApiMeal;
 import sg.edu.np.mad.lettucecook.Models.CreatedIngredient;
-import sg.edu.np.mad.lettucecook.Models.Ingredient;
 
 public class CreateRecipe extends AppCompatActivity {
     static final String TAG = "CreateRecipe";
@@ -35,7 +32,7 @@ public class CreateRecipe extends AppCompatActivity {
     ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
 
     // Initiate API meal
-    ApiMealService apiMealService = new ApiMealService(CreateRecipe.this);
+    ApiService apiService = new ApiService(CreateRecipe.this);
     ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
 
     // Initiate Spinner, Layout, Button, EditTexts & Strings
@@ -67,7 +64,7 @@ public class CreateRecipe extends AppCompatActivity {
 
         // Set string to call Area list for API
         String areaQuery = "list.php?a=list";
-        apiMealService.getMeals(areaQuery, new VolleyResponseListener() {
+        apiService.get(ApiURL.MealDB, areaQuery, new VolleyResponseListener() {
             @Override
             public void onError(String message) {
                 Log.v(TAG, message);
@@ -89,7 +86,7 @@ public class CreateRecipe extends AppCompatActivity {
 
         // Set string to call Category list for API
         String categoryQuery = "list.php?c=list";
-        apiMealService.getMeals(categoryQuery, new VolleyResponseListener() {
+        apiService.get(ApiURL.MealDB, categoryQuery, new VolleyResponseListener() {
             @Override
             public void onError(String message) {
                 Log.v(TAG, message);
