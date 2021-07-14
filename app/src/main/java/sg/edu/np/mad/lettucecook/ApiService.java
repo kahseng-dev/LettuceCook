@@ -20,6 +20,7 @@ import java.util.Map;
 
 import sg.edu.np.mad.lettucecook.Models.ApiMeal;
 
+// This class helps in sending requests to the API, MealDB or CalorieNinjas.
 public class ApiService {
     Context context;
 
@@ -27,6 +28,7 @@ public class ApiService {
         this.context = context;
     }
 
+    // ApiURL is an enum with two variants: MealDB and CalorieNinjas
     public void get(ApiURL URL, String query, VolleyResponseListener listener) {
         JsonObjectRequest request = new JsonObjectRequest
                 (URL.toString() + query, null, new Response.Listener<JSONObject>() {
@@ -49,9 +51,11 @@ public class ApiService {
         VolleySingleton.getInstance(context).addToRequestQueue(request);
     }
 
+    // This method sends request with a headers
+    // ApiURL is an enum.
     public void getIngredient(ApiURL URL, String query, VolleyResponseListener listener) {
         JsonObjectRequest request = new JsonObjectRequest
-                ( URL.toString() + query, null, new Response.Listener<JSONObject>() {
+                (URL.toString() + query, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {

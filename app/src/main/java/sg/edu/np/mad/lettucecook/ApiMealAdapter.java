@@ -49,16 +49,22 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ApiMealViewHolder holder, int position) {
         ApiMeal meal = data.get(position);
-        String area = meal.getStrArea();
-        String category = meal.getStrCategory();
+        String area = meal.getStrArea(); // Get area
+        String category = meal.getStrCategory(); // Get category
+
+        // Load image via URL into ImageView
         Picasso
                 .with(mContext)
                 .load(meal.getStrMealThumb())
                 .into(holder.thumbnail);
+
         holder.name.setText(meal.getStrMeal());
+
+        // Show the category and area if they are not null
         if (area != null) holder.area.setText(area);
         if (category != null) holder.category.setText(category);
 
+        // Make image clickable, show recipe details page when clicked
         holder.thumbnail.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
             intent.putExtra("mealId", meal.getIdMeal());

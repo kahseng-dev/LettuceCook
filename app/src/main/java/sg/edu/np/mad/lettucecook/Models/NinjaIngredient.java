@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.Models;
 
 public class NinjaIngredient {
     private float sugar_g;

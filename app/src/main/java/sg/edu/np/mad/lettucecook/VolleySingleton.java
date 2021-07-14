@@ -9,6 +9,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+// The app makes a lot of requests, so using a Singleton pattern makes it more
+// efficient. The request queue does not get recreated each time it is needed.
 public class VolleySingleton {
     private static VolleySingleton instance;
     private RequestQueue requestQueue;
@@ -20,6 +22,7 @@ public class VolleySingleton {
     }
 
     public static synchronized VolleySingleton getInstance(Context context) {
+        // Gets a VolleySingleton instance. If null, a new instance is created.
         if (instance == null) {
             instance = new VolleySingleton(context);
         }

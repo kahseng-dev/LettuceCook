@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+// Viewholder for Ingredient in recipe details page
 public class ApiIngredientViewHolder extends RecyclerView.ViewHolder {
     TextView measure, name, calorie;
 
