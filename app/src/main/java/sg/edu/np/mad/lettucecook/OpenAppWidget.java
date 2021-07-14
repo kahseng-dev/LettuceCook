@@ -23,14 +23,17 @@ public class OpenAppWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
 
+            // When open widget, go to main activity
             Intent intent = new Intent(context, MainActivity.class);
             //intent.putExtra("mealId", mealId);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
+            // Set RemoteViews
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.open_app_widget);
             views.setOnClickPendingIntent(R.id.browse_recipe_button, pendingIntent);
 
+            // Update Widget with views according to widget Id
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
