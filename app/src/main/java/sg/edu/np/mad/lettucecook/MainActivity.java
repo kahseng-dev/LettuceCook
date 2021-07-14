@@ -51,11 +51,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        browseTypeSpinner = findViewById(R.id.main_browse_type_spinner);
-        browseTypeChoiceSpinner = findViewById(R.id.main_browse_type_choice_spinner);
-        browseButton = findViewById(R.id.main_browse_button);
-        browseRV = findViewById(R.id.main_browse_rv);
+        // First spinner
+        browseTypeSpinner = findViewById(R.id.main_browse_type_spinner); // First spinner, types of browse filters
+        browseTypeChoiceSpinner = findViewById(R.id.main_browse_type_choice_spinner); // Second spinner, filters based on the first spinner
+        browseButton = findViewById(R.id.main_browse_button); // Browse button
+        browseRV = findViewById(R.id.main_browse_rv); // Browse recycler view
 
+        // Populate the first spinner with the types of browse filters
         fillSpinner(browseTypeSpinner, getResources().getStringArray(R.array.browse_types));
 
         featuredImage = findViewById(R.id.featured_image);
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray _meals = response.getJSONArray("meals");
+
+                    // Make arrays from the flat JSON structure
                     meals = apiMealJson.mergeIntoJSONArray(_meals);
 
                     Picasso.with(MainActivity.this)
@@ -103,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Changes the contents of the second dropdown list when a different item
+        // is selected in the first dropdown list.
         browseTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 browseType = i;
@@ -118,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONArray _filters = response.getJSONArray("meals");
                             String[] filters = apiMealJson.parseFilterArray(_filters);
-                            fillSpinner(browseTypeChoiceSpinner, filters);
+                            fillSpinner(browseTypeChoiceSpinner, filters); // Populate second spinner
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -130,11 +136,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Retrieves meals from the API when the button is tapped.
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String filter = browseTypeChoiceSpinner.getSelectedItem().toString();
-                String query = "filter.php?" + (browseType == 0 ? "c=" : "a=") + filter;
+                String query = "filter.php?" + (browseType == 0 ? "c=" : "a=") + filter; // Query for filtering
+
                 apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
@@ -153,10 +161,9 @@ public class MainActivity extends AppCompatActivity {
 
                             if (getIntent().hasExtra("UserId")) {
                                 int userId = extras.getInt("UserId");
-                                mAdapter = new ApiMealAdapter(meals, userId,MainActivity.this);
+                                mAdapter = new ApiMealAdapter(meals, userId, MainActivity.this);
                             }
-
-                            else mAdapter = new ApiMealAdapter(meals,MainActivity.this);
+                            else mAdapter = new ApiMealAdapter(meals, MainActivity.this);
 
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
 
@@ -175,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setSelectedItemId(R.id.browse);
 
+        // Switch pages when different navigation buttons are tapped
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -221,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Populating a spinner
     private void fillSpinner(Spinner spinner, String[] items) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 MainActivity.this,

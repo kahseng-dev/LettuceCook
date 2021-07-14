@@ -60,6 +60,7 @@ public class ApiIngredientsAdapter extends RecyclerView.Adapter<ApiIngredientVie
         String query = (measure.trim() + " " + name.trim());
         // TODO: handle oils
 
+        // Get ingredients' calories
         apiService.getIngredient(ApiURL.CalorieNinjas, query, new VolleyResponseListener() {
             @Override
             public void onError(String message) {
@@ -70,8 +71,8 @@ public class ApiIngredientsAdapter extends RecyclerView.Adapter<ApiIngredientVie
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONObject nutrients = response.getJSONArray("items").getJSONObject(0);
-                    double calories = nutrients.getDouble("calories");
+                    JSONObject nutrients = response.getJSONArray("items").getJSONObject(0); // Get first ingredient in the array
+                    double calories = nutrients.getDouble("calories"); // Get calories
                     totalCalories += calories;
                     holder.calorie.setText(calories + " kcal");
                 } catch (JSONException e) {

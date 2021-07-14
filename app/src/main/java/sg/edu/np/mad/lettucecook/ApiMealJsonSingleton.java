@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.Models.ApiMeal;
 
+// A Singleton design is used as only one instance is needed for the entire application.
+// This is more efficient since there is no need to recreate the object when needed.
 public class ApiMealJsonSingleton {
     private static ApiMealJsonSingleton instance;
     private static Gson gson;
@@ -18,6 +20,8 @@ public class ApiMealJsonSingleton {
     }
 
     public static synchronized ApiMealJsonSingleton getInstance() {
+        // Gets instance. If null, makes a new instance
+        // and returns the same instance in the future.
         if (instance == null) {
             instance = new ApiMealJsonSingleton();
         }
@@ -25,6 +29,8 @@ public class ApiMealJsonSingleton {
     }
 
     private Gson getGson() {
+        // Gets gson property. If null, creates a new Gson object
+        // and returns the same instance in the future.
         if (gson == null) {
             gson = new Gson();
         }
@@ -39,7 +45,7 @@ public class ApiMealJsonSingleton {
         return getGson().fromJson(filtersStr, String[].class);
     }
 
-    /* The JSON object is one-dimensional, strMeasure and strIngredients are not stored
+    /* The JSON object (MealDB) is one-dimensional, strMeasure and strIngredients are not stored
        in arrays, but instead there are 20 of each, named from strMeasure1 to strMeasure20,
        and strIngredient1 to strIngredient20. This method parses */
     public ArrayList<ApiMeal> mergeIntoJSONArray(JSONArray _meals) throws JSONException {
@@ -67,6 +73,7 @@ public class ApiMealJsonSingleton {
             String ingredientValue = json.getString(ingredientKey);
             String measureValue = json.getString(measureKey);
 
+            // Add items to array if not null or empty
             if (!(json.isNull(ingredientKey) || ingredientValue.equals(""))) {
                 arrIngredients.put(ingredientValue);
                 arrMeasures.put(measureValue);
