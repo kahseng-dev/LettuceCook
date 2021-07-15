@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import sg.edu.np.mad.lettucecook.Models.DBHandler;
-import sg.edu.np.mad.lettucecook.Models.User;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.models.DBHandler;
+import sg.edu.np.mad.lettucecook.models.User;
 
 public class CreateAccountActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
@@ -23,11 +24,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         setTitle("Create LettuceCook Account");
         setContentView(R.layout.activity_create_account);
 
-        EditText username = findViewById(R.id.inputCreateUsername);
-        EditText password = findViewById(R.id.inputCreatePassword);
+        EditText username = findViewById(R.id.create_account_username);
+        EditText password = findViewById(R.id.create_account_password);
         password.setTypeface(Typeface.DEFAULT);
 
-        Button createButton = findViewById(R.id.createAccountButton);
+        Button createButton = findViewById(R.id.create_account_button);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +56,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
 
-        TextView loginAccount = findViewById(R.id.loginAccountLink);
+        TextView loginAccount = findViewById(R.id.create_account_login_link);
         loginAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

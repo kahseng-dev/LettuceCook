@@ -16,7 +16,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/lettuceCreateText"
+                android:id="@+id/create_recipe_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="LettuceCreate!"
@@ -30,8 +30,8 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/recipeName"
-                android:layout_below="@+id/lettuceCreateText"
+                android:id="@+id/create_recipe_name"
+                android:layout_below="@+id/create_recipe_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -43,8 +43,8 @@
                 android:hint="@string/createRecipeName" />
 
             <Spinner
-                android:id="@+id/recipeCategorySpinner"
-                android:layout_below="@+id/recipeName"
+                android:id="@+id/create_recipe_category_spinner"
+                android:layout_below="@+id/create_recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -52,8 +52,8 @@
                 android:layout_marginEnd="24dp" />
 
             <Spinner
-                android:id="@+id/recipeAreaSpinner"
-                android:layout_below="@+id/recipeCategorySpinner"
+                android:id="@+id/create_recipe_area_apinner"
+                android:layout_below="@+id/create_recipe_category_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -63,7 +63,7 @@
             <Button
                 android:background="@drawable/round_primary"
                 android:id="@+id/addIngredientButton"
-                android:layout_below="@id/recipeAreaSpinner"
+                android:layout_below="@id/create_recipe_area_apinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
@@ -73,7 +73,7 @@
                 android:drawableRight="@drawable/ic_add"/>
 
             <LinearLayout
-                android:id="@+id/layout_list"
+                android:id="@+id/create_recipe_layout_list"
                 android:layout_below="@id/addIngredientButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,8 +81,8 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/recipeInstructions"
-                android:layout_below="@+id/layout_list"
+                android:id="@+id/create_recipe_instructions"
+                android:layout_below="@+id/create_recipe_layout_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -91,8 +91,8 @@
                 android:hint="@string/createRecipeInstructions" />
 
             <Button
-                android:id="@+id/createRecipeButton"
-                android:layout_below="@id/recipeInstructions"
+                android:id="@+id/create_recipe_create_button"
+                android:layout_below="@id/create_recipe_instructions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"

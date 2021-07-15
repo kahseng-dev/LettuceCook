@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.api;
 
 
 import com.google.gson.Gson;
@@ -7,7 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
-import sg.edu.np.mad.lettucecook.Models.ApiMeal;
+import sg.edu.np.mad.lettucecook.models.ApiMeal;
 
 // A Singleton design is used as only one instance is needed for the entire application.
 // This is more efficient since there is no need to recreate the object when needed.

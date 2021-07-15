@@ -1,8 +1,6 @@
-package sg.edu.np.mad.lettucecook.Models;
+package sg.edu.np.mad.lettucecook.models;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.RecipeDetailsActivity;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHolder>{
     ArrayList<Ingredient> data;
@@ -26,7 +23,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
     }
 
     public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_list_recyclerview, parent, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_list_item, parent, false);
         return new ShoppingListViewHolder(item);
     }
 

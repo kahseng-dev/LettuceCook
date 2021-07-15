@@ -1,12 +1,8 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.api;
 
 import android.content.Context;
-import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -14,11 +10,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.edu.np.mad.lettucecook.Models.ApiMeal;
+import sg.edu.np.mad.lettucecook.VolleyResponseListener;
+import sg.edu.np.mad.lettucecook.VolleySingleton;
 
 // This class helps in sending requests to the API, MealDB or CalorieNinjas.
 public class ApiService {

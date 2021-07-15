@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.Models;
+package sg.edu.np.mad.lettucecook.models;
 
 public class Ingredient {
     public int mealId;

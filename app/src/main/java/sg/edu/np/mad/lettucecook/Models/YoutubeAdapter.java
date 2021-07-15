@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.Models;
+package sg.edu.np.mad.lettucecook.models;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +20,7 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.VideoVie
     }
 
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube_recyclerview, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube, parent, false);
         return new VideoViewHolder(view);
     }
 
@@ -36,7 +36,7 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.VideoVie
         WebView videoWeb;
         public VideoViewHolder(View itemView) {
             super(itemView);
-            videoWeb = (WebView) itemView.findViewById(R.id.videoView);
+            videoWeb = (WebView) itemView.findViewById(R.id.youtube_video);
             videoWeb.getSettings().setJavaScriptEnabled(true);
             videoWeb.setWebChromeClient(new WebChromeClient());
         }

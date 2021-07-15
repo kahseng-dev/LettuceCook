@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateAccountActivity">
+    tools:context=".activities.CreateAccountActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,7 +15,7 @@
         android:layout_marginTop="100dp"/>
 
     <EditText
-        android:id="@+id/inputCreateUsername"
+        android:id="@+id/create_account_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -28,8 +27,8 @@
         android:hint="@string/username"/>
 
     <EditText
-        android:id="@+id/inputCreatePassword"
-        android:layout_below="@+id/inputCreateUsername"
+        android:id="@+id/create_account_password"
+        android:layout_below="@+id/create_account_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -42,20 +41,20 @@
         android:hint="@string/password"/>
 
     <Button
-        android:id="@+id/createAccountButton"
+        android:id="@+id/create_account_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/inputCreatePassword"
+        android:layout_below="@+id/create_account_password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:text="@string/createAccountButtonText"
         />
 
     <TextView
-        android:id="@+id/loginAccountLink"
+        android:id="@+id/create_account_login_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/createAccountButton"
+        android:layout_below="@+id/create_account_button"
         android:text="@string/loginAccountText"
         android:textColor="@color/dark_green"
         android:textSize="14sp"

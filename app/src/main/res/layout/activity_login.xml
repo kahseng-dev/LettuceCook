@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,7 +16,7 @@
         android:layout_marginTop="100dp"/>
 
     <EditText
-        android:id="@+id/inputLoginUsername"
+        android:id="@+id/login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -28,8 +28,8 @@
         android:hint="@string/username"/>
 
     <EditText
-        android:id="@+id/inputLoginPassword"
-        android:layout_below="@+id/inputLoginUsername"
+        android:id="@+id/login_password"
+        android:layout_below="@+id/login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -42,20 +42,20 @@
         android:hint="@string/password"/>
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/inputLoginPassword"
+        android:layout_below="@+id/login_password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:text="@string/login"
         />
 
     <TextView
-        android:id="@+id/createAccountLink"
+        android:id="@+id/login_create_account_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loginButton"
+        android:layout_below="@+id/login_button"
         android:text="@string/createAccountText"
         android:textColor="@color/dark_green"
         android:textSize="14sp"

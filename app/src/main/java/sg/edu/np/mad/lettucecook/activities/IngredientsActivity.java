@@ -1,7 +1,6 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import sg.edu.np.mad.lettucecook.Models.CreatedIngredient;
+import sg.edu.np.mad.lettucecook.CreatedIngredientAdapter;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
 
 public class IngredientsActivity extends AppCompatActivity {
 
@@ -26,11 +27,11 @@ public class IngredientsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_recipes);
 
-        recyclerIngredients = findViewById(R.id.recycler_ingredients);
-        createdRecipeName = findViewById(R.id.createdRecipeName);
-        createdRecipeArea = findViewById(R.id.createdRecipeArea);
-        createdRecipeInstructions = findViewById(R.id.createdRecipeInstructions);
-        createdRecipeCategory = findViewById(R.id.createdRecipeCategory);
+        recyclerIngredients = findViewById(R.id.custom_recipe_ingredients_rv);
+        createdRecipeName = findViewById(R.id.custome_recipe_name);
+        createdRecipeArea = findViewById(R.id.custom_recipe_area);
+        createdRecipeInstructions = findViewById(R.id.custom_recipe_instructions);
+        createdRecipeCategory = findViewById(R.id.custom_recipe_category);
 
         ingredientList = (ArrayList<CreatedIngredient>) getIntent().getExtras().getSerializable("ARRAYLIST");
 

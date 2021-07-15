@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,11 +29,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import sg.edu.np.mad.lettucecook.Models.ApiMeal;
-import sg.edu.np.mad.lettucecook.Models.DBHandler;
-import sg.edu.np.mad.lettucecook.Models.Ingredient;
-import sg.edu.np.mad.lettucecook.Models.YoutubeAdapter;
-import sg.edu.np.mad.lettucecook.Models.YoutubeVideo;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.VolleyResponseListener;
+import sg.edu.np.mad.lettucecook.models.ApiMeal;
+import sg.edu.np.mad.lettucecook.models.DBHandler;
+import sg.edu.np.mad.lettucecook.models.Ingredient;
+import sg.edu.np.mad.lettucecook.models.YoutubeAdapter;
+import sg.edu.np.mad.lettucecook.models.YoutubeVideo;
+import sg.edu.np.mad.lettucecook.api.ApiIngredientsAdapter;
+import sg.edu.np.mad.lettucecook.api.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.api.ApiService;
+import sg.edu.np.mad.lettucecook.api.ApiURL;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
@@ -50,24 +56,24 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_details);
 
         // Setting ViewById for Meal Details
-        mealThumbnail = findViewById(R.id.mealThumbnail);
-        mealName = findViewById(R.id.mealName);
-        mealCategory = findViewById(R.id.mealCategoryText);
-        areaText = findViewById(R.id.areaText);
-        instructionsText = findViewById(R.id.instructionsText);
-        RecyclerView ingredientsRV = findViewById(R.id.ingredientsRV);
-        altDrinkText = findViewById(R.id.altDrinkText);
-        tagText = findViewById(R.id.tagText);
-        sourceLink = findViewById(R.id.sourceLink);
-        dateModifiedText = findViewById(R.id.dateModifiedText);
+        mealThumbnail = findViewById(R.id.recipe_details_meal_thumbnail);
+        mealName = findViewById(R.id.recipe_details_meal_name);
+        mealCategory = findViewById(R.id.recipe_details_meal_category_text);
+        areaText = findViewById(R.id.recipe_details_area_text);
+        instructionsText = findViewById(R.id.recipe_details_instruction_text);
+        RecyclerView ingredientsRV = findViewById(R.id.recipe_details_ingredients_rv);
+        altDrinkText = findViewById(R.id.recipe_details_alt_drink_text);
+        tagText = findViewById(R.id.recipe_details_tag_text);
+        sourceLink = findViewById(R.id.recipe_details_source_link);
+        dateModifiedText = findViewById(R.id.recipe_details_date_modified_text);
 
         // Setting ViewById and attributes for YouTube recyclerView
-        ytRecyclerView = findViewById(R.id.ytRecyclerView);
+        ytRecyclerView = findViewById(R.id.recipe_details_youtube_rv);
         ytRecyclerView.setHasFixedSize(true);
         ytRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Setting add to shopping list button
-        addToShoppingList = findViewById(R.id.addShoppingListButton);
+        addToShoppingList = findViewById(R.id.recipe_details_add_to_shopping_list_button);
 
         // get the mealId to be viewed
         Bundle extras = getIntent().getExtras();
