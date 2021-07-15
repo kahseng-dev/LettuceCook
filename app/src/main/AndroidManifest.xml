@@ -12,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LettuceCook">
-        <activity android:name=".IngredientViewHolder"></activity>
-        <activity android:name=".CreateRecipe" />
+        <activity android:name=".rv.CreatedIngredientViewHolder"></activity>
+        <activity android:name=".activities.CreateRecipeActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity
             android:name=".activities.CreateAccountActivity"

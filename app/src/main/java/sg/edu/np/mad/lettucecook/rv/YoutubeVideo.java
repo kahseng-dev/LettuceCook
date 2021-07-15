@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.models;
+package sg.edu.np.mad.lettucecook.rv;
 
 public class YoutubeVideo {
 

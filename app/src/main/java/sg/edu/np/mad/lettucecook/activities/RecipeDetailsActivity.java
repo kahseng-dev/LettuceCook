@@ -30,16 +30,16 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.VolleyResponseListener;
+import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.Ingredient;
-import sg.edu.np.mad.lettucecook.models.YoutubeAdapter;
-import sg.edu.np.mad.lettucecook.models.YoutubeVideo;
-import sg.edu.np.mad.lettucecook.api.ApiIngredientsAdapter;
-import sg.edu.np.mad.lettucecook.api.ApiMealJsonSingleton;
-import sg.edu.np.mad.lettucecook.api.ApiService;
-import sg.edu.np.mad.lettucecook.api.ApiURL;
+import sg.edu.np.mad.lettucecook.rv.YoutubeAdapter;
+import sg.edu.np.mad.lettucecook.rv.YoutubeVideo;
+import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
+import sg.edu.np.mad.lettucecook.utils.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.utils.ApiService;
+import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);

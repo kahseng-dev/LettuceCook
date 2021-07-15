@@ -1,12 +1,9 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.utils;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 // The app makes a lot of requests, so using a Singleton pattern makes it more

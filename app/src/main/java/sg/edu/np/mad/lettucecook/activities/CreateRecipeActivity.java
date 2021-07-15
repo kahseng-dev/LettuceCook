@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,14 +21,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import sg.edu.np.mad.lettucecook.activities.IngredientsActivity;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
-import sg.edu.np.mad.lettucecook.api.ApiMealJsonSingleton;
-import sg.edu.np.mad.lettucecook.api.ApiService;
-import sg.edu.np.mad.lettucecook.api.ApiURL;
+import sg.edu.np.mad.lettucecook.utils.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.utils.ApiService;
+import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
-public class CreateRecipe extends AppCompatActivity {
+public class CreateRecipeActivity extends AppCompatActivity {
     static final String TAG = "CreateRecipe";
 
     // Initiate arrays
@@ -36,7 +37,7 @@ public class CreateRecipe extends AppCompatActivity {
     ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
 
     // Initiate API meal
-    ApiService apiService = new ApiService(CreateRecipe.this);
+    ApiService apiService = new ApiService(CreateRecipeActivity.this);
     ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
 
     // Initiate Spinner, Layout, Button, EditTexts & Strings
@@ -128,7 +129,7 @@ public class CreateRecipe extends AppCompatActivity {
                     recipeNameValue = recipeName.getText().toString();
                     recipeInstructionsValue = recipeInstructions.getText().toString();
 
-                    Intent intent = new Intent(CreateRecipe.this, IngredientsActivity.class);
+                    Intent intent = new Intent(CreateRecipeActivity.this, IngredientsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("ARRAYLIST", ingredientList);
                     bundle.putString("recipeAreaSpinnerValue", recipeAreaSpinnerValue);
@@ -210,7 +211,7 @@ public class CreateRecipe extends AppCompatActivity {
     // Fill spinner
     private void fillSpinner(Spinner spinner, String[] items) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                CreateRecipe.this,
+                CreateRecipeActivity.this,
                 android.R.layout.simple_spinner_item, items);
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

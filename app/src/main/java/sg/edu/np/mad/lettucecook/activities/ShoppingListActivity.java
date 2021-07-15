@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.Ingredient;
-import sg.edu.np.mad.lettucecook.models.ShoppingListAdapter;
+import sg.edu.np.mad.lettucecook.rv.ShoppingListAdapter;
 
 public class ShoppingListActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);

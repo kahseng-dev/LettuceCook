@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import sg.edu.np.mad.lettucecook.CreatedIngredientAdapter;
+import sg.edu.np.mad.lettucecook.rv.CreatedIngredientAdapter;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
 
