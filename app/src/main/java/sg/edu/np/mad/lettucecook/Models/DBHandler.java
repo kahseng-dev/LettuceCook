@@ -13,13 +13,13 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "LettuceCook.db";
 
-    // User Table
+    // User Table and Columns
     public static final String TABLE_USERS = "user";
     public static final String USER_COLUMN_ID = "userId";
     public static final String USER_COLUMN_USERNAME = "username";
     public static final String USER_COLUMN_PASSWORD = "password";
 
-    // Shopping List Table
+    // Shopping List Table and Columns
     public static final String TABLE_SHOPPING_LIST = "shoppingList";
     public static final String SHOPPING_LIST_COLUMN_MEALID = "mealId";
     public static final String SHOPPING_LIST_COLUMN_INGREDIENTNAME = "ingredient";
@@ -35,17 +35,20 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate (SQLiteDatabase db) {
+        // Create user table string
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + USER_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + USER_COLUMN_USERNAME + " TEXT,"
                 + USER_COLUMN_PASSWORD + " TEXT" + ")";
 
+        // Create shopping list table string
         String CREATE_SHOPPING_LIST_TABLE = "CREATE TABLE " + TABLE_SHOPPING_LIST + "("
                 + USER_COLUMN_ID + " INTEGER,"
                 + SHOPPING_LIST_COLUMN_MEALID + " INTEGER,"
                 + SHOPPING_LIST_COLUMN_INGREDIENTNAME + " TEXT,"
                 + SHOPPING_LIST_COLUMN_MEASURE + " INTEGER" + ")";
 
+        // execute table creation query string
         db.execSQL(CREATE_USERS_TABLE);
         db.execSQL(CREATE_SHOPPING_LIST_TABLE);
     }
@@ -81,6 +84,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return userList;
     }
 
+    // adding user to user table
     public void addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -91,6 +95,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    // finding a user through their username
     public User findUser(String username) {
         String query = "SELECT * FROM " + TABLE_USERS +
                         " WHERE " + USER_COLUMN_USERNAME + "=\"" + username + "\"";
@@ -107,7 +112,7 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.close();
         }
 
-        else {
+        else { // if user is not found, return user is null
             user = null;
         }
 
@@ -115,6 +120,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return user;
     }
 
+    // get the details of the user from the userID
     public User getDetails(int userId) {
         String query = "SELECT * FROM " + TABLE_USERS +
                 " WHERE " + USER_COLUMN_ID + "=\"" + userId + "\"";
@@ -131,7 +137,7 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.close();
         }
 
-        else {
+        else { // if user is not found, return user is null
             user = null;
         }
 
@@ -139,6 +145,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return user;
     }
 
+    // passing the ingredient object and the userId that is logged in,
+    // add the ingredient into the shopping list table
     public void addItemToShoppingList(int userId, Ingredient ingredient) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -152,6 +160,8 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    // getting all items in the shopping list table
+    // this is used to view the table
     public ArrayList<Ingredient> getAllShoppingList() {
         ArrayList<Ingredient> shoppingLists = new ArrayList<Ingredient>();
 
@@ -174,6 +184,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return shoppingLists;
     }
 
+    // get the shopping list of a user by passing the userId
     public ArrayList<Ingredient> getShoppingList(int userId) {
         String query = "SELECT * FROM " + TABLE_SHOPPING_LIST +
                 " WHERE " + USER_COLUMN_ID + "=\"" + userId + "\"";
@@ -199,6 +210,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return shoppingList;
     }
 
+    // delete a shopping item by passing the userId from the user that is logged in
+    // and the ingredient that is to be deleted.
     public void deleteShoppingItem(int userId, Ingredient ingredient) {
         SQLiteDatabase db = this.getWritableDatabase();
 

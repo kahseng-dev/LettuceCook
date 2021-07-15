@@ -1,15 +1,9 @@
 package sg.edu.np.mad.lettucecook.Models;
 
-import java.io.Serializable;
-
 public class Ingredient {
     public int mealId;
     public String ingredientName;
     public String measure;
-
-    public Ingredient() {
-
-    }
 
     public Ingredient(int mealId, String ingredientName, String measure) {
         this.mealId = mealId;

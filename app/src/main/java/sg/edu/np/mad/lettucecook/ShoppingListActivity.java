@@ -41,11 +41,18 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         LinearLayoutManager mLayoutManger = new LinearLayoutManager(this);
 
+        // if the user is logged in
         if (getIntent().hasExtra("UserId")) {
             Bundle extras = getIntent().getExtras();
+
+            // get the user id
             int userId = extras.getInt("UserId");
+
+            // get the list of ingredients of the user from the shopping list database.
             ingredientList = dbHandler.getShoppingList(userId);
 
+            // if the user has no items,
+            // display a message to ask the user to add some ingredients
             if (ingredientList.size() == 0) {
                 recyclerView.setVisibility(View.INVISIBLE);
                 cartIcon.setVisibility(View.VISIBLE);
@@ -54,10 +61,12 @@ public class ShoppingListActivity extends AppCompatActivity {
                 shoppingListText.setText(emptyShoppingList);
             }
 
-            else {
+            else { // otherwise, if the user has an item
                 recyclerView.setVisibility(View.VISIBLE);
                 cartIcon.setVisibility(View.INVISIBLE);
                 shoppingListText.setVisibility(View.INVISIBLE);
+
+                // display the list of ingredients
                 ShoppingListAdapter sAdapter = new ShoppingListAdapter(ingredientList, this, userId);
                 recyclerView.setLayoutManager(mLayoutManger);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -65,27 +74,32 @@ public class ShoppingListActivity extends AppCompatActivity {
             }
         }
 
-        else {
+        else { // if the user is not logged in
             recyclerView.setVisibility(View.INVISIBLE);
             cartIcon.setVisibility(View.VISIBLE);
             shoppingListText.setVisibility(View.VISIBLE);
+
+            // display the not logged in message.
             String notLoggedInMessage = "Please Sign In to view your shopping items!";
             shoppingListText.setText(notLoggedInMessage);
         }
 
-        // TODO: DO SOMETHING IF DATABASE IS EMPTY
-
+        // navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+        // set the activity that the user is currently viewing, which is the shopping list activity
         bottomNavigationView.setSelectedItemId(R.id.shoppingList);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
+
+                    // if the user wants to browse, bring them to main activity
                     case R.id.browse:
                         Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
 
+                        // if the user is logged in, pass the userId
                         if (getIntent().hasExtra("UserId")) {
                             Bundle extras = getIntent().getExtras();
                             int userId = extras.getInt("UserId");
@@ -96,9 +110,11 @@ public class ShoppingListActivity extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
 
+                    // if the user wants to view his/her account, bring them to account activity
                     case R.id.account:
                         Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
 
+                        // if the user is logged in, pass the userId to the activity
                         if (getIntent().hasExtra("UserId")) {
                             Bundle extras = getIntent().getExtras();
                             int userId = extras.getInt("UserId");
@@ -109,6 +125,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
 
+                    // if the user clicks on the shopping list button, do nothing.
                     case R.id.shoppingList:
                         return true;
                 }
