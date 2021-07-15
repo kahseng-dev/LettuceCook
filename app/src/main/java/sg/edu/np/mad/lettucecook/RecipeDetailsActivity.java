@@ -44,7 +44,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     Vector<YoutubeVideo> youtubeVideos = new Vector<>();
     ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +69,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         // Setting add to shopping list button
         addToShoppingList = findViewById(R.id.addShoppingListButton);
 
+        // get the mealId to be viewed
         Bundle extras = getIntent().getExtras();
         String mealId = extras.getString("mealId");
 
@@ -91,6 +91,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                             .load(meal.getStrMealThumb())
                             .into(mealThumbnail);
 
+                    // setting meal details
                     setTitle(meal.getStrMeal());
                     mealName.setText(meal.getStrMeal());
                     mealCategory.setText(meal.getStrCategory());
@@ -113,14 +114,17 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
                     LinearLayoutManager mLayoutManager = new LinearLayoutManager(RecipeDetailsActivity.this);
 
+                    // setting ingredients recycler view
                     ingredientsRV.setLayoutManager(mLayoutManager);
                     ingredientsRV.setItemAnimator(new DefaultItemAnimator());
                     ingredientsRV.setAdapter(adapter);
 
+                    // embedding youtube videos
                     youtubeVideos.add(new YoutubeVideo(meal.getStrYoutube()));
                     YoutubeAdapter videoAdapter = new YoutubeAdapter(youtubeVideos);
                     ytRecyclerView.setAdapter(videoAdapter);
 
+                    // if user clicks on add to shopping list, it will add the ingredients to shopping list.
                     addToShoppingList.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -145,6 +149,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         });
     }
 
+    // Load thumbnail image do be done in background
     private class LoadImage extends AsyncTask<String, Void, Bitmap> {
         ImageView thumbnail;
 
@@ -173,12 +178,14 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
     }
 
+    // if the user clicks on the back button in the toolbar, bring them back to main activity.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
 
+                // if the user is logged in, pass the userId as well.
                 if (getIntent().hasExtra("UserId")) {
                     Bundle extras = getIntent().getExtras();
                     int userId = extras.getInt("UserId");

@@ -37,6 +37,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
         holder.ingredientTV.setText(ingredient.ingredientName);
         holder.measureTV.setText(ingredient.measure);
 
+        // if the user clicks on the cross image, it will delete the ingredient from the shopping list
+        // and also feedback the deletion using the notifyItemRemoved back to the user.
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
