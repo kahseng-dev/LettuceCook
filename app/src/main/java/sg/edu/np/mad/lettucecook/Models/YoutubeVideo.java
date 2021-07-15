@@ -1,6 +1,4 @@
-package sg.edu.np.mad.lettucecook.Models;
-
-import android.util.Log;
+package sg.edu.np.mad.lettucecook.models;
 
 public class YoutubeVideo {
 

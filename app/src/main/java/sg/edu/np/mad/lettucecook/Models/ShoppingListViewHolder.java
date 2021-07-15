@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.Models;
+package sg.edu.np.mad.lettucecook.models;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -15,8 +15,8 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
 
     public ShoppingListViewHolder(View itemView) {
         super(itemView);
-        ingredientTV = itemView.findViewById(R.id.ingredientTV);
-        measureTV = itemView.findViewById(R.id.measureTV);
-        delete = itemView.findViewById(R.id.delete);
+        ingredientTV = itemView.findViewById(R.id.shopping_list_item_ingredient);
+        measureTV = itemView.findViewById(R.id.shopping_list_item_measure);
+        delete = itemView.findViewById(R.id.shopping_list_item_delete);
     }
 }

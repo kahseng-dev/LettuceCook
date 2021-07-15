@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.api;
 
 // Enum to make it easier to decide which URL to use when sending requests.
 public enum ApiURL {

@@ -21,8 +21,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import sg.edu.np.mad.lettucecook.Models.ApiMeal;
-import sg.edu.np.mad.lettucecook.Models.CreatedIngredient;
+import sg.edu.np.mad.lettucecook.activities.IngredientsActivity;
+import sg.edu.np.mad.lettucecook.models.ApiMeal;
+import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
+import sg.edu.np.mad.lettucecook.api.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.api.ApiService;
+import sg.edu.np.mad.lettucecook.api.ApiURL;
 
 public class CreateRecipe extends AppCompatActivity {
     static final String TAG = "CreateRecipe";
@@ -50,17 +54,17 @@ public class CreateRecipe extends AppCompatActivity {
         setContentView(R.layout.activity_create_recipe); // Set ContentView of Activity
 
         // Find Spinner IDs
-        recipeAreaSpinner = findViewById(R.id.recipeAreaSpinner);
-        recipeCategorySpinner = findViewById(R.id.recipeCategorySpinner);
+        recipeAreaSpinner = findViewById(R.id.create_recipe_area_apinner);
+        recipeCategorySpinner = findViewById(R.id.create_recipe_category_spinner);
 
         // Find EditText names and instructions
-        recipeName = findViewById(R.id.recipeName);
-        recipeInstructions = findViewById(R.id.recipeInstructions);
+        recipeName = findViewById(R.id.create_recipe_name);
+        recipeInstructions = findViewById(R.id.create_recipe_instructions);
 
         // Find buttons and layoutlists
-        layoutList = findViewById(R.id.layout_list);
+        layoutList = findViewById(R.id.create_recipe_layout_list);
         buttonAdd = findViewById(R.id.addIngredientButton);
-        createRecipeButton = findViewById(R.id.createRecipeButton);
+        createRecipeButton = findViewById(R.id.create_recipe_create_button);
 
         // Set string to call Area list for API
         String areaQuery = "list.php?a=list";
@@ -150,7 +154,7 @@ public class CreateRecipe extends AppCompatActivity {
             View ingredientView = layoutList.getChildAt(i);
 
             // Find EditText IDs
-            EditText editName = ingredientView.findViewById(R.id.edit_ingredient_name);
+            EditText editName = ingredientView.findViewById(R.id.row_add_ingredient_edit_name);
             EditText editMeasure = ingredientView.findViewById(R.id.edit_ingredient_measure);
 
             // Create new CreatedIngredient object
@@ -183,7 +187,7 @@ public class CreateRecipe extends AppCompatActivity {
     public void addView() {
         View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient, null, false);
 
-        EditText editTextName = ingredientView.findViewById(R.id.edit_ingredient_name);
+        EditText editTextName = ingredientView.findViewById(R.id.row_add_ingredient_edit_name);
         EditText editTextMeasure = ingredientView.findViewById(R.id.edit_ingredient_measure);
         ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
 

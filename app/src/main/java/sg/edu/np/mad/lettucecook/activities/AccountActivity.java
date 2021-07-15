@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +12,9 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import sg.edu.np.mad.lettucecook.Models.DBHandler;
-import sg.edu.np.mad.lettucecook.Models.User;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.models.DBHandler;
+import sg.edu.np.mad.lettucecook.models.User;
 
 public class AccountActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
@@ -30,8 +31,8 @@ public class AccountActivity extends AppCompatActivity {
         }
 
         else { // else if the user is logged in
-            TextView greeting = findViewById(R.id.greeting);
-            TextView logout = findViewById(R.id.logout);
+            TextView greeting = findViewById(R.id.account_greeting);
+            TextView logout = findViewById(R.id.account_logout);
 
             setTitle("LettuceCook Account");
 

@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.Models;
+package sg.edu.np.mad.lettucecook.models;
 
 
 import java.util.ArrayList;

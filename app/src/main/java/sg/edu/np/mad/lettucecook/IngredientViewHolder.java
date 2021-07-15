@@ -10,7 +10,7 @@ public class IngredientViewHolder extends RecyclerView.ViewHolder {
 
     public IngredientViewHolder(View itemView) {
         super(itemView);
-        ingredientName = itemView.findViewById(R.id.text_ingredient_name);
-        ingredientMeasure = itemView.findViewById(R.id.text_ingredient_measure);
+        ingredientName = itemView.findViewById(R.id.row_ingredient_name);
+        ingredientMeasure = itemView.findViewById(R.id.row_ingredient_measure);
     }
 }

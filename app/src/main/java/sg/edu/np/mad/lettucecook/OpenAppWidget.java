@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import sg.edu.np.mad.lettucecook.activities.MainActivity;
+
 public class OpenAppWidget extends AppWidgetProvider {
 
     private String mealId;
@@ -31,7 +33,7 @@ public class OpenAppWidget extends AppWidgetProvider {
 
             // Set RemoteViews
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.open_app_widget);
-            views.setOnClickPendingIntent(R.id.browse_recipe_button, pendingIntent);
+            views.setOnClickPendingIntent(R.id.open_app_widget_browse_recipe_button, pendingIntent);
 
             // Update Widget with views according to widget Id
             appWidgetManager.updateAppWidget(appWidgetId, views);

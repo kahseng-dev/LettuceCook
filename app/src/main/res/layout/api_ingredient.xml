@@ -34,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent">
         </TextView>
         <TextView
-            android:id="@+id/api_ingredient_calorie"
+            android:id="@+id/api_ingredient_calories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/calories"

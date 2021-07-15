@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <WebView
-        android:id="@+id/videoView"
+        android:id="@+id/youtube_video"
         android:layout_width="match_parent"
         android:layout_height="250dp" />
 </LinearLayout>

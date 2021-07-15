@@ -1,14 +1,10 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.api;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +13,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import sg.edu.np.mad.lettucecook.Models.ApiMeal;
+import sg.edu.np.mad.lettucecook.models.ApiMeal;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.activities.RecipeDetailsActivity;
 
 public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     ArrayList<ApiMeal> data;

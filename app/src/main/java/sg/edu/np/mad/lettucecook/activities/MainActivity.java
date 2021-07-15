@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +29,14 @@ import java.util.ArrayList;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import sg.edu.np.mad.lettucecook.Models.ApiMeal;
+import sg.edu.np.mad.lettucecook.CreateRecipe;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.VolleyResponseListener;
+import sg.edu.np.mad.lettucecook.models.ApiMeal;
+import sg.edu.np.mad.lettucecook.api.ApiMealAdapter;
+import sg.edu.np.mad.lettucecook.api.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.api.ApiService;
+import sg.edu.np.mad.lettucecook.api.ApiURL;
 
 public class MainActivity extends AppCompatActivity {
     static final String TAG = "MainActivity";
@@ -62,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         featuredImage = findViewById(R.id.featured_image);
         featuredImage .setVisibility(View.VISIBLE);
-        featuredName = findViewById(R.id.featured_meal_text);
+        featuredName = findViewById(R.id.main_featured_meal_name);
         featuredName.setVisibility(View.VISIBLE);
 
-        createRecipeButton = findViewById(R.id.create_recipe_button);
+        createRecipeButton = findViewById(R.id.main_create_recipe_button);
 
         String query = "random.php";
         apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {

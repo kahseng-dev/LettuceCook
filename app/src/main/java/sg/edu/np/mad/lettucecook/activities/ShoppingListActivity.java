@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,19 +11,16 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-import sg.edu.np.mad.lettucecook.Models.DBHandler;
-import sg.edu.np.mad.lettucecook.Models.Ingredient;
-import sg.edu.np.mad.lettucecook.Models.ShoppingListAdapter;
-import sg.edu.np.mad.lettucecook.Models.User;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.models.DBHandler;
+import sg.edu.np.mad.lettucecook.models.Ingredient;
+import sg.edu.np.mad.lettucecook.models.ShoppingListAdapter;
 
 public class ShoppingListActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
@@ -35,9 +32,9 @@ public class ShoppingListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shopping_list);
         setTitle("Shopping List");
 
-        RecyclerView recyclerView = findViewById(R.id.shoppingListRV);
-        ImageView cartIcon = findViewById(R.id.shoppingCartIcon);
-        TextView shoppingListText = findViewById(R.id.shoppingListText);
+        RecyclerView recyclerView = findViewById(R.id.shopping_list_rv);
+        ImageView cartIcon = findViewById(R.id.shopping_list_cart_icon);
+        TextView shoppingListText = findViewById(R.id.shopping_list_text);
 
         LinearLayoutManager mLayoutManger = new LinearLayoutManager(this);
 

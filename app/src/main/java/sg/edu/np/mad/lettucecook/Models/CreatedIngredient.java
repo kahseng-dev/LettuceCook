@@ -1,8 +1,6 @@
-package sg.edu.np.mad.lettucecook.Models;
+package sg.edu.np.mad.lettucecook.models;
 
 import java.io.Serializable;
-
-import sg.edu.np.mad.lettucecook.CreateRecipe;
 
 public class CreatedIngredient implements Serializable {
 

@@ -1,8 +1,7 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.api;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +10,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import sg.edu.np.mad.lettucecook.Models.Ingredient;
+import sg.edu.np.mad.lettucecook.models.Ingredient;
+import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.VolleyResponseListener;
 
 public class ApiIngredientsAdapter extends RecyclerView.Adapter<ApiIngredientViewHolder>{
     ArrayList<Ingredient> data;

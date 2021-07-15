@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecipeDetailsActivity">
+    tools:context=".activities.RecipeDetailsActivity">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/mealThumbnail"
+                android:id="@+id/recipe_details_meal_thumbnail"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
                 android:fitsSystemWindows="true"
@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/mealName"
+                android:id="@+id/recipe_details_meal_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -48,10 +48,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/mealThumbnail" />
+                app:layout_constraintTop_toTopOf="@+id/recipe_details_meal_thumbnail" />
 
             <TextView
-                android:id="@+id/mealCategoryLabel"
+                android:id="@+id/recipe_details_meal_category_label"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -60,19 +60,19 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mealThumbnail" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_meal_thumbnail" />
 
             <TextView
-                android:id="@+id/mealCategoryText"
+                android:id="@+id/recipe_details_meal_category_text"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mealCategoryLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_meal_category_label" />
 
             <TextView
-                android:id="@+id/areaLabel"
+                android:id="@+id/recipe_details_area_label"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -81,19 +81,19 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mealThumbnail" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_meal_thumbnail" />
 
             <TextView
-                android:id="@+id/areaText"
+                android:id="@+id/recipe_details_area_text"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/areaLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_area_label" />
 
             <TextView
-                android:id="@+id/altDrinkLabel"
+                android:id="@+id/recipe_details_alt_drink_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -104,10 +104,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ytRecyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_youtube_rv" />
 
             <TextView
-                android:id="@+id/altDrinkText"
+                android:id="@+id/recipe_details_alt_drink_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -117,10 +117,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/altDrinkLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_alt_drink_label" />
 
             <TextView
-                android:id="@+id/instructionLabel"
+                android:id="@+id/recipe_details_instructions_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -131,10 +131,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mealCategoryText" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_meal_category_text" />
 
             <TextView
-                android:id="@+id/instructionsText"
+                android:id="@+id/recipe_details_instruction_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -142,10 +142,10 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/instructionLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_instructions_label" />
 
             <TextView
-                android:id="@+id/tagLabel"
+                android:id="@+id/recipe_details_tag_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -156,10 +156,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/altDrinkText" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_alt_drink_text" />
 
             <TextView
-                android:id="@+id/tagText"
+                android:id="@+id/recipe_details_tag_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -168,10 +168,10 @@
                 android:text="-"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tagLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_tag_label" />
 
             <TextView
-                android:id="@+id/ingredientLabel"
+                android:id="@+id/recipe_details_ingredients_label"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="24dp"
@@ -183,10 +183,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/instructionsText" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_instruction_text" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ingredientsRV"
+                android:id="@+id/recipe_details_ingredients_rv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -194,19 +194,19 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ingredientLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_ingredients_label" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ytRecyclerView"
+                android:id="@+id/recipe_details_youtube_rv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ingredientsRV" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_ingredients_rv" />
 
             <TextView
-                android:id="@+id/dateModifiedLabel"
+                android:id="@+id/recipe_details_date_modified_label"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -215,20 +215,20 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tagText" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_tag_text" />
 
             <TextView
-                android:id="@+id/dateModifiedText"
+                android:id="@+id/recipe_details_date_modified_text"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:text="-"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dateModifiedLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_date_modified_label" />
 
             <TextView
-                android:id="@+id/sourceLabel"
+                android:id="@+id/recipe_details_source_label"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -237,20 +237,20 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tagText" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_tag_text" />
 
             <TextView
-                android:id="@+id/sourceLink"
+                android:id="@+id/recipe_details_source_link"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:textSize="18sp"
                 android:text="-"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sourceLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_source_label" />
 
             <Button
-                android:id="@+id/addShoppingListButton"
+                android:id="@+id/recipe_details_add_to_shopping_list_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -259,7 +259,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sourceLink" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_details_source_link" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

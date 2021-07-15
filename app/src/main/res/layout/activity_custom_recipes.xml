@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/createdRecipeTitle"
+        android:id="@+id/custom_recipe_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -17,8 +17,8 @@
         android:text="@string/createdRecipeTitle" />
 
     <TextView
-        android:id="@+id/createdRecipeName"
-        android:layout_below="@+id/createdRecipeTitle"
+        android:id="@+id/custome_recipe_name"
+        android:layout_below="@+id/custom_recipe_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -27,8 +27,8 @@
         android:padding="4dp" />
 
     <TextView
-        android:id="@+id/createdRecipeArea"
-        android:layout_below="@id/createdRecipeName"
+        android:id="@+id/custom_recipe_area"
+        android:layout_below="@id/custome_recipe_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -37,8 +37,8 @@
         android:padding="4dp" />
 
     <TextView
-        android:id="@+id/createdRecipeCategory"
-        android:layout_below="@id/createdRecipeArea"
+        android:id="@+id/custom_recipe_category"
+        android:layout_below="@id/custom_recipe_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -47,8 +47,8 @@
         android:padding="4dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_ingredients"
-        android:layout_below="@id/createdRecipeCategory"
+        android:id="@+id/custom_recipe_ingredients_rv"
+        android:layout_below="@id/custom_recipe_category"
         android:layout_width="match_parent"
         android:layout_height="213dp"
         android:layout_marginTop="28dp"
@@ -59,8 +59,8 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/createdRecipeInstructions"
-        android:layout_below="@id/recycler_ingredients"
+        android:id="@+id/custom_recipe_instructions"
+        android:layout_below="@id/custom_recipe_ingredients_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
