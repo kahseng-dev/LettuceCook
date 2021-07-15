@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.api;
+package sg.edu.np.mad.lettucecook.rv;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.edu.np.mad.lettucecook.R;
 
 public class ApiMealViewHolder extends RecyclerView.ViewHolder {
-    ImageView thumbnail;
-    TextView name, area, category;
+    private ImageView thumbnail;
+    private TextView name, area, category;
 
     public ApiMealViewHolder(View itemView) {
         super(itemView);

@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.api;
+package sg.edu.np.mad.lettucecook.rv;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +17,9 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.models.Ingredient;
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.VolleyResponseListener;
+import sg.edu.np.mad.lettucecook.utils.ApiService;
+import sg.edu.np.mad.lettucecook.utils.ApiURL;
+import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
 public class ApiIngredientsAdapter extends RecyclerView.Adapter<ApiIngredientViewHolder>{
     ArrayList<Ingredient> data;

@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.models;
+package sg.edu.np.mad.lettucecook.rv;
 
 import android.view.LayoutInflater;
 import android.view.View;

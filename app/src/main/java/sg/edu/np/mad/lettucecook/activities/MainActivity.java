@@ -29,14 +29,13 @@ import java.util.ArrayList;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import sg.edu.np.mad.lettucecook.CreateRecipe;
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.VolleyResponseListener;
+import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
-import sg.edu.np.mad.lettucecook.api.ApiMealAdapter;
-import sg.edu.np.mad.lettucecook.api.ApiMealJsonSingleton;
-import sg.edu.np.mad.lettucecook.api.ApiService;
-import sg.edu.np.mad.lettucecook.api.ApiURL;
+import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
+import sg.edu.np.mad.lettucecook.utils.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.utils.ApiService;
+import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class MainActivity extends AppCompatActivity {
     static final String TAG = "MainActivity";
@@ -230,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CreateRecipe.class);
+                Intent intent = new Intent(MainActivity.this, CreateRecipeActivity.class);
                 startActivity(intent);
             }
         });

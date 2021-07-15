@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.api;
+package sg.edu.np.mad.lettucecook.utils;
 
 import android.content.Context;
 
@@ -12,9 +12,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import sg.edu.np.mad.lettucecook.VolleyResponseListener;
-import sg.edu.np.mad.lettucecook.VolleySingleton;
 
 // This class helps in sending requests to the API, MealDB or CalorieNinjas.
 public class ApiService {

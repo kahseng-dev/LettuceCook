@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.api;
+package sg.edu.np.mad.lettucecook.utils;
 
 
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.api;
+package sg.edu.np.mad.lettucecook.rv;
 
 import android.content.Context;
 import android.content.Intent;

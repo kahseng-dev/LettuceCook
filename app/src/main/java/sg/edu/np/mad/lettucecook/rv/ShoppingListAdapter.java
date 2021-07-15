@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook.models;
+package sg.edu.np.mad.lettucecook.rv;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.models.DBHandler;
+import sg.edu.np.mad.lettucecook.models.Ingredient;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHolder>{
     ArrayList<Ingredient> data;

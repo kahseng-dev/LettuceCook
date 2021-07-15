@@ -1,4 +1,4 @@
-package sg.edu.np.mad.lettucecook;
+package sg.edu.np.mad.lettucecook.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
