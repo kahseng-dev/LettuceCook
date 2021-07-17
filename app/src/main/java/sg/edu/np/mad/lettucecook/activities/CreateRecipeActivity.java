@@ -1,10 +1,12 @@
 package sg.edu.np.mad.lettucecook.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,6 +146,72 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 }
             }
 
+        });
+
+        // setting id of navigation bar
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Switch pages when different navigation buttons are tapped
+        bottomNavigationView.setSelectedItemId(R.id.create_recipe);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+
+                    // if the user clicks on browse
+                    case R.id.browse:
+
+                        // bring user to main activity
+                        Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
+
+                        // pass the userId as well
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            browseIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(browseIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+
+                    // if the user clicks on account
+                    case R.id.account:
+                        Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
+
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            accountIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(accountIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+
+                    // if the user clicks on create recipe, do nothing
+                    case R.id.create_recipe:
+                        return true;
+
+                    // if the user clicks on shopping list
+                    case R.id.shoppingList:
+
+                        // bring user to shopping activity
+                        Intent shoppingListIntent = new Intent(getApplicationContext(), ShoppingListActivity.class);
+
+                        // pass the userId as well
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            shoppingListIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(shoppingListIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
         });
     }
 
