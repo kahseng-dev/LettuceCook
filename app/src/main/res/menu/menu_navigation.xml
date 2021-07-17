@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_browse" />
 
     <item
+        android:id="@+id/create_recipe"
+        android:title="Make Recipe"
+        android:icon="@drawable/ic_add_circle_outline" />
+
+    <item
         android:id="@+id/shoppingList"
         android:title="Shopping List"
         android:icon="@drawable/ic_shopping_list" />
