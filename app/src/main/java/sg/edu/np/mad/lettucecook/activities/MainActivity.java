@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else mAdapter = new ApiMealAdapter(meals, MainActivity.this);
 
-                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
 
                             browseRV.setLayoutManager(mLayoutManager);
                             browseRV.setItemAnimator(new DefaultItemAnimator());
