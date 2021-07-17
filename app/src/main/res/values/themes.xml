@@ -14,7 +14,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 
-        <!-- Customize your theme here. -->
+        <!-- Customize theme here. -->
+        <item name="android:fontFamily">@font/roboto</item>
     </style>
 
     <style name="ThemeOverlay.LettuceCook.AppWidgetContainer" parent="">
