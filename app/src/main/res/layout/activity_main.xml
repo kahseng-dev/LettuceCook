@@ -11,45 +11,57 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/main_featured_meal_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:text="Featured"/>
-
-            <ImageView
-                android:id="@+id/featured_image"
-                android:layout_below="@+id/main_featured_meal_title"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/featured_image_card"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:layout_marginBottom="4dp"
-                app:srcCompat="@mipmap/ic_launcher"
-                android:visibility="gone" />
+                android:layout_height="150dp"
+                app:cardCornerRadius="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_centerHorizontal="true" >
 
-            <TextView
-                android:id="@+id/main_featured_meal_name"
-                android:layout_below="@+id/featured_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text=""
-                android:visibility="gone"
-                android:maxLines="1" />
+                <ImageView
+                    android:id="@+id/featured_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:visibility="gone"
+                    android:contentDescription=""
+                    tools:ignore="ContentDescription"/>
+
+                <TextView
+                    android:id="@+id/main_featured_meal_name"
+                    android:layout_below="@+id/featured_image_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="24sp"
+                    android:layout_gravity="bottom"
+                    android:text=""
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:shadowColor="@color/shadow_gray"
+                    android:textStyle="bold"
+                    android:shadowRadius="4"
+                    android:maxLines="1" />
+
+            </androidx.cardview.widget.CardView>
 
             <Spinner
                 android:id="@+id/main_browse_type_spinner"
-                android:layout_below="@+id/main_featured_meal_name"
+                android:layout_below="@+id/featured_image_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
@@ -61,7 +73,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp" />
-
 
             <Button
                 android:id="@+id/main_browse_button"
@@ -76,7 +87,7 @@
                 android:layout_below="@+id/main_browse_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp" />
 
         </RelativeLayout>
@@ -92,5 +103,5 @@
         app:itemIconTint="@drawable/selector"
         app:menu="@menu/menu_navigation"
         android:layout_alignParentBottom="true"/>
-    
+
 </RelativeLayout>
