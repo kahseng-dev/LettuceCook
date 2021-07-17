@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.edu.np.mad.lettucecook.R;
 
 public class ApiMealViewHolder extends RecyclerView.ViewHolder {
-    private ImageView thumbnail;
-    private TextView name, area, category;
+    ImageView thumbnail;
+    TextView name, area, category;
 
     public ApiMealViewHolder(View itemView) {
         super(itemView);

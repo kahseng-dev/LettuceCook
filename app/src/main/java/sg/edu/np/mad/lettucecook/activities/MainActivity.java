@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
         featuredName = findViewById(R.id.main_featured_meal_name);
         featuredName.setVisibility(View.VISIBLE);
 
-        createRecipeButton = findViewById(R.id.main_create_recipe_button);
-
         String query = "random.php";
         apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
 
@@ -209,6 +207,19 @@ public class MainActivity extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
 
+                    case R.id.create_recipe:
+                        Intent createRecipeIntent = new Intent(getApplicationContext(), CreateRecipeActivity.class);
+
+                        if (getIntent().hasExtra("UserId")) {
+                            Bundle extras = getIntent().getExtras();
+                            int userId = extras.getInt("UserId");
+                            createRecipeIntent.putExtra("UserId", userId);
+                        }
+
+                        startActivity(createRecipeIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+
                     case R.id.shoppingList:
                         Intent shoppingListIntent = new Intent(getApplicationContext(), ShoppingListActivity.class);
 
@@ -223,14 +234,6 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                 }
                 return false;
-            }
-        });
-
-        createRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CreateRecipeActivity.class);
-                startActivity(intent);
             }
         });
     }
