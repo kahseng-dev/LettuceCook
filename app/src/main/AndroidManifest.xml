@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sg.edu.np.mad.lettucecook">
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,15 +12,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LettuceCook">
-        <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".rv.CreatedIngredientViewHolder"></activity>
+        <activity android:name=".activities.CreateRecipeActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity
+            android:name=".activities.CreateAccountActivity"
+            android:parentActivityName=".activities.LoginActivity" />
+        <activity android:name=".activities.AccountActivity" />
+
+        <activity android:name=".activities.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-    </application>
+        <activity
+            android:name=".activities.RecipeDetailsActivity"
+            android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".activities.ShoppingListActivity" />
 
+        <receiver android:name=".OpenAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_add_widget_info" />
+        </receiver>
+
+        <activity android:name=".activities.IngredientsActivity"></activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
 </manifest>
