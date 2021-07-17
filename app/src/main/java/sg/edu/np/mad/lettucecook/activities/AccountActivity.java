@@ -86,6 +86,23 @@ public class AccountActivity extends AppCompatActivity {
                         case R.id.account:
                             return true;
 
+                        // if the user clicks on create recipe
+                        case R.id.create_recipe:
+
+                            // bring user to create recipe activity
+                            Intent createRecipeIntent = new Intent(getApplicationContext(), CreateRecipeActivity.class);
+
+                            // pass the userId as well
+                            if (getIntent().hasExtra("UserId")) {
+                                Bundle extras = getIntent().getExtras();
+                                int userId = extras.getInt("UserId");
+                                createRecipeIntent.putExtra("UserId", userId);
+                            }
+
+                            startActivity(createRecipeIntent);
+                            overridePendingTransition(0, 0);
+                            return true;
+
                         // if the user clicks on shopping list
                         case R.id.shoppingList:
 
