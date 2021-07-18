@@ -6,13 +6,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity"
-    tools:layout_editor_absoluteY="81dp">
+    tools:context=".activities.MainActivity" >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray">
+        android:background="@color/gray"
+        android:layout_marginBottom="56dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,8 +44,8 @@
                     android:layout_below="@+id/featured_image_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
                     android:layout_marginBottom="8dp"
                     android:textSize="24sp"
                     android:layout_gravity="bottom"
@@ -59,19 +59,33 @@
 
             </androidx.cardview.widget.CardView>
 
+            <TextView
+                android:id="@+id/main_browse_title"
+                android:layout_below="@+id/featured_image_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:textSize="24sp"
+                android:text="@string/browse"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
             <Spinner
                 android:id="@+id/main_browse_type_spinner"
-                android:layout_below="@+id/featured_image_card"
+                android:layout_below="@+id/main_browse_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp" />
 
             <Spinner
                 android:id="@+id/main_browse_type_choice_spinner"
                 android:layout_below="@+id/main_browse_type_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp" />
 
             <Button
@@ -80,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="browse" />
+                android:text="@string/browse" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_browse_rv"
@@ -88,10 +102,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="10dp"/>
 
         </RelativeLayout>
-
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

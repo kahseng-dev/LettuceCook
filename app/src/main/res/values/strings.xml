@@ -12,6 +12,7 @@
     <string name="account">Account</string>
 
     <!-- Browse Activity strings-->
+    <string name="browse">Browse</string>
     <string-array name="browse_types">
         <item name="category">Category</item>
         <item name="area">Area</item>
