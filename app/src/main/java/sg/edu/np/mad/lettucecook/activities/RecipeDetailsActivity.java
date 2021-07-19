@@ -2,6 +2,7 @@ package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +58,15 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
+
+        // Setup toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_white_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
 
         // Setting ViewById for Meal Details
         mealThumbnail = findViewById(R.id.recipe_details_meal_thumbnail);
@@ -115,8 +125,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                                 }
                             });
 
-                    // setting meal details
-                    setTitle(meal.getStrMeal());
+                    // Setting meal details
                     mealName.setText(meal.getStrMeal());
                     mealCategory.setText(meal.getStrCategory());
                     areaText.setText(meal.getStrArea());
