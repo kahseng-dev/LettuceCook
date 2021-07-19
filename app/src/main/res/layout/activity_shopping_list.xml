@@ -9,7 +9,11 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"/>
 
     <ImageView
         android:id="@+id/shopping_list_cart_icon"

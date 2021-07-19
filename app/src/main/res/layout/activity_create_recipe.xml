@@ -15,23 +15,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/create_recipe_title"
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LettuceCreate!"
-                tools:layout_editor_absoluteX="159dp"
-                tools:layout_editor_absoluteY="34dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="24dp"
-                android:layout_centerHorizontal="true"
-                android:textSize="28dp"
-                android:textStyle="bold" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="24dp"/>
 
             <EditText
                 android:id="@+id/create_recipe_name"
-                android:layout_below="@+id/create_recipe_title"
+                android:layout_below="@id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

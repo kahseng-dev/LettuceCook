@@ -11,19 +11,23 @@
         layout="@layout/toolbar" />
 
     <TextView
+        android:id="@+id/login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:text="@string/login"
-        android:textStyle="bold"
         android:textSize="24sp"
-        android:layout_marginTop="100dp"/>
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/login_username"
+        android:layout_below="@id/login_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_alignParentBottom="false"
