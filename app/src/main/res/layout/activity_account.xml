@@ -7,19 +7,14 @@
     android:background="@android:color/darker_gray"
     tools:context=".activities.AccountActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <TextView
         android:id="@+id/account_greeting"
-        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_green"
-        android:padding="24dp"
+        android:padding="28dp"
         android:textColor="@color/dark_green"
-        android:textSize="16sp"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <LinearLayout
