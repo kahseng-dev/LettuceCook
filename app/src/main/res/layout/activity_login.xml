@@ -6,27 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".activities.LoginActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
-    <TextView
-        android:id="@+id/login_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="@string/login"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_marginTop="100dp"
+        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:src="@drawable/lettuce_cook_logo"
+        android:layout_centerHorizontal="true">
+    </ImageView>
 
     <EditText
         android:id="@+id/login_username"
-        android:layout_below="@id/login_title"
+        android:layout_below="@id/app_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
@@ -51,13 +44,14 @@
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_below="@+id/login_password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="@string/login"
-        />
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="@string/login" />
 
     <TextView
         android:id="@+id/login_create_account_link"

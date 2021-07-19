@@ -14,11 +14,12 @@
         android:layout_below="@id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/createAccountButtonText"
+        android:text="Create your Account"
         android:textStyle="bold"
-        android:textSize="24sp"
-        android:layout_marginTop="50dp"/>
+        android:textSize="28sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"/>
 
     <EditText
         android:id="@+id/create_account_username"
@@ -50,11 +51,13 @@
 
     <Button
         android:id="@+id/create_account_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_below="@+id/create_account_password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:text="@string/createAccountButtonText"
         />
 

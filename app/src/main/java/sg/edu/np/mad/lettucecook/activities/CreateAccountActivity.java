@@ -1,6 +1,7 @@
 package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -21,8 +22,14 @@ public class CreateAccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Create LettuceCook Account");
         setContentView(R.layout.activity_create_account);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
+        toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
 
         EditText username = findViewById(R.id.create_account_username);
         EditText password = findViewById(R.id.create_account_password);
