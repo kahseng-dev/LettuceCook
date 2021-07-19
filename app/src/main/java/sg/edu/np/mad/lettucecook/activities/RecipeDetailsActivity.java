@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -48,9 +50,9 @@ import sg.edu.np.mad.lettucecook.utils.ApiURL;
 public class RecipeDetailsActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
     ImageView mealThumbnail;
-    TextView mealName, mealCategory, areaText, instructionsText, ingredientText, altDrinkText, tagText, sourceLink, dateModifiedText;
+    TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText;
     RecyclerView ytRecyclerView;
-    Button addToShoppingList, addRecipeWidget;
+    Button addToShoppingList, sourceLinkButton;
     Vector<YoutubeVideo> youtubeVideos = new Vector<>();
     ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
 
@@ -75,9 +77,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         areaText = findViewById(R.id.recipe_details_area_text);
         instructionsText = findViewById(R.id.recipe_details_instruction_text);
         RecyclerView ingredientsRV = findViewById(R.id.recipe_details_ingredients_rv);
-        altDrinkText = findViewById(R.id.recipe_details_alt_drink_text);
-        tagText = findViewById(R.id.recipe_details_tag_text);
-        sourceLink = findViewById(R.id.recipe_details_source_link);
         dateModifiedText = findViewById(R.id.recipe_details_date_modified_text);
 
         // Setting ViewById and attributes for YouTube recyclerView
@@ -85,8 +84,9 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         ytRecyclerView.setHasFixedSize(true);
         ytRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Setting add to shopping list button
+        // Setting ViewById for buttons
         addToShoppingList = findViewById(R.id.recipe_details_add_to_shopping_list_button);
+        sourceLinkButton = findViewById(R.id.recipe_details_source_button);
 
         // get the mealId to be viewed
         Bundle extras = getIntent().getExtras();
@@ -130,10 +130,9 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     mealCategory.setText(meal.getStrCategory());
                     areaText.setText(meal.getStrArea());
                     instructionsText.setText(meal.getStrInstructions());
-                    altDrinkText.setText(meal.getStrDrinkAlternate());
-                    tagText.setText(meal.getStrTags());
-                    sourceLink.setText(meal.getStrSource());
-                    dateModifiedText.setText(meal.getDateModified());
+                    if (!(meal.getDateModified() == null)) {
+                        dateModifiedText.setText(meal.getDateModified());
+                    }
 
                     int mealId = Integer.parseInt(meal.getIdMeal());
                     String[] ingredientNames = meal.getArrIngredients();
@@ -156,6 +155,23 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     youtubeVideos.add(new YoutubeVideo(meal.getStrYoutube()));
                     YoutubeAdapter videoAdapter = new YoutubeAdapter(youtubeVideos);
                     ytRecyclerView.setAdapter(videoAdapter);
+
+                    // if user clicks on View Source button, it will lead user to the source website.
+                    sourceLinkButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String url = meal.getStrSource();
+                            if (url.startsWith("https://") || url.startsWith("http://")) {
+                                Uri uri = Uri.parse(url);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                startActivity(intent);
+                            }
+
+                            else {
+                                Toast.makeText(RecipeDetailsActivity.this, "Source Not Found", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
                     // if user clicks on add to shopping list, it will add the ingredients to shopping list.
                     addToShoppingList.setOnClickListener(new View.OnClickListener() {

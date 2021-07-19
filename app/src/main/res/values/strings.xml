@@ -22,11 +22,10 @@
     <string name="mealLabel">Meal Name</string>
     <string name="categoryLabel">Category</string>
     <string name="areaLabel">Area</string>
-    <string name="altDrinkLabel">Drink Alternate</string>
     <string name="instructionLabel">Instructions</string>
-    <string name="tagLabel">Tags</string>
     <string name="ingredientLabel">Ingredients</string>
-    <string name="sourceLabel">Source</string>
+    <string name="youtubeLabel">YouTube Guides</string>
+    <string name="sourceLabel">View Source</string>
     <string name="addShoppingList">Add to Shopping List</string>
     <string name="dateModifiedLabel">Date Modified</string>
 
