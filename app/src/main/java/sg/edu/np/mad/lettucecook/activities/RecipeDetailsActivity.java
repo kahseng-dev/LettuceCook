@@ -48,7 +48,7 @@ import sg.edu.np.mad.lettucecook.utils.ApiURL;
 public class RecipeDetailsActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
     ImageView mealThumbnail;
-    TextView mealName, mealCategory, areaText, instructionsText, ingredientText, altDrinkText, tagText, sourceLink, dateModifiedText;
+    TextView mealName, mealCategory, areaText, instructionsText, sourceLink, dateModifiedText;
     RecyclerView ytRecyclerView;
     Button addToShoppingList, addRecipeWidget;
     Vector<YoutubeVideo> youtubeVideos = new Vector<>();
@@ -75,9 +75,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         areaText = findViewById(R.id.recipe_details_area_text);
         instructionsText = findViewById(R.id.recipe_details_instruction_text);
         RecyclerView ingredientsRV = findViewById(R.id.recipe_details_ingredients_rv);
-        altDrinkText = findViewById(R.id.recipe_details_alt_drink_text);
-        tagText = findViewById(R.id.recipe_details_tag_text);
-        sourceLink = findViewById(R.id.recipe_details_source_link);
         dateModifiedText = findViewById(R.id.recipe_details_date_modified_text);
 
         // Setting ViewById and attributes for YouTube recyclerView
@@ -130,10 +127,9 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     mealCategory.setText(meal.getStrCategory());
                     areaText.setText(meal.getStrArea());
                     instructionsText.setText(meal.getStrInstructions());
-                    altDrinkText.setText(meal.getStrDrinkAlternate());
-                    tagText.setText(meal.getStrTags());
-                    sourceLink.setText(meal.getStrSource());
-                    dateModifiedText.setText(meal.getDateModified());
+                    if (!(meal.getDateModified() == null)) {
+                        dateModifiedText.setText(meal.getDateModified());
+                    }
 
                     int mealId = Integer.parseInt(meal.getIdMeal());
                     String[] ingredientNames = meal.getArrIngredients();
