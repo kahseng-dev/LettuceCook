@@ -18,8 +18,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/featured_image_card"
+                android:layout_below="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 app:cardCornerRadius="12dp"
