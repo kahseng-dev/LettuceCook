@@ -194,7 +194,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <Button
-                    android:id="@+id/recipe_details_source_label"
+                    android:id="@+id/recipe_details_source_button"
                     android:layout_toEndOf="@id/date_modified_card"
                     android:layout_below="@+id/recipe_details_youtube_rv"
                     android:layout_marginStart="12dp"
