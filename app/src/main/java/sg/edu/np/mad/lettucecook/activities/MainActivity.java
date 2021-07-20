@@ -68,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
         browseButton = findViewById(R.id.main_browse_button); // Browse button
         browseRV = findViewById(R.id.main_browse_rv); // Browse recycler view
 
-        // Populate the first spinner with the types of browse filters
-        fillSpinner(browseTypeSpinner, getResources().getStringArray(R.array.browse_types));
-
         featuredImage = findViewById(R.id.featured_image);
         featuredImage .setVisibility(View.VISIBLE);
         featuredName = findViewById(R.id.main_featured_meal_name);
@@ -116,29 +113,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Populate the first spinner with the types of browse filters
+        fillSpinner(browseTypeSpinner, getResources().getStringArray(R.array.browse_types));
+        
         // Changes the contents of the second dropdown list when a different item
         // is selected in the first dropdown list.
         browseTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 browseType = i;
-                String query = i == 0 ? "list.php?c=list" : "list.php?a=list";
-                apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
-                    @Override
-                    public void onError(String message) {
-                        Log.v(TAG, message);
-                    }
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray _filters = response.getJSONArray("meals");
-                            String[] filters = apiMealJson.parseFilterArray(_filters);
-                            fillSpinner(browseTypeChoiceSpinner, filters); // Populate second spinner
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                int resource = i == 0 ? R.array.browse_categories : R.array.browse_areas;
+                fillSpinner(browseTypeChoiceSpinner, getResources().getStringArray(resource));
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
