@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // First spinner
         browseTypeSpinner = findViewById(R.id.main_browse_type_spinner); // First spinner, types of browse filters
@@ -250,6 +250,26 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_toolbar, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.notification:
+                Intent createRecipeIntent = new Intent(getApplicationContext(), NotificationActivity.class);
+
+                if (getIntent().hasExtra("UserId")) {
+                    Bundle extras = getIntent().getExtras();
+                    int userId = extras.getInt("UserId");
+                    createRecipeIntent.putExtra("UserId", userId);
+                }
+
+                startActivity(createRecipeIntent);
+                overridePendingTransition(0, 0);
+                return true;
+        }
+
+        return false;
     }
 
     // Populating a spinner

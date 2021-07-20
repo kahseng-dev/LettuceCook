@@ -18,6 +18,12 @@
         <item name="android:fontFamily">@font/roboto</item>
     </style>
 
+    <style name="TimePickerTheme" parent="">
+        <item name="colorPrimary">@color/light_green</item>
+        <item name="colorPrimaryDark">@color/dark_green</item>
+        <item name="colorAccent">@color/dark_green</item>
+    </style>
+
     <style name="ThemeOverlay.LettuceCook.AppWidgetContainer" parent="">
         <item name="appWidgetBackgroundColor">@color/dark_green</item>
         <item name="appWidgetTextColor">@color/white</item>
