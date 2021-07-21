@@ -35,7 +35,7 @@
     <string name="createRecipeCategory">Recipe Category</string>
     <string name="createRecipeInstructions">Recipe Instructions</string>
     <string name="createRecipeButton">Create Recipe!</string>
-    <string name="addIngredientButton">Add</string>
+    <string name="addIngredientButton">Add Ingredient</string>
 
     <!--    Display created ingredients strings -->
     <string name="ingredientName">Ingredient Name</string>

@@ -117,7 +117,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 startActivity(browseIntent);
-                overridePendingTransition(0, 0);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
                 return true;
         }

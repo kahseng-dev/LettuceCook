@@ -1,5 +1,6 @@
 package sg.edu.np.mad.lettucecook.rv;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -59,6 +60,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
                 intent.putExtra("mealId", Integer.toString(ingredient.getMealId()));
                 intent.putExtra("UserId", userID);
                 mContext.startActivity(intent);
+                ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

@@ -242,7 +242,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 }
 
                 startActivity(browseIntent);
-                overridePendingTransition(0, 0);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
                 return true;
         }

@@ -59,7 +59,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_recipe); // Set ContentView of Activity
 
         // Find Spinner IDs
-        recipeAreaSpinner = findViewById(R.id.create_recipe_area_apinner);
+        recipeAreaSpinner = findViewById(R.id.create_recipe_area_spinner);
         recipeCategorySpinner = findViewById(R.id.create_recipe_category_spinner);
 
         // Find EditText names and instructions
