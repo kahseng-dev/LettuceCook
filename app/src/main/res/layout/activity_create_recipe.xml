@@ -7,102 +7,83 @@
     android:layout_height="match_parent"
     tools:context=".activities.CreateRecipeActivity">
 
-    <ScrollView
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 
-        <RelativeLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/bottom_navigation">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include
-                android:id="@+id/toolbar"
-                layout="@layout/toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="24dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/create_recipe_name"
-                android:layout_below="@id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="24dp"
-                android:inputType="textPersonName"
-                android:layout_centerHorizontal="true"
-                android:hint="@string/createRecipeName" />
+                android:layout_margin="10dp"
+                android:hint="@string/createRecipeName"
+                android:inputType="text" />
 
             <Spinner
                 android:id="@+id/create_recipe_category_spinner"
-                android:layout_below="@+id/create_recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="24dp" />
+                android:layout_margin="10dp" />
 
             <Spinner
-                android:id="@+id/create_recipe_area_apinner"
-                android:layout_below="@+id/create_recipe_category_spinner"
+                android:id="@+id/create_recipe_area_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="24dp" />
+                android:layout_margin="10dp" />
 
             <Button
-                android:background="@drawable/round_primary"
                 android:id="@+id/addIngredientButton"
-                android:layout_below="@id/create_recipe_area_apinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:drawableEnd="@drawable/ic_add"
                 android:text="@string/addIngredientButton"
-                android:drawableRight="@drawable/ic_add"/>
+                app:drawableTint="@color/white" />
 
             <LinearLayout
                 android:id="@+id/create_recipe_layout_list"
-                android:layout_below="@id/addIngredientButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </LinearLayout>
+                android:orientation="vertical" />
 
             <EditText
                 android:id="@+id/create_recipe_instructions"
-                android:layout_below="@+id/create_recipe_layout_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="24dp"
+                android:layout_margin="10dp"
                 android:hint="@string/createRecipeInstructions" />
 
             <Button
                 android:id="@+id/create_recipe_create_button"
-                android:layout_below="@id/create_recipe_instructions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
                 android:text="@string/createRecipeButton" />
-
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottom_navigation"
+        android:layout_alignParentBottom="true"
         app:itemBackground="@color/dark_green"
         app:itemTextColor="@drawable/selector"
         app:itemIconTint="@drawable/selector"
-        app:menu="@menu/menu_navigation"
-        android:layout_alignParentBottom="true"/>
+        app:menu="@menu/menu_navigation" />
+
 </RelativeLayout>

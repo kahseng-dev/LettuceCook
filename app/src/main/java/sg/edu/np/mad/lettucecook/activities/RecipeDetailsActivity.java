@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,8 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -51,7 +49,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
     ImageView mealThumbnail;
     TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText;
-    RecyclerView ytRecyclerView;
+    RecyclerView ytRecyclerView, ingredientsRV;
     Button addToShoppingList, sourceLinkButton;
     Vector<YoutubeVideo> youtubeVideos = new Vector<>();
     ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
@@ -76,7 +74,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         mealCategory = findViewById(R.id.recipe_details_meal_category_text);
         areaText = findViewById(R.id.recipe_details_area_text);
         instructionsText = findViewById(R.id.recipe_details_instruction_text);
-        RecyclerView ingredientsRV = findViewById(R.id.recipe_details_ingredients_rv);
+        ingredientsRV = findViewById(R.id.recipe_details_ingredients_rv);
         dateModifiedText = findViewById(R.id.recipe_details_date_modified_text);
 
         // Setting ViewById and attributes for YouTube recyclerView
@@ -95,9 +93,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         ApiService apiService = new ApiService(this);
         apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
             @Override
-            public void onError(String message) {
-
-            }
+            public void onError(String message) { }
 
             @Override
             public void onResponse(JSONObject response) {
@@ -115,14 +111,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onBitmapFailed(Drawable errorDrawable) {
-
-                                }
+                                public void onBitmapFailed(Drawable errorDrawable) { }
 
                                 @Override
-                                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                }
+                                public void onPrepareLoad(Drawable placeHolderDrawable) { }
                             });
 
                     // Setting meal details
@@ -198,33 +190,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         });
     }
 
-    // Load thumbnail image do be done in background
-    private class LoadImage extends AsyncTask<String, Void, Bitmap> {
-        ImageView thumbnail;
-
-        public LoadImage(ImageView mealThumbnail) {
-            this.thumbnail = mealThumbnail;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            String url = strings[0];
-            Bitmap bitmap = null;
-
-            try {
-                InputStream inputStream = new java.net.URL(url).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            mealThumbnail.setImageBitmap(bitmap);
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_toolbar, menu);
+        menu.findItem(R.id.notification).setIcon(R.drawable.ic_notifications_white);
+        return true;
     }
 
     // if the user clicks on the back button in the toolbar, bring them back to main activity.
@@ -242,8 +213,26 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 }
 
                 startActivity(browseIntent);
-                overridePendingTransition(0, 0);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return true;
 
+            case R.id.notification:
+                Intent notificationIntent = new Intent(getApplicationContext(), NotificationActivity.class);
+
+                if (getIntent().hasExtra("UserId")) {
+                    Bundle extras = getIntent().getExtras();
+                    int userId = extras.getInt("UserId");
+                    notificationIntent.putExtra("UserId", userId);
+                }
+
+                if (getIntent().hasExtra("mealId")) {
+                    Bundle extras = getIntent().getExtras();
+                    String mealId = extras.getString("mealId");
+                    notificationIntent.putExtra("mealId", mealId);
+                }
+
+                startActivity(notificationIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 return true;
         }
 

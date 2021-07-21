@@ -12,12 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LettuceCook">
-        <activity android:name=".rv.CreatedIngredientViewHolder"></activity>
-        <activity android:name=".activities.CreateRecipeActivity" />
+
+        <activity android:name=".rv.CreatedIngredientViewHolder" />
+
+        <activity android:name=".activities.CreateRecipeActivity"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".activities.LoginActivity" />
-        <activity
-            android:name=".activities.CreateAccountActivity"
+
+        <activity android:name=".activities.CreateAccountActivity"
             android:parentActivityName=".activities.LoginActivity" />
+
         <activity android:name=".activities.AccountActivity" />
 
         <activity android:name=".activities.MainActivity"
@@ -28,6 +33,7 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.RecipeDetailsActivity"
             android:parentActivityName=".activities.MainActivity" />
@@ -43,9 +49,15 @@
                 android:resource="@xml/recipe_add_widget_info" />
         </receiver>
 
-        <activity android:name=".activities.IngredientsActivity"></activity>
+        <activity android:name=".activities.IngredientsActivity" />
+
+        <activity android:name=".activities.NotificationActivity"
+            android:parentActivityName=".activities.MainActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver android:name=".utils.AlarmReceiver" />
     </application>
 </manifest>
