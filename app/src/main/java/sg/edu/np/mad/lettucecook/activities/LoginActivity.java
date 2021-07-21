@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,11 +17,17 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.w3c.dom.Text;
+
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.User;
 
 public class LoginActivity extends AppCompatActivity {
+    EditText username;
+    EditText password;
+    Button loginButton;
+    TextView createAccount;
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
 
     @Override
@@ -27,11 +35,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        EditText username = findViewById(R.id.login_username);
-        EditText password = findViewById(R.id.login_password);
-        password.setTypeface(Typeface.DEFAULT);
+        username = findViewById(R.id.login_username);
+        password = findViewById(R.id.login_password);
 
-        Button loginButton = findViewById(R.id.login_button);
+        // Text change listener to watch if both text fields are filled to enable button.
+        username.addTextChangedListener(loginTextWatch);
+        password.addTextChangedListener(loginTextWatch);
+
+        loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        TextView createAccount = findViewById(R.id.login_create_account_link);
+        createAccount = findViewById(R.id.login_create_account_link);
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +128,22 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private TextWatcher loginTextWatch = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String usernameInput = username.getText().toString().trim();
+            String passwordInput = password.getText().toString().trim();
+
+            loginButton.setEnabled(!usernameInput.isEmpty() && !passwordInput.isEmpty());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
 
     public boolean isValidCredentials(String username, String password) {
         User dbUser = dbHandler.findUser(username);

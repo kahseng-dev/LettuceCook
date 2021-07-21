@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +22,11 @@ import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.User;
 
 public class CreateAccountActivity extends AppCompatActivity {
+    EditText username;
+    EditText password;
+    Button createButton;
     DBHandler dbHandler = new DBHandler(this , null, null, 1);
+    TextView loginAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +40,14 @@ public class CreateAccountActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
         toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
 
-        EditText username = findViewById(R.id.create_account_username);
-        EditText password = findViewById(R.id.create_account_password);
-        password.setTypeface(Typeface.DEFAULT);
+        username = findViewById(R.id.create_account_username);
+        password = findViewById(R.id.create_account_password);
 
-        Button createButton = findViewById(R.id.create_account_button);
+        // Text change listener to watch if both text fields are filled to enable button.
+        username.addTextChangedListener(createTextWatch);
+        password.addTextChangedListener(createTextWatch);
+
+        createButton = findViewById(R.id.create_account_button);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +75,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
 
-        TextView loginAccount = findViewById(R.id.create_account_login_link);
+        loginAccount = findViewById(R.id.create_account_login_link);
         loginAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +85,22 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
     }
+
+    private TextWatcher createTextWatch = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String usernameInput = username.getText().toString().trim();
+            String passwordInput = password.getText().toString().trim();
+
+            createButton.setEnabled(!usernameInput.isEmpty() && !passwordInput.isEmpty());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
 
     // if the user clicks on the back button in the toolbar, bring them back to main activity.
     @Override
