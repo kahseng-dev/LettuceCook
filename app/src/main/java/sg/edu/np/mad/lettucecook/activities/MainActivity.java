@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     });
 
                 } catch (JSONException e) {
@@ -265,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 startActivity(createRecipeIntent);
-                overridePendingTransition(0, 0);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 return true;
         }
 
