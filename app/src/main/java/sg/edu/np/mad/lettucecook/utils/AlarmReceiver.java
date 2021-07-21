@@ -7,10 +7,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
 
 import sg.edu.np.mad.lettucecook.activities.MainActivity;
+import sg.edu.np.mad.lettucecook.activities.RecipeDetailsActivity;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -21,9 +23,20 @@ public class AlarmReceiver extends BroadcastReceiver {
         int notificationId = intent.getIntExtra("notificationId", 0);
         String message = intent.getStringExtra("message");
 
-        // Call NotificationActivity when notification is tapped.
-        Intent mainIntent = new Intent(context, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);
+        PendingIntent contentIntent;
+
+        if (intent.hasExtra("mealId")) {
+            // Call RecipeDetails when notification is tapped.
+            Intent recipeDetailsIntent = new Intent(context, RecipeDetailsActivity.class);
+            recipeDetailsIntent.putExtra("mealId", intent.getStringExtra("mealId"));
+            contentIntent = PendingIntent.getActivity(context, 0, recipeDetailsIntent, 0);
+        }
+
+        else {
+            // Call MainActivity when notification is tapped.
+            Intent mainIntent = new Intent(context, MainActivity.class);
+            contentIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);
+        }
 
         // NotificationManager
         NotificationManager notificationManager =

@@ -34,6 +34,9 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
 
     private int notificationId = 1;
 
+    EditText alertMessage;
+    TimePicker timePicker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,17 +51,50 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
 
         findViewById(R.id.setButton).setOnClickListener(this);
         findViewById(R.id.cancelButton).setOnClickListener(this);
+
+        if (getIntent().hasExtra("mealId")) {
+            ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
+            alertMessage = findViewById(R.id.alertMessage);
+
+            Bundle extras = getIntent().getExtras();
+            String mealId = extras.getString("mealId");
+
+            ApiService apiService = new ApiService(this);
+            apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
+                @Override
+                public void onError(String message) { }
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray _meals = response.getJSONArray("meals");
+                        ApiMeal meal = apiMealJson.mergeIntoJSONArray(_meals).get(0);
+                        alertMessage.setText("Time to make " + meal.getStrMeal() + "!");
+                    }
+
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     @Override
     public void onClick(View v) {
-        EditText alertMessage = findViewById(R.id.alertMessage);
-        TimePicker timePicker = findViewById(R.id.timePicker);
+        alertMessage = findViewById(R.id.alertMessage);
+        timePicker = findViewById(R.id.timePicker);
 
         // Set notificationId and Message
         Intent intent = new Intent(NotificationActivity.this, AlarmReceiver.class);
         intent.putExtra("notificationId", notificationId);
         intent.putExtra("message", alertMessage.getText().toString());
+
+        if (getIntent().hasExtra("mealId")) {
+            Bundle extras = getIntent().getExtras();
+            String mealId = extras.getString("mealId");
+            intent.putExtra("mealId", mealId);
+        }
 
         // PendingIntent
         PendingIntent alarmIntent = PendingIntent.getBroadcast(
