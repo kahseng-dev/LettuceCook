@@ -19,18 +19,21 @@ import sg.edu.np.mad.lettucecook.models.Ingredient;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
+import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
 public class ApiIngredientsAdapter extends RecyclerView.Adapter<ApiIngredientViewHolder>{
     ArrayList<Ingredient> data;
     Context mContext;
     ApiService apiService;
+    private final IngredientClickListener listener;
     double totalCalories = 0;
 
-    public ApiIngredientsAdapter(ArrayList<Ingredient> input, Context mContext) {
+    public ApiIngredientsAdapter(ArrayList<Ingredient> input, Context mContext, IngredientClickListener ingredientClickListener) {
         this.data = input;
         this.mContext = mContext;
         this.apiService = new ApiService(mContext);
+        this.listener = ingredientClickListener;
     }
 
     @NonNull
@@ -75,6 +78,7 @@ public class ApiIngredientsAdapter extends RecyclerView.Adapter<ApiIngredientVie
                 }
             }
         });
+        holder.bind(ingredient, listener);
     }
 
     @Override

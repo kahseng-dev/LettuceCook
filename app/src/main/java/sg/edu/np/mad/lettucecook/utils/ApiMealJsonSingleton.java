@@ -6,8 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
+import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
 
 // A Singleton design is used as only one instance is needed for the entire application.
 // This is more efficient since there is no need to recreate the object when needed.

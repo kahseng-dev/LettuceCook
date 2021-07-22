@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.models.DBHandler;
@@ -134,7 +135,14 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     for (int i = 0; i < ingredientNames.length; i++) {
                         ingredients.add(new Ingredient(mealId, ingredientNames[i], measures[i]));
                     }
-                    ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ingredients,RecipeDetailsActivity.this);
+                    ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ingredients, RecipeDetailsActivity.this, new IngredientClickListener() {
+                        @Override
+                        public void onItemClick(Ingredient ingredient) {
+                            Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.slide_in_up, 0);
+                        }
+                    });
 
                     LinearLayoutManager mLayoutManager = new LinearLayoutManager(RecipeDetailsActivity.this);
 
