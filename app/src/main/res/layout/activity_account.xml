@@ -1,92 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/gray"
     tools:context=".activities.AccountActivity">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/account_greeting_card"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/light_green"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="0dp"
-        app:contentPaddingLeft="24dp"
-        app:contentPaddingBottom="24dp"
-        app:contentPaddingTop="48dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/account_greeting"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/dark_green"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:layout_gravity="bottom"/>
+            android:paddingBottom="100dp">
 
-    </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/account_greeting_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/light_green"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp"
+                app:contentPaddingBottom="24dp"
+                app:contentPaddingLeft="24dp"
+                app:contentPaddingTop="48dp">
 
-    <LinearLayout
-        android:layout_below="@id/account_greeting_card"
-        android:layout_above="@id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+                <TextView
+                    android:id="@+id/account_greeting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:textColor="@color/dark_green"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="0dp">
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/favourites"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawablePadding="12dp"
-                android:text="Your Favourites"
-                android:layout_margin="18dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_star" />
-        </androidx.cardview.widget.CardView>
+                android:layout_below="@id/account_greeting_card"
+                android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="0dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp" >
 
-            <TextView
-                android:id="@+id/account_recipes"
-                app:drawableStartCompat="@drawable/ic_menu_book_"
-                android:drawablePadding="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Your Recipes"
-                android:layout_margin="18dp"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/favourites"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="18dp"
+                        android:drawablePadding="12dp"
+                        android:text="Your Favourites"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_star" />
+                </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="0dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp">
 
-            <TextView
-                android:id="@+id/account_logout"
-                app:drawableStartCompat="@drawable/ic_logout"
-                android:drawablePadding="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="18dp"
-                android:text="Logout"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+                    <TextView
+                        android:id="@+id/account_recipes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="18dp"
+                        android:drawablePadding="12dp"
+                        android:text="Your Recipes"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_menu_book_" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp">
+
+                    <TextView
+                        android:id="@+id/account_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="18dp"
+                        android:drawablePadding="12dp"
+                        android:text="Logout"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_logout" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
