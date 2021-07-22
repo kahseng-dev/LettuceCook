@@ -12,20 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LettuceCook">
-
         <activity android:name=".rv.CreatedIngredientViewHolder" />
-
-        <activity android:name=".activities.CreateRecipeActivity"
+        <activity
+            android:name=".activities.CreateRecipeActivity"
             android:windowSoftInputMode="adjustPan" />
-
         <activity android:name=".activities.LoginActivity" />
-
-        <activity android:name=".activities.CreateAccountActivity"
+        <activity
+            android:name=".activities.CreateAccountActivity"
             android:parentActivityName=".activities.LoginActivity" />
-
         <activity android:name=".activities.AccountActivity" />
-
-        <activity android:name=".activities.MainActivity"
+        <activity
+            android:name=".activities.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,11 +30,14 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.RecipeDetailsActivity"
             android:parentActivityName=".activities.MainActivity" />
         <activity android:name=".activities.ShoppingListActivity" />
+
+        <activity
+            android:name=".activities.IngredientPopup"
+            android:theme="@style/IngredientPopup" />
 
         <receiver android:name=".OpenAppWidget">
             <intent-filter>
@@ -50,8 +50,8 @@
         </receiver>
 
         <activity android:name=".activities.IngredientsActivity" />
-
-        <activity android:name=".activities.NotificationActivity"
+        <activity
+            android:name=".activities.NotificationActivity"
             android:parentActivityName=".activities.MainActivity" />
 
         <meta-data
@@ -60,4 +60,5 @@
 
         <receiver android:name=".utils.AlarmReceiver" />
     </application>
+
 </manifest>
