@@ -12,11 +12,57 @@
     <string name="loginAccountText">Have an Account? Login here!</string>
     <string name="account">Account</string>
 
-    <!-- Browse Activity strings-->
+    <!-- Main Activity strings-->
     <string name="browse">Browse</string>
     <string-array name="browse_types">
         <item name="category">Category</item>
         <item name="area">Area</item>
+    </string-array>
+    
+    <string-array name="browse_categories">
+        <item>Beef</item>
+        <item>Breakfast</item>
+        <item>Chicken</item>
+        <item>Dessert</item>
+        <item>Goat</item>
+        <item>Lamb</item>
+        <item>Miscellaneous</item>
+        <item>Pasta</item>
+        <item>Pork</item>
+        <item>Seafood</item>
+        <item>Side</item>
+        <item>Starter</item>
+        <item>Vegan</item>
+        <item>Vegetarian</item>
+    </string-array>
+
+    <string-array name="browse_areas">
+        <item>American</item>
+        <item>British</item>
+        <item>Canadian</item>
+        <item>Chinese</item>
+        <item>Dutch</item>
+        <item>Egyptian</item>
+        <item>French</item>
+        <item>Greek</item>
+        <item>Indian</item>
+        <item>Irish</item>
+        <item>Italian</item>
+        <item>Jamaican</item>
+        <item>Japanese</item>
+        <item>Kenyan</item>
+        <item>Malaysian</item>
+        <item>Mexican</item>
+        <item>Moroccan</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Russian</item>
+        <item>Spanish</item>
+        <item>Thai</item>
+        <item>Tunisian</item>
+        <item>Turkish</item>
+        <item>Unknown</item>
+        <item>Vietnamese</item>
     </string-array>
 
     <!-- Recipe Details Activity strings-->
@@ -45,5 +91,5 @@
     <!--    Display created recipes strings -->
     <string name="createdRecipeTitle">Your Recipes</string>
     <string name="createdRecipeName">Ingredient Measurement</string>
-    <string name="calories">calories</string>
+    <string name="calories">- kcal</string>
 </resources>
