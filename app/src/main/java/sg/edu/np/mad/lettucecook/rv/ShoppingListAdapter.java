@@ -16,18 +16,19 @@ import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.activities.CreateAccountActivity;
 import sg.edu.np.mad.lettucecook.activities.LoginActivity;
 import sg.edu.np.mad.lettucecook.activities.RecipeDetailsActivity;
+import sg.edu.np.mad.lettucecook.activities.ShoppingListActivity;
 import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.Ingredient;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHolder>{
     ArrayList<Ingredient> data;
-    int userID;
+    String userID;
     Context mContext;
 
-    public ShoppingListAdapter(ArrayList<Ingredient> input, Context context, int userId) {
-        data = input;
-        mContext = context;
-        userID = userId;
+    public ShoppingListAdapter(ArrayList<Ingredient> input, Context context, String userID) {
+        this.data = input;
+        this.mContext = context;
+        this.userID = userID;
     }
 
     public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,8 +49,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
             @Override
             public void onClick(View v) {
                 data.remove(position);
-                notifyItemRemoved(position);
                 dbHandler.deleteShoppingItem(userID, ingredient);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position,data.size());
+
+                if (data.isEmpty()) {
+                    mContext.startActivity(new Intent (mContext, ShoppingListActivity.class));
+                    ((Activity) mContext).overridePendingTransition(0, 0);
+                }
             }
         });
 
@@ -58,7 +65,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
                 intent.putExtra("mealId", Integer.toString(ingredient.getMealId()));
-                intent.putExtra("UserId", userID);
                 mContext.startActivity(intent);
                 ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }

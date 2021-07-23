@@ -20,17 +20,10 @@ import sg.edu.np.mad.lettucecook.activities.RecipeDetailsActivity;
 
 public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     ArrayList<ApiMeal> data;
-    int userId;
     Context mContext;
 
     public ApiMealAdapter(ArrayList<ApiMeal> input, Context mContext) {
         this.data = input;
-        this.mContext = mContext;
-    }
-
-    public ApiMealAdapter(ArrayList<ApiMeal> input, int userId,Context mContext) {
-        this.data = input;
-        this.userId = userId;
         this.mContext = mContext;
     }
 
@@ -67,9 +60,6 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         holder.thumbnail.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
             intent.putExtra("mealId", meal.getIdMeal());
-            if (userId != 0) {
-                intent.putExtra("UserId", userId);
-            }
             mContext.startActivity(intent);
             ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });

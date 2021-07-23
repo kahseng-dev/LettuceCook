@@ -33,9 +33,8 @@ import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 public class NotificationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private int notificationId = 1;
-
-    EditText alertMessage;
-    TimePicker timePicker;
+    private EditText alertMessage;
+    private TimePicker timePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,18 +142,8 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
-
-                // if the user is logged in, pass the userId as well.
-                if (getIntent().hasExtra("UserId")) {
-                    Bundle extras = getIntent().getExtras();
-                    int userId = extras.getInt("UserId");
-                    browseIntent.putExtra("UserId", userId);
-                }
-
-                startActivity(browseIntent);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-
                 return true;
         }
 

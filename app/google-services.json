@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "304006266719",
+    "firebase_url": "https://lettucecook-8ed36-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "lettucecook-8ed36",
+    "storage_bucket": "lettucecook-8ed36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304006266719:android:70b9668f8e2a49ebe0c0ea",
+        "android_client_info": {
+          "package_name": "sg.edu.np.mad.lettucecook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "304006266719-bqv8bib7pd3bv4mfm58buui9qgirjhnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcuXIqMOpPuBUJKiQgms2JYEBV_DPUdPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "304006266719-bqv8bib7pd3bv4mfm58buui9qgirjhnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

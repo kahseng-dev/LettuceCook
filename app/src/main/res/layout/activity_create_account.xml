@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_above="@id/bottom_navigation">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".activities.CreateAccountActivity"
@@ -20,6 +20,7 @@
 
         <TextView
             android:id="@+id/create_account_title"
+            android:layout_below="@id/toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create your Account"
@@ -30,7 +31,9 @@
             android:layout_marginStart="20dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/create_account_username_outline"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_below="@id/create_account_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -39,8 +42,6 @@
             android:hint="@string/username"
             app:helperTextTextColor="@android:color/holo_red_light"
             app:startIconDrawable="@drawable/ic_person"
-            app:counterEnabled="true"
-            app:counterMaxLength="12"
             app:endIconMode="clear_text" >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -48,12 +49,36 @@
                 android:maxLength="12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nextFocusForward="@id/create_account_password"/>
-
+                android:inputType="textPersonName"
+                android:nextFocusForward="@id/create_account_email"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/create_account_email_outline"
+            android:layout_below="@id/create_account_username_outline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:hint="@string/email"
+            app:helperTextTextColor="@android:color/holo_red_light"
+            app:startIconDrawable="@drawable/ic_mail"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/create_account_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:nextFocusForward="@id/create_account_password"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/create_account_password_outline"
+            android:layout_below="@id/create_account_email_outline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -62,8 +87,6 @@
             android:hint="@string/password"
             app:helperTextTextColor="@android:color/holo_red_light"
             app:startIconDrawable="@drawable/ic_lock"
-            app:counterEnabled="true"
-            app:counterMaxLength="15"
             app:endIconMode="password_toggle" >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -72,30 +95,39 @@
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/create_account_button"
+            android:layout_below="@id/create_account_password_outline"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:text="@string/createAccountButtonText"
             android:enabled="false" />
 
         <TextView
-            android:id="@+id/create_account_login_link"
+            android:id="@+id/login_link"
+            android:layout_below="@id/create_account_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="24dp"
-            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
             android:padding="12dp"
             android:text="@string/loginAccountText"
             android:textColor="@color/dark_green"
             android:textSize="16sp"
             android:textStyle="bold" />
-    </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </ScrollView>

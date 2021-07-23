@@ -218,8 +218,20 @@
                     android:text="@string/addShoppingList"
                     android:textAllCaps="false"
                     android:textSize="18sp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="50dp"/>
+                    android:enabled="false"
+                    android:layout_marginTop="12dp" />
+
+                <TextView
+                    android:id="@+id/add_to_shopping_list_message"
+                    android:layout_below="@id/recipe_details_add_to_shopping_list_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Please login to use this feature"
+                    android:gravity="center_horizontal"
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="50dp" />
+
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
