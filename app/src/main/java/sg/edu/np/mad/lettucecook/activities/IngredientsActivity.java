@@ -27,24 +27,31 @@ public class IngredientsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_recipes);
 
+        // Find recyclerview to display each recipe
         recyclerIngredients = findViewById(R.id.custom_recipe_ingredients_rv);
+
+        // Find createdRecipe texts to display info
         createdRecipeName = findViewById(R.id.custome_recipe_name);
         createdRecipeArea = findViewById(R.id.custom_recipe_area);
         createdRecipeInstructions = findViewById(R.id.custom_recipe_instructions);
         createdRecipeCategory = findViewById(R.id.custom_recipe_category);
 
-        ingredientList = (ArrayList<CreatedIngredient>) getIntent().getExtras().getSerializable("ARRAYLIST");
+        // Get ingredientList through intent
+        ingredientList = getIntent().getExtras().getParcelableArrayList("ARRAYLIST");
 
+        // Get recipe information through intent
         recipeNameValue = getIntent().getExtras().getString("recipeNameValue");
         recipeInstructionsValue = getIntent().getExtras().getString("recipeInstructionsValue");
         recipeAreaSpinnerValue = getIntent().getExtras().getString("recipeAreaSpinnerValue");
         recipeCategorySpinnerValue = getIntent().getExtras().getString("recipeCategorySpinnerValue");
 
+        // Set recipe information to createdRecipe texts
         createdRecipeName.setText(recipeNameValue);
         createdRecipeArea.setText(recipeAreaSpinnerValue);
         createdRecipeCategory.setText(recipeCategorySpinnerValue);
         createdRecipeInstructions.setText(recipeInstructionsValue);
 
+        // Set ingredients list to recycler view
         CreatedIngredientAdapter mAdapter = new CreatedIngredientAdapter(ingredientList, this);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);

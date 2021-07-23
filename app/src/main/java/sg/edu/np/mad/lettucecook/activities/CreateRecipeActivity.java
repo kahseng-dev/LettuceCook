@@ -131,7 +131,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(CreateRecipeActivity.this, IngredientsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("ARRAYLIST", ingredientList);
+                    bundle.putParcelableArrayList("ARRAYLIST", ingredientList);
                     bundle.putString("recipeAreaSpinnerValue", recipeAreaSpinnerValue);
                     bundle.putString("recipeCategorySpinnerValue", recipeCategorySpinnerValue);
                     bundle.putString("recipeNameValue", recipeNameValue);
@@ -188,7 +188,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         ingredientList.clear();
         boolean result = true;
 
-        // Loop through according to the number of ingredients in the layoutlist
+        // Loop through according to the number of ingredients in the layout list
         for (int i=0; i<layoutList.getChildCount(); i++) {
             View ingredientView = layoutList.getChildAt(i);
 
