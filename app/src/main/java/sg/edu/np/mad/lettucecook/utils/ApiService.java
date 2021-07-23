@@ -47,6 +47,8 @@ public class ApiService {
     // This method sends request with a headers
     // ApiURL is an enum.
     public void getIngredient(ApiURL URL, String query, VolleyResponseListener listener) {
+        // Remove clove(s) from the name, as it doesn't work with CalorieNinjas API
+        query = query.replaceAll(" cloves?", "");
         JsonObjectRequest request = new JsonObjectRequest
                 (URL.toString() + query, null, new Response.Listener<JSONObject>() {
                     @Override

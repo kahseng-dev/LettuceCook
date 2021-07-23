@@ -44,13 +44,6 @@
             android:name=".activities.IngredientPopup"
             android:theme="@style/IngredientPopup" />
 
-        <receiver android:name=".OpenAppWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-        <activity android:name=".activities.ShoppingListActivity" />
-
         <activity android:name=".activities.IngredientsActivity" />
         <activity
             android:name=".activities.NotificationActivity"
