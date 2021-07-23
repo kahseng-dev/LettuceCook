@@ -5,14 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -25,7 +23,7 @@ import java.util.Calendar;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.utils.AlarmReceiver;
-import sg.edu.np.mad.lettucecook.utils.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
@@ -53,7 +51,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.cancelButton).setOnClickListener(this);
 
         if (getIntent().hasExtra("mealId")) {
-            ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
+            ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
             alertMessage = findViewById(R.id.alertMessage);
 
             Bundle extras = getIntent().getExtras();
@@ -68,7 +66,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                 public void onResponse(JSONObject response) {
                     try {
                         JSONArray _meals = response.getJSONArray("meals");
-                        ApiMeal meal = apiMealJson.mergeIntoJSONArray(_meals).get(0);
+                        ApiMeal meal = apiJson.mergeIntoJSONArray(_meals).get(0);
                         alertMessage.setText("Time to make " + meal.getStrMeal() + "!");
                     }
 

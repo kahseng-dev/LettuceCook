@@ -29,7 +29,7 @@ import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
-import sg.edu.np.mad.lettucecook.utils.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
@@ -42,7 +42,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
     // Initiate API meal
     ApiService apiService = new ApiService(CreateRecipeActivity.this);
-    ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
+    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
 
     // Initiate Spinner, Layout, Button, EditTexts & Strings
     Spinner recipeAreaSpinner, recipeCategorySpinner;
@@ -83,7 +83,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray _filters = response.getJSONArray("meals");
-                    String[] filters = apiMealJson.parseFilterArray(_filters);
+                    String[] filters = apiJson.parseFilterArray(_filters);
                     fillSpinner(recipeAreaSpinner, filters); // Fill up spinner with response
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -105,7 +105,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray _filters = response.getJSONArray("meals");
-                    String[] filters = apiMealJson.parseFilterArray(_filters);
+                    String[] filters = apiJson.parseFilterArray(_filters);
                     fillSpinner(recipeCategorySpinner, filters); // Fill up spinner with response
                 } catch (JSONException e) {
                     e.printStackTrace();

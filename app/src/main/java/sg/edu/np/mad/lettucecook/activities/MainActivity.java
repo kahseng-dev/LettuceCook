@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,7 +36,7 @@ import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
-import sg.edu.np.mad.lettucecook.utils.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<ApiMeal> meals;
     ApiService apiService = new ApiService(MainActivity.this);
-    ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
+    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
 
     int browseType;
     Spinner browseTypeSpinner;
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray _meals = response.getJSONArray("meals");
 
                     // Make arrays from the flat JSON structure
-                    meals = apiMealJson.mergeIntoJSONArray(_meals);
+                    meals = apiJson.mergeIntoJSONArray(_meals);
 
                     Picasso.with(MainActivity.this)
                             .load(meals.get(0).getStrMealThumb())
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray _meals = response.getJSONArray("meals");
-                            meals = apiMealJson.mergeIntoJSONArray(_meals);
+                            meals = apiJson.mergeIntoJSONArray(_meals);
                             Log.v("Meal", String.valueOf(meals.get(0)));
 
                             Bundle extras = getIntent().getExtras();
