@@ -180,22 +180,29 @@ public class ShoppingListActivity extends AppCompatActivity {
                         else {
                             reference = FirebaseDatabase.getInstance().getReference("Users");
                             userID = user.getUid();
+
                             ingredientList = dbHandler.getShoppingList(userID);
 
-                            reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .child("shoppingList").setValue(ingredientList)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(ShoppingListActivity.this, "Backup Successfully!", Toast.LENGTH_SHORT).show();
-                                            }
+                            if (ingredientList.isEmpty()) {
+                                Toast.makeText(ShoppingListActivity.this, "There is nothing to backup", Toast.LENGTH_SHORT).show();
+                            }
 
-                                            else {
-                                                Toast.makeText(ShoppingListActivity.this, "Failed to Backup!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            else {
+                                reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child("shoppingList").setValue(ingredientList)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(ShoppingListActivity.this, "Backup Successfully!", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                else {
+                                                    Toast.makeText(ShoppingListActivity.this, "Failed to Backup!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                            }
                         }
                     }
                 });
