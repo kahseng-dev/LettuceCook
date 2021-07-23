@@ -152,7 +152,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 });
     }
 
-    // if the user clicks on the back button in the toolbar, bring them back to main activity.
+    // if the user clicks on the back button in the toolbar, bring them back to login activity.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -163,5 +163,11 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

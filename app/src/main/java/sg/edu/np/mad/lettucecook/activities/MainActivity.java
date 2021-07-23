@@ -230,4 +230,7 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
     }
+
+    @Override
+    public void onBackPressed() { }
 }
