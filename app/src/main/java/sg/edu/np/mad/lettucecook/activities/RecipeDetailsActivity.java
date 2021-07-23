@@ -20,9 +20,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -48,13 +53,17 @@ import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
-    DBHandler dbHandler = new DBHandler(this , null, null, 1);
-    ImageView mealThumbnail;
-    TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText;
-    RecyclerView ytRecyclerView, ingredientsRV;
-    Button addToShoppingList, sourceLinkButton;
-    Vector<YoutubeVideo> youtubeVideos = new Vector<>();
-    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
+
+    private DBHandler dbHandler = new DBHandler(this , null, null, 1);
+    private ImageView mealThumbnail;
+    private TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText;
+    private RecyclerView ytRecyclerView, ingredientsRV;
+    private Button addToShoppingList, sourceLinkButton;
+    private Vector<YoutubeVideo> youtubeVideos = new Vector<>();
+    private ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
+    private FirebaseUser user;
+    private DatabaseReference reference;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +101,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String mealId = extras.getString("mealId");
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         ApiService apiService = new ApiService(this);
         apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
             @Override
@@ -124,6 +135,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     mealCategory.setText(meal.getStrCategory());
                     areaText.setText(meal.getStrArea());
                     instructionsText.setText(meal.getStrInstructions());
+
                     if (!(meal.getDateModified() == null)) {
                         dateModifiedText.setText(meal.getDateModified());
                     }
@@ -183,8 +195,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                             String url = meal.getStrSource();
                             if (url.startsWith("https://") || url.startsWith("http://")) {
                                 Uri uri = Uri.parse(url);
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                startActivity(intent);
+                                startActivity(new Intent(Intent.ACTION_VIEW, uri));
                             }
 
                             else {
@@ -193,24 +204,27 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                         }
                     });
 
-                    // if user clicks on add to shopping list, it will add the ingredients to shopping list.
-                    addToShoppingList.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (getIntent().hasExtra("UserId")) {
-                                Bundle extras = getIntent().getExtras();
-                                int userId = extras.getInt("UserId");
+                    if (user != null) {
+                        addToShoppingList.setEnabled(true);
+                        findViewById(R.id.add_to_shopping_list_message).setVisibility(View.INVISIBLE);
+
+                        addToShoppingList.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                reference = FirebaseDatabase.getInstance().getReference("Users");
+                                userID = user.getUid();
                                 String[] ingredients = meal.getArrIngredients();
                                 String[] measures = meal.getArrMeasures();
                                 for (int i = 0; i < ingredients.length; i++) {
                                     Ingredient ingredient = new Ingredient(
                                             Integer.parseInt(meal.getIdMeal()), ingredients[i], measures[i]);
-                                    dbHandler.addItemToShoppingList(userId, ingredient);
+                                    dbHandler.addItemToShoppingList(userID, ingredient);
                                 }
+                                Toast.makeText(RecipeDetailsActivity.this, "Ingredients has been added\nto your shopping list", Toast.LENGTH_LONG).show();
                             }
-                            // TODO: Check if user has logged in
-                        }
-                    });
+                        });
+
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -231,35 +245,20 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
-
-                // if the user is logged in, pass the userId as well.
-                if (getIntent().hasExtra("UserId")) {
-                    Bundle extras = getIntent().getExtras();
-                    int userId = extras.getInt("UserId");
-                    browseIntent.putExtra("UserId", userId);
-                }
-
-                startActivity(browseIntent);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
 
             case R.id.notification:
-                Intent notificationIntent = new Intent(getApplicationContext(), NotificationActivity.class);
-
-                if (getIntent().hasExtra("UserId")) {
-                    Bundle extras = getIntent().getExtras();
-                    int userId = extras.getInt("UserId");
-                    notificationIntent.putExtra("UserId", userId);
-                }
+                Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
 
                 if (getIntent().hasExtra("mealId")) {
                     Bundle extras = getIntent().getExtras();
                     String mealId = extras.getString("mealId");
-                    notificationIntent.putExtra("mealId", mealId);
+                    intent.putExtra("mealId", mealId);
                 }
 
-                startActivity(notificationIntent);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 return true;
         }

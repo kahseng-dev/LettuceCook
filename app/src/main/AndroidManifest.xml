@@ -12,14 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LettuceCook">
-        <activity android:name=".rv.CreatedIngredientViewHolder" />
-        <activity
-            android:name=".activities.CreateRecipeActivity"
+
+        <activity android:name=".activities.CreateRecipeActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity
-            android:name=".activities.CreateAccountActivity"
+
+        <activity android:name=".activities.LoginActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity android:name=".activities.CreateAccountActivity"
             android:parentActivityName=".activities.LoginActivity" />
+
+        <activity android:name=".activities.ForgotPasswordActivity"
+            android:parentActivityName=".activities.LoginActivity" />
+
         <activity android:name=".activities.AccountActivity" />
         <activity
             android:name=".activities.MainActivity"
@@ -44,10 +49,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/recipe_add_widget_info" />
-        </receiver>
+        <activity android:name=".activities.ShoppingListActivity" />
 
         <activity android:name=".activities.IngredientsActivity" />
         <activity
@@ -59,6 +61,17 @@
             android:resource="@array/preloaded_fonts" />
 
         <receiver android:name=".utils.AlarmReceiver" />
+
+        <receiver android:name=".OpenAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_add_widget_info" />
+        </receiver>
+
     </application>
 
 </manifest>

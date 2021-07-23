@@ -34,8 +34,6 @@ import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class CreateRecipeActivity extends AppCompatActivity {
-    static final String TAG = "CreateRecipe";
-
     // Initiate arrays
     ArrayList<ApiMeal> meals;
     ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
@@ -66,7 +64,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         recipeName = findViewById(R.id.create_recipe_name);
         recipeInstructions = findViewById(R.id.create_recipe_instructions);
 
-        // Find buttons and layoutlists
+        // Find buttons and layout lists
         layoutList = findViewById(R.id.create_recipe_layout_list);
         buttonAdd = findViewById(R.id.addIngredientButton);
         createRecipeButton = findViewById(R.id.create_recipe_create_button);
@@ -76,7 +74,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         apiService.get(ApiURL.MealDB, areaQuery, new VolleyResponseListener() {
             @Override
             public void onError(String message) {
-                Log.v(TAG, message);
+
             }
 
             @Override
@@ -97,9 +95,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         String categoryQuery = "list.php?c=list";
         apiService.get(ApiURL.MealDB, categoryQuery, new VolleyResponseListener() {
             @Override
-            public void onError(String message) {
-                Log.v(TAG, message);
-            }
+            public void onError(String message) { }
 
             @Override
             public void onResponse(JSONObject response) {
@@ -160,32 +156,14 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                     // if the user clicks on browse
                     case R.id.browse:
-
                         // bring user to main activity
-                        Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
-
-                        // pass the userId as well
-                        if (getIntent().hasExtra("UserId")) {
-                            Bundle extras = getIntent().getExtras();
-                            int userId = extras.getInt("UserId");
-                            browseIntent.putExtra("UserId", userId);
-                        }
-
-                        startActivity(browseIntent);
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
 
                     // if the user clicks on account
                     case R.id.account:
-                        Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
-
-                        if (getIntent().hasExtra("UserId")) {
-                            Bundle extras = getIntent().getExtras();
-                            int userId = extras.getInt("UserId");
-                            accountIntent.putExtra("UserId", userId);
-                        }
-
-                        startActivity(accountIntent);
+                        startActivity(new Intent(getApplicationContext(), AccountActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
 
@@ -195,18 +173,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                     // if the user clicks on shopping list
                     case R.id.shoppingList:
-
                         // bring user to shopping activity
-                        Intent shoppingListIntent = new Intent(getApplicationContext(), ShoppingListActivity.class);
-
-                        // pass the userId as well
-                        if (getIntent().hasExtra("UserId")) {
-                            Bundle extras = getIntent().getExtras();
-                            int userId = extras.getInt("UserId");
-                            shoppingListIntent.putExtra("UserId", userId);
-                        }
-
-                        startActivity(shoppingListIntent);
+                        startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                 }

@@ -41,16 +41,13 @@ import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class MainActivity extends AppCompatActivity {
-    static final String TAG = "MainActivity";
-
     ArrayList<ApiMeal> meals;
     ApiService apiService = new ApiService(MainActivity.this);
     ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
 
     int browseType;
-    Spinner browseTypeSpinner;
-    Spinner browseTypeChoiceSpinner;
-    Button browseButton, createRecipeButton;
+    Spinner browseTypeSpinner, browseTypeChoiceSpinner;
+    Button browseButton;
     RecyclerView browseRV;
     ImageView featuredImage;
     TextView featuredName;
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         browseRV = findViewById(R.id.main_browse_rv); // Browse recycler view
 
         featuredImage = findViewById(R.id.featured_image);
-        featuredImage .setVisibility(View.VISIBLE);
+        featuredImage.setVisibility(View.VISIBLE);
         featuredName = findViewById(R.id.main_featured_meal_name);
         featuredName.setVisibility(View.VISIBLE);
 
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(String message) {
-                Log.v(TAG, message);
+
             }
 
             @Override
@@ -98,13 +95,6 @@ public class MainActivity extends AppCompatActivity {
                     featuredImage.setOnClickListener(view -> {
                         Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
                         intent.putExtra("mealId", meals.get(0).getIdMeal());
-
-                        if (getIntent().hasExtra("UserId")) {
-                            Bundle extras = getIntent().getExtras();
-                            int userId = extras.getInt("UserId");
-                            intent.putExtra("UserId", userId);
-                        }
-
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     });
@@ -127,8 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 fillSpinner(browseTypeChoiceSpinner, getResources().getStringArray(resource));
             }
 
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) { }
         });
 
         // Retrieves meals from the API when the button is tapped.
@@ -141,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
-                        Log.v(TAG, message);
+
                     }
 
                     @Override
@@ -152,13 +141,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.v("Meal", String.valueOf(meals.get(0)));
 
                             Bundle extras = getIntent().getExtras();
-                            ApiMealAdapter mAdapter;
-
-                            if (getIntent().hasExtra("UserId")) {
-                                int userId = extras.getInt("UserId");
-                                mAdapter = new ApiMealAdapter(meals, userId, MainActivity.this);
-                            }
-                            else mAdapter = new ApiMealAdapter(meals, MainActivity.this);
+                            ApiMealAdapter mAdapter = new ApiMealAdapter(meals, MainActivity.this);
 
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
 
@@ -174,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.setSelectedItemId(R.id.browse);
 
         // Switch pages when different navigation buttons are tapped
@@ -186,41 +168,17 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.account:
-                        Intent accountIntent = new Intent(getApplicationContext(), AccountActivity.class);
-
-                        if (getIntent().hasExtra("UserId")) {
-                            Bundle extras = getIntent().getExtras();
-                            int userId = extras.getInt("UserId");
-                            accountIntent.putExtra("UserId", userId);
-                        }
-
-                        startActivity(accountIntent);
+                        startActivity(new Intent(getApplicationContext(), AccountActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
 
                     case R.id.create_recipe:
-                        Intent createRecipeIntent = new Intent(getApplicationContext(), CreateRecipeActivity.class);
-
-                        if (getIntent().hasExtra("UserId")) {
-                            Bundle extras = getIntent().getExtras();
-                            int userId = extras.getInt("UserId");
-                            createRecipeIntent.putExtra("UserId", userId);
-                        }
-
-                        startActivity(createRecipeIntent);
+                        startActivity(new Intent(getApplicationContext(), CreateRecipeActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
 
                     case R.id.shoppingList:
-                        Intent shoppingListIntent = new Intent(getApplicationContext(), ShoppingListActivity.class);
-
-                        if (getIntent().hasExtra("UserId")) {
-                            Bundle extras = getIntent().getExtras();
-                            int userId = extras.getInt("UserId");
-                            shoppingListIntent.putExtra("UserId", userId);
-                        }
-
-                        startActivity(shoppingListIntent);
+                        startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                 }
@@ -240,19 +198,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.notification:
-                Intent createRecipeIntent = new Intent(getApplicationContext(), NotificationActivity.class);
-
-                if (getIntent().hasExtra("UserId")) {
-                    Bundle extras = getIntent().getExtras();
-                    int userId = extras.getInt("UserId");
-                    createRecipeIntent.putExtra("UserId", userId);
-                }
-
-                startActivity(createRecipeIntent);
+                startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 return true;
         }
-
         return false;
     }
 
@@ -266,4 +215,7 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
     }
+
+    @Override
+    public void onBackPressed() { }
 }
