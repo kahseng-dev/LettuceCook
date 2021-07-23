@@ -22,10 +22,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.w3c.dom.Text;
+
 import sg.edu.np.mad.lettucecook.R;
 
 public class LoginActivity extends AppCompatActivity implements  View.OnClickListener {
-    private TextView createAccount;
+    private TextView createAccount, forgotPassword;
     private EditText editTextEmail, editTextPassword;
     private Button loginButton;
     private FirebaseAuth mAuth;
@@ -38,6 +40,9 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
 
         createAccount = (TextView) findViewById(R.id.create_account_link);
         createAccount.setOnClickListener(this);
+
+        forgotPassword = (TextView) findViewById(R.id.forgot_password);
+        forgotPassword.setOnClickListener(this);
 
         loginButton = (Button) findViewById(R.id.login_button);
         loginButton.setOnClickListener(this);
@@ -88,6 +93,11 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
         switch (v.getId()) {
             case R.id.create_account_link:
                 startActivity(new Intent(this, CreateAccountActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                break;
+
+            case R.id.forgot_password:
+                startActivity(new Intent(this, ForgotPasswordActivity.class));
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
 
