@@ -97,12 +97,13 @@ public class ApiJsonSingleton {
         ArrayList<NinjaIngredient> ninjaIngredients = new ArrayList<>();
 
         for (int i = 0; i < ingredientNames.length; i++) {
-            NinjaIngredient ninjaIngredient = searchNinjaIngredient(_ninjaIngredients, ingredientNames[i]);
+            String ingredientName = ingredientNames[i];
+            NinjaIngredient ninjaIngredient = searchNinjaIngredient(_ninjaIngredients, ingredientName);
 
             // If ninjaIngredient is null, create a new NinjaIngredient with just name and measure.
-            if (ninjaIngredient == null) {
-                ninjaIngredient = new NinjaIngredient(ingredientNames[i]);
-            }
+            if (ninjaIngredient == null)
+                ninjaIngredient = new NinjaIngredient(ingredientName);
+
             ninjaIngredient.setMeasure(measures[i]);
             ninjaIngredients.add(ninjaIngredient);
         }
