@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
 import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
@@ -42,7 +43,7 @@ import sg.edu.np.mad.lettucecook.models.Ingredient;
 import sg.edu.np.mad.lettucecook.rv.YoutubeAdapter;
 import sg.edu.np.mad.lettucecook.rv.YoutubeVideo;
 import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
-import sg.edu.np.mad.lettucecook.utils.ApiMealJsonSingleton;
+import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
@@ -53,7 +54,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     RecyclerView ytRecyclerView, ingredientsRV;
     Button addToShoppingList, sourceLinkButton;
     Vector<YoutubeVideo> youtubeVideos = new Vector<>();
-    ApiMealJsonSingleton apiMealJson = ApiMealJsonSingleton.getInstance();
+    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray _meals = response.getJSONArray("meals");
-                    ApiMeal meal = apiMealJson.mergeIntoJSONArray(_meals).get(0);
+                    ApiMeal meal = apiJson.mergeIntoJSONArray(_meals).get(0);
                     Log.v("Meal", meal.getIdMeal());
                     Picasso
                             .with(RecipeDetailsActivity.this)
@@ -127,29 +128,48 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                         dateModifiedText.setText(meal.getDateModified());
                     }
 
-                    int mealId = Integer.parseInt(meal.getIdMeal());
-                    String[] ingredientNames = meal.getArrIngredients();
-                    String[] measures = meal.getArrMeasures();
-
-                    ArrayList<Ingredient> ingredients = new ArrayList<>();
-                    for (int i = 0; i < ingredientNames.length; i++) {
-                        ingredients.add(new Ingredient(mealId, ingredientNames[i], measures[i]));
+                    String[] mealIngredients = meal.getArrIngredients();
+                    String[] mealMeasures = meal.getArrMeasures();
+                    String ninjaQuery = "";
+                    for (int i = 0; i < mealIngredients.length; i++) {
+                        ninjaQuery += mealMeasures[i] + " " + mealIngredients[i] + ", ";
                     }
-                    ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ingredients, RecipeDetailsActivity.this, new IngredientClickListener() {
+                    // Remove the trailing ", "
+                    ninjaQuery = ninjaQuery.substring(0, ninjaQuery.length() - 2);
+
+                    apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
+
                         @Override
-                        public void onItemClick(Ingredient ingredient) {
-                            Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.slide_in_up, 0);
+                        public void onError(String message) {
+                            Toast.makeText(RecipeDetailsActivity.this, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(JSONObject response) throws JSONException {
+                            ArrayList<NinjaIngredient> ninjaIngredients = apiJson.parseNinjaIngredients(
+                                    response.getJSONArray("items"), mealIngredients, mealMeasures
+                            );
+                            for (NinjaIngredient i: ninjaIngredients) {
+                                Log.v("Meal", String.valueOf(i.getCalories()));
+                            }
+                            ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ninjaIngredients, RecipeDetailsActivity.this, new IngredientClickListener() {
+                                @Override
+                                public void onItemClick(NinjaIngredient ingredient) {
+                                    Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
+                                    intent.putExtra("ingredient", ingredient); // Send NinjaIngredient object to IngredientPopup
+                                    startActivity(intent);
+//                            overridePendingTransition(R.anim.slide_in_up, 0);
+                                }
+                            });
+
+                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(RecipeDetailsActivity.this);
+
+                            // setting ingredients recycler view
+                            ingredientsRV.setLayoutManager(mLayoutManager);
+                            ingredientsRV.setItemAnimator(new DefaultItemAnimator());
+                            ingredientsRV.setAdapter(adapter);
                         }
                     });
-
-                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(RecipeDetailsActivity.this);
-
-                    // setting ingredients recycler view
-                    ingredientsRV.setLayoutManager(mLayoutManager);
-                    ingredientsRV.setItemAnimator(new DefaultItemAnimator());
-                    ingredientsRV.setAdapter(adapter);
 
                     // embedding youtube videos
                     youtubeVideos.add(new YoutubeVideo(meal.getStrYoutube()));

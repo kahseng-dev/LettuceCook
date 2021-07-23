@@ -11,174 +11,179 @@
     android:layout_marginTop="0dp"
     android:layout_marginBottom="-24dp"
     tools:context=".activities.IngredientPopup">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent">
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_name"
-            android:text="Name"
-            android:textSize="32sp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_name"
+                android:text="Name"
+                android:textSize="32sp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_calories_label"
-            android:text="Calories"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_name"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_calories_label"
+                android:text="Calories"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_name"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_calories_value"
-            android:text="- kcal"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_name"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_calories_value"
+                android:text="- kcal"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_name"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_sugar_label"
-            android:text="Sugar"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_calories_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_sugar_label"
+                android:text="Sugar"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_calories_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_sugar_value"
-            android:text="- g"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_calories_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_sugar_value"
+                android:text="- g"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_calories_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_fiber_label"
-            android:text="Fiber"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_sugar_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_fiber_label"
+                android:text="Fiber"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_sugar_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_fiber_value"
-            android:text="- g"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_sugar_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_fiber_value"
+                android:text="- g"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_sugar_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_serving_size_label"
-            android:text="Serving size"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_fiber_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_serving_size_label"
+                android:text="Serving size"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_fiber_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_serving_size_value"
-            android:text="- g"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_fiber_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_serving_size_value"
+                android:text="- g"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_fiber_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_sodium_label"
-            android:text="Sodium"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_serving_size_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_sodium_label"
+                android:text="Sodium"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_serving_size_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_sodium_value"
-            android:text="- mg"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_serving_size_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_sodium_value"
+                android:text="- mg"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_serving_size_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_potassium_label"
-            android:text="Potassium"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_sodium_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_potassium_label"
+                android:text="Potassium"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_sodium_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_potassium_value"
-            android:text="- mg"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_sodium_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_potassium_value"
+                android:text="- mg"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_sodium_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_saturated_fat_label"
-            android:text="Saturated fat"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_potassium_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_saturated_fat_label"
+                android:text="Saturated fat"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_potassium_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_saturated_fat_value"
-            android:text="- g"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_potassium_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_saturated_fat_value"
+                android:text="- g"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_potassium_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_total_fat_label"
-            android:text="Total fat"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_saturated_fat_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_total_fat_label"
+                android:text="Total fat"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_saturated_fat_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_total_fat_value"
-            android:text="- g"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_saturated_fat_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_total_fat_value"
+                android:text="- g"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_saturated_fat_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_cholesterol_label"
-            android:text="Cholesterol"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_total_fat_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_cholesterol_label"
+                android:text="Cholesterol"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_total_fat_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_cholesterol_value"
-            android:text="- mg"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_total_fat_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_cholesterol_value"
+                android:text="- mg"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_total_fat_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_protein_label"
-            android:text="Protein"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_cholesterol_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_protein_label"
+                android:text="Protein"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_cholesterol_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_protein_value"
-            android:text="- g"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_cholesterol_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_protein_value"
+                android:text="- g"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_cholesterol_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            style="@style/NutritionalInformationLabel"
-            android:id="@+id/popup_ingredient_carbohydrates_label"
-            android:text="Carbohydrates"
-            app:layout_constraintTop_toBottomOf="@id/popup_ingredient_protein_label"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                style="@style/NutritionalInformationLabel"
+                android:id="@+id/popup_ingredient_carbohydrates_label"
+                android:text="Carbohydrates"
+                app:layout_constraintTop_toBottomOf="@id/popup_ingredient_protein_label"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            style="@style/NutritionalInformationValue"
-            android:id="@+id/popup_ingredient_carbohydrates_value"
-            android:text="- g"
-            app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_protein_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                style="@style/NutritionalInformationValue"
+                android:id="@+id/popup_ingredient_carbohydrates_value"
+                android:text="- g"
+                app:layout_constraintTop_toBottomOf="@+id/popup_ingredient_protein_value"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.cardview.widget.CardView>
