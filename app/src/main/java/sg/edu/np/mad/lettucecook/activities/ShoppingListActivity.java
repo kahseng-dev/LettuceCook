@@ -25,14 +25,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.Ingredient;
+import sg.edu.np.mad.lettucecook.models.User;
 import sg.edu.np.mad.lettucecook.rv.ShoppingListAdapter;
 
 public class ShoppingListActivity extends AppCompatActivity {
@@ -192,6 +196,53 @@ public class ShoppingListActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
+                        }
+                    }
+                });
+
+                bottomSheetView.findViewById(R.id.shopping_list_restore).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (user == null) {
+                            Toast.makeText(ShoppingListActivity.this, "Please Login to use this feature", Toast.LENGTH_SHORT).show();
+                        }
+
+                        else {
+                            reference = FirebaseDatabase.getInstance().getReference("Users");
+                            userID = user.getUid();
+
+                            reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    User userProfile = snapshot.getValue(User.class);
+
+                                    if (userProfile != null) {
+                                        if (userProfile.shoppingList == null) {
+                                            Toast.makeText(ShoppingListActivity.this, "Could not find previous backup", Toast.LENGTH_LONG).show();
+                                        }
+
+                                        else {
+                                            ingredientList = userProfile.shoppingList;
+
+                                            if (dbHandler.getShoppingList(userID).size() != 0) {
+                                                dbHandler.clearUserShoppingList(userID);
+                                            }
+
+                                            for (int i = 0; i < ingredientList.size(); i++) {
+                                                dbHandler.addItemToShoppingList(userID, ingredientList.get(i));
+                                            }
+
+                                            Toast.makeText(ShoppingListActivity.this, "Successfully Restored", Toast.LENGTH_LONG).show();
+                                            startActivity(getIntent());
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(ShoppingListActivity.this, "Failed to restore", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     }
                 });
