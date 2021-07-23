@@ -13,12 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LettuceCook">
 
-        <activity android:name=".rv.CreatedIngredientViewHolder" />
-
         <activity android:name=".activities.CreateRecipeActivity"
             android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.LoginActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity android:name=".activities.CreateAccountActivity"
             android:parentActivityName=".activities.LoginActivity" />
@@ -37,6 +36,7 @@
         <activity
             android:name=".activities.RecipeDetailsActivity"
             android:parentActivityName=".activities.MainActivity" />
+
         <activity android:name=".activities.ShoppingListActivity" />
 
         <receiver android:name=".OpenAppWidget">

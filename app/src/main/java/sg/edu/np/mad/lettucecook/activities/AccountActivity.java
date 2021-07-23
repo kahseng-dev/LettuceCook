@@ -11,112 +11,97 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.User;
 
 public class AccountActivity extends AppCompatActivity {
-    DBHandler dbHandler = new DBHandler(this , null, null, 1);
+    private FirebaseUser user;
+    private DatabaseReference reference;
+    private String userID;
+    private TextView greeting, logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        // if the user is not logged in, bring them to the login activity.
-        if (!(getIntent().hasExtra("UserId"))) {
-            Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
-            startActivity(intent);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            startActivity(new Intent(AccountActivity.this, LoginActivity.class));
+            finish();
         }
 
-        else { // else if the user is logged in
-            TextView greeting = findViewById(R.id.account_greeting);
-            TextView logout = findViewById(R.id.account_logout);
+        else {
+            reference = FirebaseDatabase.getInstance().getReference("Users");
+            userID = user.getUid();
 
-            setTitle("LettuceCook Account");
+            greeting = (TextView) findViewById(R.id.account_greeting);
+            logout = (TextView) findViewById(R.id.account_logout);
 
-            Bundle extras = getIntent().getExtras();
+            reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User userProfile = snapshot.getValue(User.class);
 
-            int userId = extras.getInt("UserId"); // getting the userId that is logged in
-            User user = dbHandler.getDetails(userId); // get the details of the user that is logged in
-            greeting.setText("Hello " + user.getUsername() + "!"); // setting welcome message in account activity.
+                    if (userProfile != null) {
+                        String username = userProfile.username;
+                        String greetingMessage = "Hello " + username + "!";
+                        greeting.setText(greetingMessage);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(AccountActivity.this, "Oops! something went wrong", Toast.LENGTH_LONG).show();
+                }
+            });
 
             // if the user clicks on the log out section in the account activity
             // bring them to the login activity without parsing the userId
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent (AccountActivity.this, LoginActivity.class);
-                    startActivity(intent);
-
-                    // create a toast message to say goodbye to user
-                    Toast.makeText(AccountActivity.this, "Goodbye " + user.getUsername() + "!", Toast.LENGTH_SHORT).show();
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent (AccountActivity.this, LoginActivity.class));
                 }
             });
 
-            // navigation bar
+            // Navigation Bar
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-            // set which activity the user is currently viewing which is the account activity
-            bottomNavigationView.setSelectedItemId(R.id.account);
+            bottomNavigationView.setSelectedItemId(R.id.account); // set which activity the user is currently viewing which is the account activity
             bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch(item.getItemId()) {
-
-                        // if the user clicks on browse
+                    switch (item.getItemId()) {
                         case R.id.browse:
-
                             // bring user to main activity
-                            Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
-
-                            // pass the userId as well
-                            if (getIntent().hasExtra("UserId")) {
-                                Bundle extras = getIntent().getExtras();
-                                int userId = extras.getInt("UserId");
-                                browseIntent.putExtra("UserId", userId);
-                            }
-
-                            startActivity(browseIntent);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             overridePendingTransition(0, 0);
                             return true;
 
-                        // if the user clicks on account which is this activity, do nothing
                         case R.id.account:
+                            // if the user clicks on account which is this activity, do nothing
                             return true;
 
-                        // if the user clicks on create recipe
                         case R.id.create_recipe:
-
-                            // bring user to create recipe activity
-                            Intent createRecipeIntent = new Intent(getApplicationContext(), CreateRecipeActivity.class);
-
-                            // pass the userId as well
-                            if (getIntent().hasExtra("UserId")) {
-                                Bundle extras = getIntent().getExtras();
-                                int userId = extras.getInt("UserId");
-                                createRecipeIntent.putExtra("UserId", userId);
-                            }
-
-                            startActivity(createRecipeIntent);
+                            // if the user clicks on create recipe, bring user to create recipe activity
+                            startActivity(new Intent(getApplicationContext(), CreateRecipeActivity.class));
                             overridePendingTransition(0, 0);
                             return true;
 
                         // if the user clicks on shopping list
                         case R.id.shoppingList:
-
                             // bring user to shopping activity
-                            Intent shoppingListIntent = new Intent(getApplicationContext(), ShoppingListActivity.class);
-
-                            // pass the userId as well
-                            if (getIntent().hasExtra("UserId")) {
-                                Bundle extras = getIntent().getExtras();
-                                int userId = extras.getInt("UserId");
-                                shoppingListIntent.putExtra("UserId", userId);
-                            }
-
-                            startActivity(shoppingListIntent);
+                            startActivity(new Intent(getApplicationContext(), ShoppingListActivity.class));
                             overridePendingTransition(0, 0);
                             return true;
                     }

@@ -3,7 +3,14 @@ package sg.edu.np.mad.lettucecook.models;
 public class User {
     public int userId;
     public String username;
-    public String password;
+    public String email;
+
+    public User() {}
+
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
 
     public int getUserId() {
         return userId;
@@ -21,11 +28,11 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
