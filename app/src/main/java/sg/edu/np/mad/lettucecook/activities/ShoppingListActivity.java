@@ -247,6 +247,20 @@ public class ShoppingListActivity extends AppCompatActivity {
                     }
                 });
 
+                bottomSheetView.findViewById(R.id.shopping_list_clear_all).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (user == null) {
+                            Toast.makeText(ShoppingListActivity.this, "Please Login to use this feature", Toast.LENGTH_SHORT).show();
+                        }
+
+                        else {
+                            dbHandler.clearUserShoppingList(userID);
+                            startActivity(getIntent());
+                        }
+                    }
+                });
+
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
                 return true;
