@@ -128,4 +128,14 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
     }
+
+    public void clearUserShoppingList(String userID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "DELETE FROM " + TABLE_SHOPPING_LIST +
+                " WHERE " + USER_COLUMN_ID + "=\"" + userID + "\"";
+
+        db.execSQL(query);
+        db.close();
+    }
 }

@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,7 +112,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 try {
                     JSONArray _meals = response.getJSONArray("meals");
                     ApiMeal meal = apiJson.mergeIntoJSONArray(_meals).get(0);
-                    Log.v("Meal", meal.getIdMeal());
                     Picasso
                             .with(RecipeDetailsActivity.this)
                             .load(meal.getStrMealThumb())
@@ -235,7 +233,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_toolbar, menu);
+        inflater.inflate(R.menu.menu_notifications_toolbar, menu);
         menu.findItem(R.id.notification).setIcon(R.drawable.ic_notifications_white);
         return true;
     }
