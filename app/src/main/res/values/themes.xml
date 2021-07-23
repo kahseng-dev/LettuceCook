@@ -28,4 +28,27 @@
         <item name="appWidgetBackgroundColor">@color/dark_green</item>
         <item name="appWidgetTextColor">@color/white</item>
     </style>
+
+    <!-- Ingredient popup -->
+    <style name="IngredientPopup" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+    <style name="NutritionalInformationLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+    </style>
+
+    <style name="NutritionalInformationValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+    </style>
 </resources>

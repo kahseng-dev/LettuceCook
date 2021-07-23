@@ -1,29 +1,31 @@
 package sg.edu.np.mad.lettucecook.utils;
 
-
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
+import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
 
 // A Singleton design is used as only one instance is needed for the entire application.
 // This is more efficient since there is no need to recreate the object when needed.
-public class ApiMealJsonSingleton {
-    private static ApiMealJsonSingleton instance;
+public class ApiJsonSingleton {
+    private static ApiJsonSingleton instance;
     private static Gson gson;
 
-    private ApiMealJsonSingleton() {
+    private ApiJsonSingleton() {
         gson = getGson();
     }
 
-    public static synchronized ApiMealJsonSingleton getInstance() {
+    public static synchronized ApiJsonSingleton getInstance() {
         // Gets instance. If null, makes a new instance
         // and returns the same instance in the future.
         if (instance == null) {
-            instance = new ApiMealJsonSingleton();
+            instance = new ApiJsonSingleton();
         }
         return instance;
     }
@@ -70,8 +72,8 @@ public class ApiMealJsonSingleton {
             String ingredientKey = "strIngredient" + i;
             String measureKey = "strMeasure" + i;
 
-            String ingredientValue = json.getString(ingredientKey);
-            String measureValue = json.getString(measureKey);
+            String ingredientValue = json.getString(ingredientKey).toLowerCase();
+            String measureValue = json.getString(measureKey).toLowerCase();
 
             // Add items to array if not null or empty
             if (!(json.isNull(ingredientKey) || ingredientValue.equals(""))) {
@@ -87,5 +89,31 @@ public class ApiMealJsonSingleton {
         json.put("arrMeasures", arrMeasures);
 
         return json.toString();
+    }
+
+    public ArrayList<NinjaIngredient> parseNinjaIngredients(JSONArray json, String[] ingredientNames, String[] measures) {
+        ArrayList<NinjaIngredient> _ninjaIngredients = getGson().fromJson
+                (json.toString(), new TypeToken<ArrayList<NinjaIngredient>>(){}.getType());
+        ArrayList<NinjaIngredient> ninjaIngredients = new ArrayList<>();
+
+        for (int i = 0; i < ingredientNames.length; i++) {
+            NinjaIngredient ninjaIngredient = searchNinjaIngredient(_ninjaIngredients, ingredientNames[i]);
+
+            // If ninjaIngredient is null, create a new NinjaIngredient with just name and measure.
+            if (ninjaIngredient == null) {
+                ninjaIngredient = new NinjaIngredient(ingredientNames[i]);
+            }
+            ninjaIngredient.setMeasure(measures[i]);
+            ninjaIngredients.add(ninjaIngredient);
+        }
+
+        return ninjaIngredients;
+    }
+
+    private NinjaIngredient searchNinjaIngredient(ArrayList<NinjaIngredient> ninjaIngredients, String ingredientName) {
+        for (NinjaIngredient i : ninjaIngredients)
+            if (ingredientName.contains(i.getName()))
+                return i;
+        return null;
     }
 }
