@@ -2,6 +2,7 @@ package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,14 +37,14 @@ import sg.edu.np.mad.lettucecook.models.User;
 import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
 
 public class AccountRecipesActivity extends AppCompatActivity {
-
     ArrayList<CreatedRecipe> createdRecipeList = new ArrayList<>();
     ArrayList<CreatedRecipe> recipeList = new ArrayList<>();
-    Button backToAccount, createRecipeButton;
+    Button createRecipeButton;
     TextView noAccountRecipeText;
     String addRecipeName, addRecipeArea, addRecipeCategory, addRecipeInstructions;
-    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
 
+    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
+    private Toolbar toolbar;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID, recipeID;
@@ -52,8 +54,14 @@ public class AccountRecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_recipes);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
+        toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
+
         // Find views ids and set to variables
-        backToAccount = findViewById(R.id.back_account_button);
         createRecipeButton = findViewById(R.id.create_recipe_button);
         noAccountRecipeText = findViewById(R.id.account_no_recipe);
 
@@ -129,14 +137,24 @@ public class AccountRecipesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        // Back to account button onClick
-        backToAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AccountRecipesActivity.this, AccountActivity.class);
-                startActivity(intent);
-            }
-        });
+    // if the user clicks on the back button in the toolbar, bring them back to login activity.
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

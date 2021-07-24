@@ -92,7 +92,7 @@
     <string name="ingredientMeasure">Ingredient Measurement</string>
 
     <!-- Display created recipes strings -->
-    <string name="createdRecipeTitle">Your Recipe</string>
+    <string name="createdRecipeTitle">View Recipes</string>
     <string name="createdRecipeName">Ingredient Measurement</string>
     <string name="calories">- kcal</string>
 </resources>
