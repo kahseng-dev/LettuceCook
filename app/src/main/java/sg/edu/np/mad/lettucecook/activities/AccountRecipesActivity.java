@@ -85,14 +85,8 @@ public class AccountRecipesActivity extends AppCompatActivity {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    // HashMap to child
-                    Map<String, CreatedRecipe> td = (HashMap<String, CreatedRecipe>) snapshot.getValue();
-
-                    ArrayList<CreatedRecipe> values = new ArrayList<CreatedRecipe>(td.values());
-
                     // Loop through each createdRecipesList children and append to createdRecipeList
-                    for(DataSnapshot dataSnapshot : snapshot.getChildren())
-                    {
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         CreatedRecipe createdRecipe = dataSnapshot.getValue(CreatedRecipe.class);
                         createdRecipeList.add(createdRecipe);
                     }
@@ -102,9 +96,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
                         Toast.makeText(AccountRecipesActivity.this, "You do not have any created recipes!", Toast.LENGTH_SHORT).show();
                         recipeRecyclerView.setVisibility(View.INVISIBLE); // Hide recyclerview if empty
                         noAccountRecipeText.setVisibility(View.VISIBLE); // Show no account recipe message if empty
-                    }
-
-                    else {
+                    } else {
                         recipeRecyclerView.setVisibility(View.VISIBLE); // Show recyclerview if not empty
                         noAccountRecipeText.setVisibility(View.INVISIBLE); // Hide no account recipe message if not empty
 

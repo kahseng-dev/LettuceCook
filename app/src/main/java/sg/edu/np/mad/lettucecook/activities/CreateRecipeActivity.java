@@ -1,11 +1,13 @@
 package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +35,9 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
+import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
+import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
+import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
@@ -44,13 +49,14 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
+    private Context mContext = CreateRecipeActivity.this;
 
     // Initiate arrays
     ArrayList<ApiMeal> meals;
     ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
 
     // Initiate API meal
-    ApiService apiService = new ApiService(CreateRecipeActivity.this);
+    ApiService apiService = new ApiService(mContext);
     ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
 
     // Initiate Spinner, Layout, Button, EditTexts & Strings
@@ -139,8 +145,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkIfValidAndRead()) {
-                    //Get values of user inputs
+                try {
+                    // Get values of user inputs
                     recipeAreaSpinnerValue = recipeAreaSpinner.getSelectedItem().toString();
                     recipeCategorySpinnerValue = recipeCategorySpinner.getSelectedItem().toString();
                     recipeNameValue = recipeName.getText().toString();
@@ -149,25 +155,48 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     // Create new CreatedRecipe object
                     CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, ingredientList);
 
-                    // Get child references
-                    reference.child(userID)
-                            .child("createdRecipesList").push()
-                            .setValue(createdRecipe)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(CreateRecipeActivity.this, "Added Recipe Successfully", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else {
-                                        Toast.makeText(CreateRecipeActivity.this, "Failed to Add Recipe!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
+                    String ninjaQuery = checkIfValidAndRead();
+                    // Request ingredients' nutritional information
+                    apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
 
-                    // Start new intent
-                    Intent intent = new Intent(CreateRecipeActivity.this, AccountRecipesActivity.class);
-                    startActivity(intent);
+                        @Override
+                        public void onError(String message) {
+                            Toast.makeText(mContext, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(JSONObject response) throws JSONException {
+                            ArrayList<NinjaIngredient> ninjaIngredients = apiJson.parseNinjaIngredients
+                                    (response.getJSONArray("items"), ingredientList);
+
+                            // Ingredients whose nutritional information could not be found
+                            String errorIngredients = "";
+                            for (NinjaIngredient i : ninjaIngredients) {
+                                if (i.getCalories() < 0) errorIngredients += i.getMeasure() + " " + i.getName() + "\n";
+//                                    errorIngredients.add(i);
+                            }
+
+                            if (errorIngredients.length() > 0) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                builder
+                                        .setTitle("Ingredients' nutritional information not found")
+                                        .setMessage(errorIngredients)
+                                        .setCancelable(true)
+                                        .setNegativeButton("Continue editing", null)
+                                        .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                addRecipeToFirebase(createdRecipe);
+                                            }
+                                        })
+                                        .show();
+                            } else {
+                                addRecipeToFirebase(createdRecipe);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -212,10 +241,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
     }
 
     // Function to validate user input for Create Recipe form
-    private boolean checkIfValidAndRead() {
+    private String checkIfValidAndRead() throws Exception {
         ingredientList.clear();
-        boolean result = true;
-
+        String ninjaQuery = "";
         // Loop through according to the number of ingredients in the layout list
         for (int i=0; i<layoutList.getChildCount(); i++) {
             View ingredientView = layoutList.getChildAt(i);
@@ -229,27 +257,50 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             // Check if both Recipe Name & Recipe Measure inputs are empty
             if (!editName.getText().toString().equals("") && !editMeasure.getText().toString().equals("")) {
-                ingredient.setIngredientName(editName.getText().toString());
-                ingredient.setIngredientMeasure(editMeasure.getText().toString());
+                String ingredientName = editName.getText().toString();
+                String ingredientMeasure = editMeasure.getText().toString();
+                ingredient.setIngredientName(ingredientName);
+                ingredient.setIngredientMeasure(ingredientMeasure);
+                ninjaQuery += ingredientMeasure + " " + ingredientName + ", ";
+            } else {
+                throw new Exception("Enter all details correctly");
             }
-            else { result = false; break; }
 
             // Add ingredient to ingredientList
             ingredientList.add(ingredient);
 
             // Check if ingredientList is empty
             if (ingredientList.size() == 0) {
-                result = false;
-                Toast.makeText(this, "Add Ingredients First!", Toast.LENGTH_SHORT).show();
-            }
-            else if (!result) {
-                Toast.makeText(this, "Enter all details correctly!", Toast.LENGTH_SHORT).show();
+                throw new Exception("Add ingredients first");
             }
         }
 
-        return result;
+        // Remove the trailing ", "
+        ninjaQuery = ninjaQuery.substring(0, ninjaQuery.length() - 2);
+        return ninjaQuery;
     }
 
+    private void addRecipeToFirebase(CreatedRecipe createdRecipe) {
+        // Get child references
+        reference.child(userID)
+                .child("createdRecipesList").push()
+                .setValue(createdRecipe)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(mContext, "Added Recipe Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(mContext, "Failed to Add Recipe!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+        // Start new intent
+        Intent intent = new Intent(mContext, AccountRecipesActivity.class);
+        startActivity(intent);
+    }
     // Function to addView everytime user clicks on click
     public void addView() {
         View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient, null, false);
@@ -277,7 +328,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     // Fill spinner
     private void fillSpinner(Spinner spinner, String[] items) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                CreateRecipeActivity.this,
+                mContext,
                 android.R.layout.simple_spinner_item, items);
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
