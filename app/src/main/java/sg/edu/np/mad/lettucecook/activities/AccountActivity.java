@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,8 +28,8 @@ public class AccountActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
+    private LinearLayout logout, recipes;
     private TextView greeting;
-    private LinearLayout logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class AccountActivity extends AppCompatActivity {
 
             greeting = (TextView) findViewById(R.id.account_greeting);
             logout = (LinearLayout) findViewById(R.id.account_logout);
+            recipes = (LinearLayout) findViewById(R.id.account_recipes);
 
             reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -67,13 +69,22 @@ public class AccountActivity extends AppCompatActivity {
                 }
             });
 
-            // if the user clicks on the log out section in the account activity
+            // if the user clicks on the log out section in account activity
             // bring them to the login activity without parsing the userId
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent (AccountActivity.this, LoginActivity.class));
+                }
+            });
+
+            // if the user clicks on the recipes section in account activity
+            // bring them to the account recipes activity
+            recipes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent (AccountActivity.this, AccountRecipesActivity.class));
                 }
             });
 
