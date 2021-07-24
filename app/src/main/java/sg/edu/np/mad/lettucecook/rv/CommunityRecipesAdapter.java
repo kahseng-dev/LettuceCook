@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.activities.IngredientsActivity;
+import sg.edu.np.mad.lettucecook.activities.CustomRecipeActivity;
 import sg.edu.np.mad.lettucecook.activities.RecipeDetailsActivity;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 
@@ -44,7 +44,7 @@ public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecip
         holder.name.setText(meal.getRecipeName());
 
         holder.name.setOnClickListener(view -> {
-            Intent intent = new Intent(mContext, IngredientsActivity.class);
+            Intent intent = new Intent(mContext, CustomRecipeActivity.class);
             intent.putExtra("Recipe", data.get(position));
             mContext.startActivity(intent);
             ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
