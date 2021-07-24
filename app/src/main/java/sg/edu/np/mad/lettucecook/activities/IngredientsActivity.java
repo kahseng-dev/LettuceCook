@@ -120,7 +120,8 @@ public class IngredientsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+                if (getIntent().hasExtra("userID")) startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+                else startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
         }
@@ -130,7 +131,8 @@ public class IngredientsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+        if (getIntent().hasExtra("userID")) startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+        else startActivity(new Intent(getApplicationContext(), MainActivity.class));
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

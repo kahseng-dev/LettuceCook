@@ -106,7 +106,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
                         noAccountRecipeText.setVisibility(View.INVISIBLE); // Hide no account recipe message if not empty
 
                         // Add customized created recipes to recycler view
-                        AccountRecipesAdapter sAdapter = new AccountRecipesAdapter(createdRecipeList, AccountRecipesActivity.this, recipeIDList);
+                        AccountRecipesAdapter sAdapter = new AccountRecipesAdapter(createdRecipeList, AccountRecipesActivity.this, recipeIDList, userID);
                         recipeRecyclerView.setLayoutManager(mLayoutManger);
                         recipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
                         recipeRecyclerView.setAdapter(sAdapter);
