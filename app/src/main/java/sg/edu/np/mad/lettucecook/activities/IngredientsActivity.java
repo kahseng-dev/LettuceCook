@@ -2,6 +2,7 @@ package sg.edu.np.mad.lettucecook.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,15 +48,22 @@ public class IngredientsActivity extends AppCompatActivity {
 
     String recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue;
     TextView createdRecipeName, createdRecipeArea, createdRecipeInstructions, createdRecipeCategory;
-    Button backToRecipesListButton;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID, recipeID;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_recipes);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
+        toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
 
         // Get userID from Firebase
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -69,9 +78,6 @@ public class IngredientsActivity extends AppCompatActivity {
         createdRecipeArea = findViewById(R.id.custom_recipe_area);
         createdRecipeInstructions = findViewById(R.id.custom_recipe_instructions);
         createdRecipeCategory = findViewById(R.id.custom_recipe_category);
-
-        // Find button id for addToRecipeListButton
-        backToRecipesListButton = findViewById(R.id.backToRecipesListButton);
 
         // ===========================================================================================================================================
         CreatedRecipe createdRecipe = (CreatedRecipe) getIntent().getSerializableExtra("Recipe");
@@ -90,16 +96,24 @@ public class IngredientsActivity extends AppCompatActivity {
         recyclerIngredients.setLayoutManager(mLayoutManager);
         recyclerIngredients.setItemAnimator(new DefaultItemAnimator());
         recyclerIngredients.setAdapter(mAdapter);
+    }
 
-        // ===========================================================================================================================================
+    // if the user clicks on the back button in the toolbar, bring them back to login activity.
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return true;
+        }
 
-        // Back to recipe list
-        backToRecipesListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(IngredientsActivity.this, AccountRecipesActivity.class);
-                startActivity(intent);
-            }
-        });
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

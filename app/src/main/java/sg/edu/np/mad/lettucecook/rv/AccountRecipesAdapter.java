@@ -1,5 +1,6 @@
 package sg.edu.np.mad.lettucecook.rv;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesVi
                 Intent intent = new Intent(context, IngredientsActivity.class);
                 intent.putExtra("Recipe", recipeList.get(position));
                 context.startActivity(intent);
+                ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
