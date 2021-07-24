@@ -1,5 +1,6 @@
 package sg.edu.np.mad.lettucecook.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,6 +12,8 @@ public class CreatedRecipe {
     public String recipeName;
     public String recipeArea;
     public String recipeCategory;
+    public String recipeInstructions;
+    public ArrayList<CreatedIngredient> ingredientList;
 
     public CreatedRecipe(String recipeName, String recipeArea, String recipeCategory, String recipeInstructions, ArrayList<CreatedIngredient> ingredientList) {
         this.recipeName = recipeName;
@@ -20,11 +23,7 @@ public class CreatedRecipe {
         this.ingredientList = ingredientList;
     }
 
-    public String recipeInstructions;
-    public ArrayList<CreatedIngredient> ingredientList;
-
-    public CreatedRecipe(String string, String string1, String string2, String string3, String string4) {
-    }
+    public CreatedRecipe() { }
 
     public String getRecipeName() {
         return recipeName;
