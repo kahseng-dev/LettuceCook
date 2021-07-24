@@ -15,18 +15,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="100dp">
+            android:background="@color/white"
+            android:layout_marginBottom="100dp" >
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/account_greeting_card"
+            <LinearLayout
+                android:id="@+id/account_greeting_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/light_green"
-                app:cardCornerRadius="0dp"
-                app:cardElevation="0dp"
-                app:contentPaddingBottom="24dp"
-                app:contentPaddingLeft="24dp"
-                app:contentPaddingTop="48dp">
+                android:background="@color/light_green"
+                android:paddingTop="48dp"
+                android:paddingBottom="24dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="0dp" >
 
                 <TextView
                     android:id="@+id/account_greeting"
@@ -36,23 +36,24 @@
                     android:textColor="@color/dark_green"
                     android:textSize="32sp"
                     android:textStyle="bold" />
-
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
             <LinearLayout
+                android:layout_below="@id/account_greeting_background"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/account_greeting_card"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
+                    android:id="@+id/favourites"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="0dp"
-                    app:cardElevation="0dp" >
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackground">
 
                     <TextView
-                        android:id="@+id/favourites"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="18dp"
@@ -61,16 +62,18 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:drawableStartCompat="@drawable/ic_star" />
-                </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
+                    android:id="@+id/account_recipes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="0dp"
-                    app:cardElevation="0dp">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackground" >
 
                     <TextView
-                        android:id="@+id/account_recipes"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="18dp"
@@ -79,16 +82,18 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:drawableStartCompat="@drawable/ic_menu_book_" />
-                </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
+                    android:id="@+id/account_logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="0dp"
-                    app:cardElevation="0dp">
+                    android:orientation="horizontal"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true" >
 
                     <TextView
-                        android:id="@+id/account_logout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="18dp"
@@ -97,7 +102,7 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:drawableStartCompat="@drawable/ic_logout" />
-                </androidx.cardview.widget.CardView>
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
