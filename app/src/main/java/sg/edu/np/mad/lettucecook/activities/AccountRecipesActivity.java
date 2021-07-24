@@ -43,7 +43,6 @@ public class AccountRecipesActivity extends AppCompatActivity {
     TextView noAccountRecipeText;
     String addRecipeName, addRecipeArea, addRecipeCategory, addRecipeInstructions;
 
-    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
     private Toolbar toolbar;
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -114,11 +113,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
                         recipeRecyclerView.setLayoutManager(mLayoutManger);
                         recipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
                         recipeRecyclerView.setAdapter(sAdapter);
-
-                        // Add toast messages to show
-                        Toast.makeText(AccountRecipesActivity.this, "Displaying your Created Recipes!", Toast.LENGTH_SHORT).show();
                     }
-
                 }
 
                 // Validation in case cancelled

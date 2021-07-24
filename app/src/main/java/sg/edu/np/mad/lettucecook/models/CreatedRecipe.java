@@ -7,7 +7,7 @@ import java.util.Date;
 
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
 
-public class CreatedRecipe {
+public class CreatedRecipe implements Serializable {
 
     public String recipeName;
     public String recipeArea;

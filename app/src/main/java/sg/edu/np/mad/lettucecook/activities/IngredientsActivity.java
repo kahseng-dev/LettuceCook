@@ -73,54 +73,25 @@ public class IngredientsActivity extends AppCompatActivity {
         // Find button id for addToRecipeListButton
         backToRecipesListButton = findViewById(R.id.backToRecipesListButton);
 
-        // Retrieve data from Firebase
-        reference.child(userID).child("createdRecipesList").addListenerForSingleValueEvent(new ValueEventListener() {
+        // ===========================================================================================================================================
+        CreatedRecipe createdRecipe = (CreatedRecipe) getIntent().getSerializableExtra("Recipe");
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // HashMap to child
-                Map<String, CreatedRecipe> td = (HashMap<String, CreatedRecipe>) snapshot.getValue();
+        // Set recipe information to createdRecipe texts -- CHANGE
+        createdRecipeName.setText(createdRecipe.recipeName);
+        createdRecipeArea.setText(createdRecipe.recipeArea);
+        createdRecipeCategory.setText(createdRecipe.recipeCategory);
+        createdRecipeInstructions.setText(createdRecipe.recipeInstructions);
 
-                ArrayList<CreatedRecipe> values = new ArrayList<CreatedRecipe>(td.values());
+        // Set ingredients list to recycler view -- CHANGE
+        CreatedIngredientAdapter mAdapter = new CreatedIngredientAdapter(createdRecipe.ingredientList, IngredientsActivity.this);
 
-                // Loop through each createdRecipesList children and append to createdRecipeList
-                for(DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
-                    CreatedRecipe createdRecipe = dataSnapshot.getValue(CreatedRecipe.class);
-                    createdRecipeList.add(createdRecipe);
-                }
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(IngredientsActivity.this);
 
-                // Check if createdRecipeList is empty
-                if (createdRecipeList == null) {
-                    Toast.makeText(IngredientsActivity.this, "You do not have any created recipes!", Toast.LENGTH_SHORT).show();
-                }
+        recyclerIngredients.setLayoutManager(mLayoutManager);
+        recyclerIngredients.setItemAnimator(new DefaultItemAnimator());
+        recyclerIngredients.setAdapter(mAdapter);
 
-                else {
-                    // Set recipe information to createdRecipe texts -- CHANGE
-                    createdRecipeName.setText(recipeNameValue);
-                    createdRecipeArea.setText(recipeAreaSpinnerValue);
-                    createdRecipeCategory.setText(recipeCategorySpinnerValue);
-                    createdRecipeInstructions.setText(recipeInstructionsValue);
-
-                    // Set ingredients list to recycler view -- CHANGE
-                    CreatedIngredientAdapter mAdapter = new CreatedIngredientAdapter(ingredientList, IngredientsActivity.this);
-
-                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(IngredientsActivity.this);
-
-                    recyclerIngredients.setLayoutManager(mLayoutManager);
-                    recyclerIngredients.setItemAnimator(new DefaultItemAnimator());
-                    recyclerIngredients.setAdapter(mAdapter);
-
-                }
-
-            }
-
-            // Validation in case cancelled
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(IngredientsActivity.this, "Unable to retrieve information!", Toast.LENGTH_LONG).show();
-            }
-        });
+        // ===========================================================================================================================================
 
         // Back to recipe list
         backToRecipesListButton.setOnClickListener(new View.OnClickListener() {
