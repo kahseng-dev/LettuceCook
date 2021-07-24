@@ -1,16 +1,39 @@
 package sg.edu.np.mad.lettucecook.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
+import sg.edu.np.mad.lettucecook.models.DBHandler;
+import sg.edu.np.mad.lettucecook.models.Ingredient;
+import sg.edu.np.mad.lettucecook.models.User;
+import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
 import sg.edu.np.mad.lettucecook.rv.CreatedIngredientAdapter;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
@@ -19,46 +42,93 @@ public class IngredientsActivity extends AppCompatActivity {
 
     RecyclerView recyclerIngredients;
     ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
+    ArrayList<CreatedRecipe> createdRecipeList = new ArrayList<>();
+
     String recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue;
     TextView createdRecipeName, createdRecipeArea, createdRecipeInstructions, createdRecipeCategory;
+    Button backToRecipesListButton;
+    private FirebaseUser user;
+    private DatabaseReference reference;
+    private String userID, recipeID;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_recipes);
 
+        // Get userID from Firebase
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        userID = user.getUid();
+
         // Find recyclerview to display each recipe
         recyclerIngredients = findViewById(R.id.custom_recipe_ingredients_rv);
 
         // Find createdRecipe texts to display info
-        createdRecipeName = findViewById(R.id.custome_recipe_name);
+        createdRecipeName = findViewById(R.id.custom_recipe_name);
         createdRecipeArea = findViewById(R.id.custom_recipe_area);
         createdRecipeInstructions = findViewById(R.id.custom_recipe_instructions);
         createdRecipeCategory = findViewById(R.id.custom_recipe_category);
 
-        // Get ingredientList through intent
-        ingredientList = getIntent().getExtras().getParcelableArrayList("ARRAYLIST");
+        // Find button id for addToRecipeListButton
+        backToRecipesListButton = findViewById(R.id.backToRecipesListButton);
 
-        // Get recipe information through intent
-        recipeNameValue = getIntent().getExtras().getString("recipeNameValue");
-        recipeInstructionsValue = getIntent().getExtras().getString("recipeInstructionsValue");
-        recipeAreaSpinnerValue = getIntent().getExtras().getString("recipeAreaSpinnerValue");
-        recipeCategorySpinnerValue = getIntent().getExtras().getString("recipeCategorySpinnerValue");
+        // Retrieve data from Firebase
+        reference.child(userID).child("createdRecipesList").addListenerForSingleValueEvent(new ValueEventListener() {
 
-        // Set recipe information to createdRecipe texts
-        createdRecipeName.setText(recipeNameValue);
-        createdRecipeArea.setText(recipeAreaSpinnerValue);
-        createdRecipeCategory.setText(recipeCategorySpinnerValue);
-        createdRecipeInstructions.setText(recipeInstructionsValue);
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // HashMap to child
+                Map<String, CreatedRecipe> td = (HashMap<String, CreatedRecipe>) snapshot.getValue();
 
-        // Set ingredients list to recycler view
-        CreatedIngredientAdapter mAdapter = new CreatedIngredientAdapter(ingredientList, this);
+                ArrayList<CreatedRecipe> values = new ArrayList<CreatedRecipe>(td.values());
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+                // Loop through each createdRecipesList children and append to createdRecipeList
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    CreatedRecipe createdRecipe = dataSnapshot.getValue(CreatedRecipe.class);
+                    createdRecipeList.add(createdRecipe);
+                }
 
-        recyclerIngredients.setLayoutManager(mLayoutManager);
-        recyclerIngredients.setItemAnimator(new DefaultItemAnimator());
-        recyclerIngredients.setAdapter(mAdapter);
+                // Check if createdRecipeList is empty
+                if (createdRecipeList == null) {
+                    Toast.makeText(IngredientsActivity.this, "You do not have any created recipes!", Toast.LENGTH_SHORT).show();
+                }
 
+                else {
+                    // Set recipe information to createdRecipe texts -- CHANGE
+                    createdRecipeName.setText(recipeNameValue);
+                    createdRecipeArea.setText(recipeAreaSpinnerValue);
+                    createdRecipeCategory.setText(recipeCategorySpinnerValue);
+                    createdRecipeInstructions.setText(recipeInstructionsValue);
+
+                    // Set ingredients list to recycler view -- CHANGE
+                    CreatedIngredientAdapter mAdapter = new CreatedIngredientAdapter(ingredientList, IngredientsActivity.this);
+
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(IngredientsActivity.this);
+
+                    recyclerIngredients.setLayoutManager(mLayoutManager);
+                    recyclerIngredients.setItemAnimator(new DefaultItemAnimator());
+                    recyclerIngredients.setAdapter(mAdapter);
+
+                }
+
+            }
+
+            // Validation in case cancelled
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(IngredientsActivity.this, "Unable to retrieve information!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Back to recipe list
+        backToRecipesListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IngredientsActivity.this, AccountRecipesActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

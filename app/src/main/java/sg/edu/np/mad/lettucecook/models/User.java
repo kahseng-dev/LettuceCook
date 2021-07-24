@@ -1,11 +1,14 @@
 package sg.edu.np.mad.lettucecook.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class User {
     public String username;
     public String email;
     public ArrayList<Ingredient> shoppingList;
+    public HashMap<String, CreatedRecipe> createdRecipesList;
 
     public User () { }
 
@@ -13,6 +16,15 @@ public class User {
         this.username = username;
         this.email = email;
     }
+
+    public HashMap<String, CreatedRecipe> getCreatedRecipesList() {
+        return createdRecipesList;
+    }
+
+    public void setCreatedRecipesList(HashMap<String, CreatedRecipe> createdRecipesList) {
+        this.createdRecipesList = createdRecipesList;
+    }
+
 
     public ArrayList<Ingredient> getShoppingList() {
         return shoppingList;

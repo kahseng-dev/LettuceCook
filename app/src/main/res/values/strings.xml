@@ -76,20 +76,23 @@
     <string name="addShoppingList">Add to Shopping List</string>
     <string name="dateModifiedLabel">Date Modified</string>
 
-    <!--    Create Recipe strings-->
+    <!-- Account Recipes-->
+    <string name="accountRecipeTitle">Your Recipes</string>
+
+    <!-- Create Recipe strings-->
     <string name="createRecipeName">Recipe Name</string>
     <string name="createRecipeArea">Recipe Origin</string>
     <string name="createRecipeCategory">Recipe Category</string>
     <string name="createRecipeInstructions">Recipe Instructions</string>
-    <string name="createRecipeButton">Create Recipe!</string>
+    <string name="createRecipeButton">Create a Recipe!</string>
     <string name="addIngredientButton">Add Ingredient</string>
 
-    <!--    Display created ingredients strings -->
+    <!-- Display created ingredients strings -->
     <string name="ingredientName">Ingredient Name</string>
     <string name="ingredientMeasure">Ingredient Measurement</string>
 
-    <!--    Display created recipes strings -->
-    <string name="createdRecipeTitle">Your Recipes</string>
+    <!-- Display created recipes strings -->
+    <string name="createdRecipeTitle">Your Recipe</string>
     <string name="createdRecipeName">Ingredient Measurement</string>
     <string name="calories">- kcal</string>
 </resources>
