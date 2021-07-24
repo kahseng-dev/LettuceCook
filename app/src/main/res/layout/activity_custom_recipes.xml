@@ -112,5 +112,18 @@
             android:layout_height="250dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp" />
+
+        <ToggleButton
+            android:id="@+id/publish_recipe"
+            android:layout_below="@id/custom_recipe_ingredients_rv"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="48dp"
+            android:textOff="Publish"
+            android:textOn="Unpublish"
+            android:textSize="18sp" />
     </RelativeLayout>
 </ScrollView>
