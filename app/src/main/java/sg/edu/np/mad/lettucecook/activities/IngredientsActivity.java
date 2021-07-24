@@ -102,17 +102,25 @@ public class IngredientsActivity extends AppCompatActivity {
         recyclerIngredients.setItemAnimator(new DefaultItemAnimator());
         recyclerIngredients.setAdapter(mAdapter);
 
-        publishStateButton.setChecked(createdRecipe.publishState);
-        publishStateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recipeID = getIntent().getExtras().getString("recipeId");
-                reference = FirebaseDatabase.getInstance().getReference("Users");
-                if (publishStateButton.isChecked()) createdRecipe.publishState = true;
-                else createdRecipe.publishState = false;
-                reference.child(userID).child("createdRecipesList").child(recipeID).child("publishState").setValue(createdRecipe.publishState);
+
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+
+        recipeID = getIntent().getExtras().getString("recipeId");
+        if (recipeID != null) {
+            if (reference.child(userID).child("createdRecipesList").child(recipeID) != null) {
+                publishStateButton.setVisibility(View.VISIBLE);
+
+                publishStateButton.setChecked(createdRecipe.publishState);
+                publishStateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (publishStateButton.isChecked()) createdRecipe.publishState = true;
+                        else createdRecipe.publishState = false;
+                        reference.child(userID).child("createdRecipesList").child(recipeID).child("publishState").setValue(createdRecipe.publishState);
+                    }
+                });
             }
-        });
+        }
     }
 
     // if the user clicks on the back button in the toolbar, bring them back to login activity.

@@ -124,6 +124,7 @@
             android:layout_marginBottom="48dp"
             android:textOff="Publish"
             android:textOn="Unpublish"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone"/>
     </RelativeLayout>
 </ScrollView>
