@@ -11,13 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.activities.AccountRecipesActivity;
-import sg.edu.np.mad.lettucecook.activities.IngredientsActivity;
+import sg.edu.np.mad.lettucecook.activities.CustomRecipeActivity;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
-import sg.edu.np.mad.lettucecook.models.Ingredient;
 
 public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesViewHolder> {
     ArrayList<CreatedRecipe> recipeList;
@@ -47,7 +44,7 @@ public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesVi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, IngredientsActivity.class);
+                Intent intent = new Intent(context, CustomRecipeActivity.class);
                 intent.putExtra("userID", userID);
                 intent.putExtra("Recipe", recipeList.get(position));
                 intent.putExtra("recipeId", recipeIDList.get(position));

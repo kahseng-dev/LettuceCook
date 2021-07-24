@@ -99,9 +99,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
                         Toast.makeText(AccountRecipesActivity.this, "You do not have any created recipes!", Toast.LENGTH_SHORT).show();
                         recipeRecyclerView.setVisibility(View.INVISIBLE); // Hide recyclerview if empty
                         noAccountRecipeText.setVisibility(View.VISIBLE); // Show no account recipe message if empty
-                    }
-
-                    else {
+                    } else {
                         recipeRecyclerView.setVisibility(View.VISIBLE); // Show recyclerview if not empty
                         noAccountRecipeText.setVisibility(View.INVISIBLE); // Hide no account recipe message if not empty
 

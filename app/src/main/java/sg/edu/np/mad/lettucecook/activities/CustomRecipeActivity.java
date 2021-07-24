@@ -1,10 +1,11 @@
 package sg.edu.np.mad.lettucecook.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -17,37 +18,31 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
-import sg.edu.np.mad.lettucecook.models.DBHandler;
-import sg.edu.np.mad.lettucecook.models.Ingredient;
-import sg.edu.np.mad.lettucecook.models.User;
-import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
-import sg.edu.np.mad.lettucecook.rv.CreatedIngredientAdapter;
+import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
+import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
+import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
+import sg.edu.np.mad.lettucecook.utils.ApiService;
+import sg.edu.np.mad.lettucecook.utils.ApiURL;
+import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
+import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
-public class IngredientsActivity extends AppCompatActivity {
+public class CustomRecipeActivity extends AppCompatActivity {
+    Context mContext = CustomRecipeActivity.this;
+    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
+    ApiService apiService = new ApiService(mContext);
 
-    RecyclerView recyclerIngredients;
-    ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
-    ArrayList<CreatedRecipe> createdRecipeList = new ArrayList<>();
-
-    String recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue;
     TextView createdRecipeName, createdRecipeArea, createdRecipeInstructions, createdRecipeCategory;
     ToggleButton publishStateButton;
     private FirebaseUser user;
@@ -75,16 +70,13 @@ public class IngredientsActivity extends AppCompatActivity {
         // Setting publish button
         publishStateButton = (ToggleButton) findViewById(R.id.publish_recipe);
 
-        // Find recyclerview to display each recipe
-        recyclerIngredients = findViewById(R.id.custom_recipe_ingredients_rv);
-
         // Find createdRecipe texts to display info
         createdRecipeName = findViewById(R.id.custom_recipe_name);
         createdRecipeArea = findViewById(R.id.custom_recipe_area);
         createdRecipeInstructions = findViewById(R.id.custom_recipe_instructions);
         createdRecipeCategory = findViewById(R.id.custom_recipe_category);
 
-        // ===========================================================================================================================================
+        // Get created recipe
         CreatedRecipe createdRecipe = (CreatedRecipe) getIntent().getSerializableExtra("Recipe");
 
         // Set recipe information to createdRecipe texts -- CHANGE
@@ -93,15 +85,41 @@ public class IngredientsActivity extends AppCompatActivity {
         createdRecipeCategory.setText(createdRecipe.recipeCategory);
         createdRecipeInstructions.setText(createdRecipe.recipeInstructions);
 
-        // Set ingredients list to recycler view -- CHANGE
-        CreatedIngredientAdapter mAdapter = new CreatedIngredientAdapter(createdRecipe.ingredientList, IngredientsActivity.this);
+        String ninjaQuery = apiJson.createNinjaQuery(createdRecipe.getIngredientList());
+        
+        apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(IngredientsActivity.this);
+            @Override
+            public void onError(String message) {
+                Toast.makeText(mContext, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
+            }
 
-        recyclerIngredients.setLayoutManager(mLayoutManager);
-        recyclerIngredients.setItemAnimator(new DefaultItemAnimator());
-        recyclerIngredients.setAdapter(mAdapter);
+            @Override
+            public void onResponse(JSONObject response) throws JSONException {
+                ArrayList<NinjaIngredient> ninjaIngredients = apiJson.parseNinjaIngredients(
+                        response.getJSONArray("items"), createdRecipe.getIngredientList()
+                );
+                for (NinjaIngredient i: ninjaIngredients) {
+                    Log.v("Meal", String.valueOf(i.getCalories()));
+                }
+                ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ninjaIngredients, mContext, new IngredientClickListener() {
+                    @Override
+                    public void onItemClick(NinjaIngredient ingredient) {
+                        Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
+                        intent.putExtra("ingredient", ingredient); // Send NinjaIngredient object to IngredientPopup
+                        startActivity(intent);
+//                            overridePendingTransition(R.anim.slide_in_up, 0);
+                    }
+                });
+                RecyclerView ingredientsRV = findViewById(R.id.custom_recipe_ingredients_rv);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
 
+                // Setting ingredients recycler view
+                ingredientsRV.setLayoutManager(mLayoutManager);
+                ingredientsRV.setItemAnimator(new DefaultItemAnimator());
+                ingredientsRV.setAdapter(adapter);
+            }
+        });
 
         reference = FirebaseDatabase.getInstance().getReference("Users");
 
