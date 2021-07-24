@@ -69,7 +69,7 @@ public class AccountActivity extends AppCompatActivity {
                 }
             });
 
-            // if the user clicks on the log out section in the account activity
+            // if the user clicks on the log out section in account activity
             // bring them to the login activity without parsing the userId
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,7 +79,7 @@ public class AccountActivity extends AppCompatActivity {
                 }
             });
 
-            // if the user clicks on the recipes section in the account activity
+            // if the user clicks on the recipes section in account activity
             // bring them to the account recipes activity
             recipes.setOnClickListener(new View.OnClickListener() {
                 @Override
