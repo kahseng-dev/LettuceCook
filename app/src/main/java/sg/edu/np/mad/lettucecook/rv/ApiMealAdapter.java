@@ -31,7 +31,7 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     @Override
     public ApiMealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.api_meal,
+                R.layout.meal_item,
                 parent,
                 false);
 
