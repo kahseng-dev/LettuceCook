@@ -17,7 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +32,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
@@ -34,6 +41,10 @@ import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class CreateRecipeActivity extends AppCompatActivity {
+    private FirebaseUser user;
+    private DatabaseReference reference;
+    private String userID;
+
     // Initiate arrays
     ArrayList<ApiMeal> meals;
     ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
@@ -55,6 +66,11 @@ public class CreateRecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_recipe); // Set ContentView of Activity
+
+        // Get userID from Firebase
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        userID = user.getUid();
 
         // Find Spinner IDs
         recipeAreaSpinner = findViewById(R.id.create_recipe_area_spinner);
@@ -119,29 +135,41 @@ public class CreateRecipeActivity extends AppCompatActivity {
             }
         });
 
-        // Set create recipe on click method
+        // Create recipes button
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkIfValidAndRead()) {
+                    //Get values of user inputs
                     recipeAreaSpinnerValue = recipeAreaSpinner.getSelectedItem().toString();
                     recipeCategorySpinnerValue = recipeCategorySpinner.getSelectedItem().toString();
                     recipeNameValue = recipeName.getText().toString();
                     recipeInstructionsValue = recipeInstructions.getText().toString();
 
-                    Intent intent = new Intent(CreateRecipeActivity.this, IngredientsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("ARRAYLIST", ingredientList);
-                    bundle.putString("recipeAreaSpinnerValue", recipeAreaSpinnerValue);
-                    bundle.putString("recipeCategorySpinnerValue", recipeCategorySpinnerValue);
-                    bundle.putString("recipeNameValue", recipeNameValue);
-                    bundle.putString("recipeInstructionsValue", recipeInstructionsValue);
-                    intent.putExtras(bundle);
+                    // Create new CreatedRecipe object
+                    CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, ingredientList);
 
+                    // Get child references
+                    reference.child(userID)
+                            .child("createdRecipesList").push()
+                            .setValue(createdRecipe)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(CreateRecipeActivity.this, "Added Recipe Successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
+                                        Toast.makeText(CreateRecipeActivity.this, "Failed to Add Recipe!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+
+                    // Start new intent
+                    Intent intent = new Intent(CreateRecipeActivity.this, AccountRecipesActivity.class);
                     startActivity(intent);
                 }
             }
-
         });
 
         // setting id of navigation bar
