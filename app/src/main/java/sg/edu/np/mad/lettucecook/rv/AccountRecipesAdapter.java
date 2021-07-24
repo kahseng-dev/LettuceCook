@@ -18,14 +18,16 @@ import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 
 public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesViewHolder> {
     ArrayList<CreatedRecipe> recipeList;
-    String userID, recipeID;
+    ArrayList<String> recipeIDList = new ArrayList<>();
+    String userID;
     Context context;
 
     // Call account recipes adapter
-    public AccountRecipesAdapter(ArrayList<CreatedRecipe> recipeList, Context mContext, String userId) {
+    public AccountRecipesAdapter(ArrayList<CreatedRecipe> recipeList, Context mContext, ArrayList<String> recipeIDList, String userID) {
         this.recipeList = recipeList;
         this.context = mContext;
-        this.userID = userId;
+        this.recipeIDList = recipeIDList;
+        this.userID = userID;
     }
 
     // ViewHolder for Account Recipes
@@ -43,7 +45,9 @@ public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesVi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CustomRecipeActivity.class);
+                intent.putExtra("userID", userID);
                 intent.putExtra("Recipe", recipeList.get(position));
+                intent.putExtra("recipeId", recipeIDList.get(position));
                 context.startActivity(intent);
                 ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }

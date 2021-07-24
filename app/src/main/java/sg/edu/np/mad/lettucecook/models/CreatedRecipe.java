@@ -14,6 +14,7 @@ public class CreatedRecipe implements Serializable {
     public String recipeCategory;
     public String recipeInstructions;
     public ArrayList<CreatedIngredient> ingredientList;
+    public boolean publishState;
 
     public CreatedRecipe(String recipeName, String recipeArea, String recipeCategory, String recipeInstructions, ArrayList<CreatedIngredient> ingredientList) {
         this.recipeName = recipeName;
@@ -21,6 +22,7 @@ public class CreatedRecipe implements Serializable {
         this.recipeCategory = recipeCategory;
         this.recipeInstructions = recipeInstructions;
         this.ingredientList = ingredientList;
+        this.publishState = false;
     }
 
     public CreatedRecipe() { }
@@ -63,5 +65,13 @@ public class CreatedRecipe implements Serializable {
 
     public void setIngredientList(ArrayList<CreatedIngredient> ingredientList) {
         this.ingredientList = ingredientList;
+    }
+
+    public boolean isPublishState() {
+        return publishState;
+    }
+
+    public void setPublishState(boolean publishState) {
+        this.publishState = publishState;
     }
 }

@@ -12,7 +12,7 @@
         app:cardCornerRadius="12dp">
 
         <ImageView
-            android:id="@+id/api_meal_thumbnail"
+            android:id="@+id/meal_thumbnail"
             android:layout_width="wrap_content"
             android:layout_height="250dp"
             android:adjustViewBounds="true"
@@ -21,7 +21,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/api_meal_name"
+            android:id="@+id/meal_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -37,12 +37,12 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/api_meal_category"
+            android:id="@+id/meal_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/api_meal_area"
+            android:id="@+id/meal_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

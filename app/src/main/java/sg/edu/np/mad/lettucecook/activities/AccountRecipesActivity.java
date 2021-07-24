@@ -39,6 +39,8 @@ import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
 public class AccountRecipesActivity extends AppCompatActivity {
     ArrayList<CreatedRecipe> createdRecipeList = new ArrayList<>();
     ArrayList<CreatedRecipe> recipeList = new ArrayList<>();
+    ArrayList<String> recipeIDList = new ArrayList<>();
+
     Button createRecipeButton;
     TextView noAccountRecipeText;
     String addRecipeName, addRecipeArea, addRecipeCategory, addRecipeInstructions;
@@ -82,11 +84,12 @@ public class AccountRecipesActivity extends AppCompatActivity {
 
             // Retrieve data from Firebase
             reference.child(userID).child("createdRecipesList").addListenerForSingleValueEvent(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     // Loop through each createdRecipesList children and append to createdRecipeList
-                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                    {
+                        recipeIDList.add(dataSnapshot.getKey());
                         CreatedRecipe createdRecipe = dataSnapshot.getValue(CreatedRecipe.class);
                         createdRecipeList.add(createdRecipe);
                     }
@@ -101,7 +104,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
                         noAccountRecipeText.setVisibility(View.INVISIBLE); // Hide no account recipe message if not empty
 
                         // Add customized created recipes to recycler view
-                        AccountRecipesAdapter sAdapter = new AccountRecipesAdapter(createdRecipeList, AccountRecipesActivity.this, userID);
+                        AccountRecipesAdapter sAdapter = new AccountRecipesAdapter(createdRecipeList, AccountRecipesActivity.this, recipeIDList, userID);
                         recipeRecyclerView.setLayoutManager(mLayoutManger);
                         recipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
                         recipeRecyclerView.setAdapter(sAdapter);

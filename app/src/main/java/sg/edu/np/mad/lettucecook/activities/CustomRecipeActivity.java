@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +44,7 @@ public class CustomRecipeActivity extends AppCompatActivity {
     ApiService apiService = new ApiService(mContext);
 
     TextView createdRecipeName, createdRecipeArea, createdRecipeInstructions, createdRecipeCategory;
-
+    ToggleButton publishStateButton;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID, recipeID;
@@ -65,6 +66,9 @@ public class CustomRecipeActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
+
+        // Setting publish button
+        publishStateButton = (ToggleButton) findViewById(R.id.publish_recipe);
 
         // Find createdRecipe texts to display info
         createdRecipeName = findViewById(R.id.custom_recipe_name);
@@ -116,6 +120,25 @@ public class CustomRecipeActivity extends AppCompatActivity {
                 ingredientsRV.setAdapter(adapter);
             }
         });
+
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+
+        recipeID = getIntent().getExtras().getString("recipeId");
+        if (recipeID != null) {
+            if (reference.child(userID).child("createdRecipesList").child(recipeID) != null) {
+                publishStateButton.setVisibility(View.VISIBLE);
+
+                publishStateButton.setChecked(createdRecipe.publishState);
+                publishStateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (publishStateButton.isChecked()) createdRecipe.publishState = true;
+                        else createdRecipe.publishState = false;
+                        reference.child(userID).child("createdRecipesList").child(recipeID).child("publishState").setValue(createdRecipe.publishState);
+                    }
+                });
+            }
+        }
     }
 
     // if the user clicks on the back button in the toolbar, bring them back to login activity.
@@ -123,7 +146,8 @@ public class CustomRecipeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+                if (getIntent().hasExtra("userID")) startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+                else startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
         }
@@ -133,7 +157,8 @@ public class CustomRecipeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+        if (getIntent().hasExtra("userID")) startActivity(new Intent(getApplicationContext(), AccountRecipesActivity.class));
+        else startActivity(new Intent(getApplicationContext(), MainActivity.class));
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
