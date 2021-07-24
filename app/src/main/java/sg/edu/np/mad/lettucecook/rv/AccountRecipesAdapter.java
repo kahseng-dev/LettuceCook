@@ -20,7 +20,7 @@ import sg.edu.np.mad.lettucecook.models.Ingredient;
 
 public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesViewHolder> {
     ArrayList<CreatedRecipe> recipeList;
-    String userID;
+    String userID, recipeID;
     Context context;
 
     // Call account recipes adapter
@@ -40,6 +40,15 @@ public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesVi
     public void onBindViewHolder(AccountRecipesViewHolder holder, int position) {
         CreatedRecipe recipe = recipeList.get(position);
         holder.accountRecipeName.setText(recipe.recipeName);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, IngredientsActivity.class);
+                intent.putExtra("Recipe", recipeList.get(position));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
