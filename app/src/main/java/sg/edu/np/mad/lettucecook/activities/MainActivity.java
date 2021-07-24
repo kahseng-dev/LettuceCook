@@ -40,7 +40,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
-import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
 import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
@@ -176,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot usersList : snapshot.getChildren()) {
                     for (DataSnapshot createRecipe : usersList.child("createdRecipesList").getChildren()) {
-                        if ((boolean) createRecipe.child("publishState").getValue()) {
+                        if (createRecipe.hasChild("publishState") && (boolean) createRecipe.child("publishState").getValue()) {
                             communityRecipes.add(createRecipe.getValue(CreatedRecipe.class));
                         }
                     }
