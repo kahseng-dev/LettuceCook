@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,8 @@ public class AccountActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
-    private TextView greeting, logout;
+    private TextView greeting;
+    private LinearLayout logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class AccountActivity extends AppCompatActivity {
             userID = user.getUid();
 
             greeting = (TextView) findViewById(R.id.account_greeting);
-            logout = (TextView) findViewById(R.id.account_logout);
+            logout = (LinearLayout) findViewById(R.id.account_logout);
 
             reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
