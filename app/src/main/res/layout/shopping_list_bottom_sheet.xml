@@ -41,6 +41,7 @@
                     android:textSize="16sp" />
 
                 <Switch
+                    android:theme="@style/Theme.LettuceCook"
                     android:id="@+id/offline_state_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
