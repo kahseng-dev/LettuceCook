@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +49,7 @@ public class IngredientsActivity extends AppCompatActivity {
 
     String recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue;
     TextView createdRecipeName, createdRecipeArea, createdRecipeInstructions, createdRecipeCategory;
+    ToggleButton publishStateButton;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID, recipeID;
@@ -69,6 +71,9 @@ public class IngredientsActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
+
+        // Setting publish button
+        publishStateButton = (ToggleButton) findViewById(R.id.publish_recipe);
 
         // Find recyclerview to display each recipe
         recyclerIngredients = findViewById(R.id.custom_recipe_ingredients_rv);
@@ -96,6 +101,18 @@ public class IngredientsActivity extends AppCompatActivity {
         recyclerIngredients.setLayoutManager(mLayoutManager);
         recyclerIngredients.setItemAnimator(new DefaultItemAnimator());
         recyclerIngredients.setAdapter(mAdapter);
+
+        publishStateButton.setChecked(createdRecipe.publishState);
+        publishStateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recipeID = getIntent().getExtras().getString("recipeId");
+                reference = FirebaseDatabase.getInstance().getReference("Users");
+                if (publishStateButton.isChecked()) createdRecipe.publishState = true;
+                else createdRecipe.publishState = false;
+                reference.child(userID).child("createdRecipesList").child(recipeID).child("publishState").setValue(createdRecipe.publishState);
+            }
+        });
     }
 
     // if the user clicks on the back button in the toolbar, bring them back to login activity.
