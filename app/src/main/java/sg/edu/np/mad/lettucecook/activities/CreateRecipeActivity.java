@@ -196,7 +196,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                         }
                     });
                 } catch (Exception e) {
-                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Require atleast 1 ingredient", Toast.LENGTH_SHORT).show();
                 }
             }
         });
