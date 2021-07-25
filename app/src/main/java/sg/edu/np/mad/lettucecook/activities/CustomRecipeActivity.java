@@ -20,8 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +35,7 @@ import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
 import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
 import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
@@ -61,11 +65,6 @@ public class CustomRecipeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
         toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
-
-        // Get userID from Firebase
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = user.getUid();
 
         // Setting publish button
         publishStateButton = (ToggleButton) findViewById(R.id.publish_recipe);
@@ -121,21 +120,36 @@ public class CustomRecipeActivity extends AppCompatActivity {
             }
         });
 
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+        // Get userID from Firebase
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        recipeID = getIntent().getExtras().getString("recipeId");
-        if (recipeID != null) {
-            if (reference.child(userID).child("createdRecipesList").child(recipeID) != null) {
-                publishStateButton.setVisibility(View.VISIBLE);
+        if (user != null) {
+            reference = FirebaseDatabase.getInstance().getReference("Users");
+            userID = user.getUid();
 
-                publishStateButton.setChecked(createdRecipe.publishState);
-                publishStateButton.setOnClickListener(new View.OnClickListener() {
+            recipeID = getIntent().getExtras().getString("recipeId");
+            if (recipeID != null) {
+                reference.child(userID).child("createdRecipesList").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onClick(View v) {
-                        if (publishStateButton.isChecked()) createdRecipe.publishState = true;
-                        else createdRecipe.publishState = false;
-                        reference.child(userID).child("createdRecipesList").child(recipeID).child("publishState").setValue(createdRecipe.publishState);
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.hasChild(recipeID)) {
+                            publishStateButton.setVisibility(View.VISIBLE);
+
+                            publishStateButton.setChecked(createdRecipe.publishState);
+                            publishStateButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick (View v){
+                                    if (publishStateButton.isChecked()) createdRecipe.publishState = true;
+                                    else createdRecipe.publishState = false;
+                                    reference.child(userID).child("createdRecipesList").child(recipeID).child("publishState").setValue(createdRecipe.publishState);
+                                }
+                            });
+                        }
                     }
+
+                    // Validation in case cancelled
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }
                 });
             }
         }
