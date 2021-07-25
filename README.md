@@ -1,9 +1,10 @@
 # LettuceCook
-LettuceCook - Recipe Meal App
+LettuceCook - Recipe Meal App <br>
+Ngee Ann Polytechnic ICT Year 2 Sem 1 - MAD Assignment
 ## Team Members ##
-**Ee Jun Kai Julian** - S10202587
-**Xavier Ang Yan Jun** - S10203108
-**Chew Kah Seng** - S10208180
+**Ee Jun Kai Julian** - S10202587 <br>
+**Xavier Ang Yan Jun** - S10203108 <br>
+**Chew Kah Seng** - S10208180 <br>
 
 ## Description ##
 LettuceCook is a recipe meal application which aims to assist and inspire users to cook! Features such as account-based shopping lists allow users to have a more convenient way of gathering the needed ingredients. Custom created recipes allow users to publish and share with other users of the application!
