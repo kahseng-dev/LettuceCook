@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
+import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
 import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
 
 // A Singleton design is used as only one instance is needed for the entire application.
@@ -105,6 +106,34 @@ public class ApiJsonSingleton {
                 ninjaIngredient = new NinjaIngredient(ingredientName);
 
             ninjaIngredient.setMeasure(measures[i]);
+            ninjaIngredients.add(ninjaIngredient);
+        }
+
+        return ninjaIngredients;
+    }
+
+    public String createNinjaQuery(ArrayList<CreatedIngredient> createdIngredients) {
+        String ninjaQuery = "";
+        for (CreatedIngredient i : createdIngredients) {
+            ninjaQuery += i.getIngredientMeasure() + " " + i.getIngredientName() + ", ";
+        }
+        return ninjaQuery;
+    }
+
+    public ArrayList<NinjaIngredient> parseNinjaIngredients(JSONArray json, ArrayList<CreatedIngredient> createdIngredients) {
+        ArrayList<NinjaIngredient> _ninjaIngredients = getGson().fromJson
+                (json.toString(), new TypeToken<ArrayList<NinjaIngredient>>(){}.getType());
+        ArrayList<NinjaIngredient> ninjaIngredients = new ArrayList<>();
+
+        for (int i = 0; i < createdIngredients.size(); i++) {
+            CreatedIngredient ingredient = createdIngredients.get(i);
+            NinjaIngredient ninjaIngredient = searchNinjaIngredient(_ninjaIngredients, ingredient.getIngredientName());
+
+            // If ninjaIngredient is null, create a new NinjaIngredient with just name and measure.
+            if (ninjaIngredient == null)
+                ninjaIngredient = new NinjaIngredient(ingredient.getIngredientName());
+
+            ninjaIngredient.setMeasure(ingredient.getIngredientMeasure());
             ninjaIngredients.add(ninjaIngredient);
         }
 

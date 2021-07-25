@@ -21,7 +21,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -33,6 +39,8 @@ import java.util.ArrayList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import sg.edu.np.mad.lettucecook.R;
+import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
+import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
@@ -48,9 +56,12 @@ public class MainActivity extends AppCompatActivity {
     int browseType;
     Spinner browseTypeSpinner, browseTypeChoiceSpinner;
     Button browseButton;
-    RecyclerView browseRV;
+    RecyclerView browseRV, communityRV;
     ImageView featuredImage;
     TextView featuredName;
+
+    private DatabaseReference reference;
+    private ArrayList<CreatedRecipe> communityRecipes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         featuredImage.setVisibility(View.VISIBLE);
         featuredName = findViewById(R.id.main_featured_meal_name);
         featuredName.setVisibility(View.VISIBLE);
+
+        communityRV = findViewById(R.id.main_community_rv);
 
         String query = "random.php";
         apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
@@ -153,6 +166,32 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
+
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot usersList : snapshot.getChildren()) {
+                    for (DataSnapshot createRecipe : usersList.child("createdRecipesList").getChildren()) {
+                        if (createRecipe.hasChild("publishState") && (boolean) createRecipe.child("publishState").getValue()) {
+                            communityRecipes.add(createRecipe.getValue(CreatedRecipe.class));
+                        }
+                    }
+                }
+
+                CommunityRecipesAdapter communityAdapter = new CommunityRecipesAdapter(communityRecipes, MainActivity.this);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                communityRV.setLayoutManager(mLayoutManager);
+                communityRV.setItemAnimator(new DefaultItemAnimator());
+                communityRV.setAdapter(communityAdapter);
+            }
+
+            // Validation in case cancelled
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Unable to retrieve community information!", Toast.LENGTH_LONG).show();
             }
         });
 

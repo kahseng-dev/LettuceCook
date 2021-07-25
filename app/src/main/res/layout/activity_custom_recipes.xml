@@ -1,83 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/custom_recipe_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:padding="4dp"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:text="@string/createdRecipeTitle" />
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-    <TextView
-        android:id="@+id/custom_recipe_name"
-        android:layout_below="@+id/custom_recipe_title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:textSize="18dp"
-        android:padding="4dp" />
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/custom_recipe_area"
-        android:layout_below="@id/custom_recipe_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:textSize="18dp"
-        android:padding="4dp" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
-    <TextView
-        android:id="@+id/custom_recipe_category"
-        android:layout_below="@id/custom_recipe_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:textSize="18dp"
-        android:padding="4dp" />
+        <TextView
+            android:id="@+id/custom_recipe_name"
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/custom_recipe_ingredients_rv"
-        android:layout_below="@id/custom_recipe_category"
-        android:layout_width="match_parent"
-        android:layout_height="213dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:padding="4dp"
-        >
-    </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/custom_recipe_area"
+            android:layout_below="@id/custom_recipe_name"
+            app:drawableStartCompat="@drawable/ic_location"
+            app:drawableTint="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/custom_recipe_instructions"
-        android:layout_below="@id/custom_recipe_ingredients_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:textSize="18dp"
-        android:padding="4dp" />
+        <TextView
+            android:id="@+id/custom_recipe_category_label"
+            android:layout_below="@id/custom_recipe_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black"
+            android:text="@string/categoryLabel"
+            android:textStyle="bold"
+            android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/backToRecipesListButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back to your Recipes!"
-        android:layout_marginTop="32dp"
-        android:layout_below="@id/custom_recipe_instructions"/>
+        <TextView
+            android:id="@+id/custom_recipe_category"
+            android:layout_below="@id/custom_recipe_category_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/custom_recipe_instructions_label"
+            android:layout_below="@id/custom_recipe_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black"
+            android:text="@string/instructionLabel"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/custom_recipe_instructions_sv"
+            android:layout_below="@+id/custom_recipe_instructions_label"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" >
+
+            <TextView
+                android:id="@+id/custom_recipe_instructions"
+                android:layout_below="@id/custom_recipe_instructions_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/custom_recipe_ingredients_label"
+            android:layout_below="@id/custom_recipe_instructions_sv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black"
+            android:text="@string/ingredientLabel"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/custom_recipe_ingredients_rv"
+            android:layout_below="@id/custom_recipe_ingredients_label"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <ToggleButton
+            android:id="@+id/publish_recipe"
+            android:layout_below="@id/custom_recipe_ingredients_rv"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="48dp"
+            android:textOff="Publish"
+            android:textOn="Unpublish"
+            android:textSize="18sp"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</ScrollView>

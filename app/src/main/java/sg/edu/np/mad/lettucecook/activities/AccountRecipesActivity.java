@@ -39,6 +39,8 @@ import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
 public class AccountRecipesActivity extends AppCompatActivity {
     ArrayList<CreatedRecipe> createdRecipeList = new ArrayList<>();
     ArrayList<CreatedRecipe> recipeList = new ArrayList<>();
+    ArrayList<String> recipeIDList = new ArrayList<>();
+
     Button createRecipeButton;
     TextView noAccountRecipeText;
     String addRecipeName, addRecipeArea, addRecipeCategory, addRecipeInstructions;
@@ -82,17 +84,12 @@ public class AccountRecipesActivity extends AppCompatActivity {
 
             // Retrieve data from Firebase
             reference.child(userID).child("createdRecipesList").addListenerForSingleValueEvent(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    // HashMap to child
-                    Map<String, CreatedRecipe> td = (HashMap<String, CreatedRecipe>) snapshot.getValue();
-
-                    ArrayList<CreatedRecipe> values = new ArrayList<CreatedRecipe>(td.values());
-
                     // Loop through each createdRecipesList children and append to createdRecipeList
                     for(DataSnapshot dataSnapshot : snapshot.getChildren())
                     {
+                        recipeIDList.add(dataSnapshot.getKey());
                         CreatedRecipe createdRecipe = dataSnapshot.getValue(CreatedRecipe.class);
                         createdRecipeList.add(createdRecipe);
                     }
@@ -102,14 +99,12 @@ public class AccountRecipesActivity extends AppCompatActivity {
                         Toast.makeText(AccountRecipesActivity.this, "You do not have any created recipes!", Toast.LENGTH_SHORT).show();
                         recipeRecyclerView.setVisibility(View.INVISIBLE); // Hide recyclerview if empty
                         noAccountRecipeText.setVisibility(View.VISIBLE); // Show no account recipe message if empty
-                    }
-
-                    else {
+                    } else {
                         recipeRecyclerView.setVisibility(View.VISIBLE); // Show recyclerview if not empty
                         noAccountRecipeText.setVisibility(View.INVISIBLE); // Hide no account recipe message if not empty
 
                         // Add customized created recipes to recycler view
-                        AccountRecipesAdapter sAdapter = new AccountRecipesAdapter(createdRecipeList, AccountRecipesActivity.this, userID);
+                        AccountRecipesAdapter sAdapter = new AccountRecipesAdapter(createdRecipeList, AccountRecipesActivity.this, recipeIDList, userID);
                         recipeRecyclerView.setLayoutManager(mLayoutManger);
                         recipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
                         recipeRecyclerView.setAdapter(sAdapter);
