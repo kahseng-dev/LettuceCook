@@ -47,7 +47,7 @@
             android:theme="@style/IngredientPopup" />
 
         <activity android:name=".activities.CustomRecipeActivity" />
-        
+
         <activity
             android:name=".activities.NotificationActivity"
             android:parentActivityName=".activities.MainActivity" />
