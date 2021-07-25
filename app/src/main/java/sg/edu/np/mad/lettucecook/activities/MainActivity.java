@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     TextView featuredName;
 
     private DatabaseReference reference;
+    private ArrayList<String> communityRecipeIDList = new ArrayList<>();
     private ArrayList<CreatedRecipe> communityRecipes = new ArrayList<>();
 
     @Override
@@ -176,12 +177,13 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot usersList : snapshot.getChildren()) {
                     for (DataSnapshot createRecipe : usersList.child("createdRecipesList").getChildren()) {
                         if (createRecipe.hasChild("publishState") && (boolean) createRecipe.child("publishState").getValue()) {
+                            communityRecipeIDList.add(createRecipe.getKey());
                             communityRecipes.add(createRecipe.getValue(CreatedRecipe.class));
                         }
                     }
                 }
 
-                CommunityRecipesAdapter communityAdapter = new CommunityRecipesAdapter(communityRecipes, MainActivity.this);
+                CommunityRecipesAdapter communityAdapter = new CommunityRecipesAdapter(communityRecipes, communityRecipeIDList,MainActivity.this);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
                 communityRV.setLayoutManager(mLayoutManager);
                 communityRV.setItemAnimator(new DefaultItemAnimator());

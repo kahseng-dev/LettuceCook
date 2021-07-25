@@ -20,11 +20,13 @@ import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 
 public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecipesViewHolder> {
     ArrayList<CreatedRecipe> data;
+    ArrayList<String> recipeIDList = new ArrayList<>();
     Context mContext;
 
-    public CommunityRecipesAdapter(ArrayList<CreatedRecipe> input, Context context) {
+    public CommunityRecipesAdapter(ArrayList<CreatedRecipe> input, ArrayList<String> recipeIDList, Context context) {
         this.data = input;
         this.mContext = context;
+        this.recipeIDList = recipeIDList;
     }
 
     @NonNull
@@ -46,6 +48,7 @@ public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecip
         holder.name.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, CustomRecipeActivity.class);
             intent.putExtra("Recipe", data.get(position));
+            intent.putExtra("recipeId", recipeIDList.get(position));
             mContext.startActivity(intent);
             ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
