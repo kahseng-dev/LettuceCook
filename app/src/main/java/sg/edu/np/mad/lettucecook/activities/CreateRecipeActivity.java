@@ -139,35 +139,43 @@ public class CreateRecipeActivity extends AppCompatActivity {
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkIfValidAndRead()) {
+                if (checkIfValidAndRead() == true) {
                     //Get values of user inputs
                     recipeAreaSpinnerValue = recipeAreaSpinner.getSelectedItem().toString();
                     recipeCategorySpinnerValue = recipeCategorySpinner.getSelectedItem().toString();
                     recipeNameValue = recipeName.getText().toString();
                     recipeInstructionsValue = recipeInstructions.getText().toString();
 
-                    // Create new CreatedRecipe object
-                    CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, ingredientList);
+                    if (recipeNameValue.matches("") || recipeInstructionsValue.matches("")) {
+                        Toast.makeText(CreateRecipeActivity.this, "Please fill up empty fields!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (layoutList.getChildCount() == 0){
+                        Toast.makeText(CreateRecipeActivity.this, "Please add ingredients!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        // Create new CreatedRecipe object
+                        CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, ingredientList);
 
-                    // Get child references
-                    reference.child(userID)
-                            .child("createdRecipesList").push()
-                            .setValue(createdRecipe)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(CreateRecipeActivity.this, "Added Recipe Successfully", Toast.LENGTH_SHORT).show();
+                        // Get child references
+                        reference.child(userID)
+                                .child("createdRecipesList").push()
+                                .setValue(createdRecipe)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(CreateRecipeActivity.this, "Added Recipe Successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else {
+                                            Toast.makeText(CreateRecipeActivity.this, "Failed to Add Recipe!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        }
                                     }
-                                    else {
-                                        Toast.makeText(CreateRecipeActivity.this, "Failed to Add Recipe!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
+                                });
 
-                    // Start new intent
-                    Intent intent = new Intent(CreateRecipeActivity.this, AccountRecipesActivity.class);
-                    startActivity(intent);
+                        // Start new intent
+                        Intent intent = new Intent(CreateRecipeActivity.this, AccountRecipesActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -215,9 +223,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private boolean checkIfValidAndRead() {
         ingredientList.clear();
         boolean result = true;
-
         // Loop through according to the number of ingredients in the layout list
         for (int i=0; i<layoutList.getChildCount(); i++) {
+
             View ingredientView = layoutList.getChildAt(i);
 
             // Find EditText IDs
@@ -227,12 +235,17 @@ public class CreateRecipeActivity extends AppCompatActivity {
             // Create new CreatedIngredient object
             CreatedIngredient ingredient = new CreatedIngredient();
 
-            // Check if both Recipe Name & Recipe Measure inputs are empty
-            if (!editName.getText().toString().equals("") && !editMeasure.getText().toString().equals("")) {
+            // Check if all form fields are empty
+            if (!editName.getText().toString().matches("") && !editMeasure.getText().toString().matches(""))
+            {
                 ingredient.setIngredientName(editName.getText().toString());
                 ingredient.setIngredientMeasure(editMeasure.getText().toString());
             }
-            else { result = false; break; }
+            else {
+                result = false;
+                Toast.makeText(this, "Please fill up empty fields!", Toast.LENGTH_SHORT).show();
+                break;
+            }
 
             // Add ingredient to ingredientList
             ingredientList.add(ingredient);
@@ -244,9 +257,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
             }
             else if (!result) {
                 Toast.makeText(this, "Enter all details correctly!", Toast.LENGTH_SHORT).show();
+
             }
         }
-
         return result;
     }
 
@@ -254,8 +267,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
     public void addView() {
         View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient, null, false);
 
-        EditText editTextName = ingredientView.findViewById(R.id.row_add_ingredient_edit_name);
-        EditText editTextMeasure = ingredientView.findViewById(R.id.edit_ingredient_measure);
         ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
 
         layoutList.addView(ingredientView); // Add user view to layout list
