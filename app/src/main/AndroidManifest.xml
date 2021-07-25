@@ -46,7 +46,10 @@
             android:name=".activities.IngredientPopup"
             android:theme="@style/IngredientPopup" />
 
+<<<<<<< HEAD
+        =======
         <activity android:name=".activities.CustomRecipeActivity" />
+>>>>>>> main
         <activity
             android:name=".activities.NotificationActivity"
             android:parentActivityName=".activities.MainActivity" />
