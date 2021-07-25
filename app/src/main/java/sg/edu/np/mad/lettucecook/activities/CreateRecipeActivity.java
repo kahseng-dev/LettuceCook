@@ -196,7 +196,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                         }
                     });
                 } catch (Exception e) {
-                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
