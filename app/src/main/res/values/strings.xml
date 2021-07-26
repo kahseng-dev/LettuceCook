@@ -36,6 +36,39 @@
         <item>Vegetarian</item>
     </string-array>
 
+    <!-- Image file names for displaying browse categories -->
+    <!-- https://www.themealdb.com/images/media/meals/<image>.jpg -->
+    <string-array name="browse_categories_images">
+        <!-- Beef -->
+        <item>vtqxtu1511784197</item>
+        <!-- Breakfast -->
+        <item>1550441882</item>
+        <!-- Chicken -->
+        <item>wruvqv1511880994</item>
+        <!-- Dessert -->
+        <item>wyrqqq1468233628</item>
+        <!-- Goat -->
+        <item>cuio7s1555492979</item>
+        <!-- Lamb -->
+        <item>uttrxw1511637813</item>
+        <!-- Miscellaneous -->
+        <item>yvpuuy1511797244</item>
+        <!-- Pasta -->
+        <item>usywpp1511189717</item>
+        <!-- Pork -->
+        <item>md8w601593348504</item>
+        <!-- Seafood -->
+        <item>1548772327</item>
+        <!-- Side -->
+        <item>qqpwsy1511796276</item>
+        <!-- Starter -->
+        <item>wurrux1468416624</item>
+        <!-- Vegan -->
+        <item>rvxxuy1468312893</item>
+        <!-- Vegetarian -->
+        <item>tvtxpq1511464705</item>
+    </string-array>
+
     <string-array name="browse_areas">
         <item>American</item>
         <item>British</item>
