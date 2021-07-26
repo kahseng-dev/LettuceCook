@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,6 +54,7 @@ import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
+    Context mContext = this;
 
     private DBHandler dbHandler = new DBHandler(this , null, null, 1);
     private ImageView mealThumbnail;
@@ -113,7 +116,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     JSONArray _meals = response.getJSONArray("meals");
                     ApiMeal meal = apiJson.mergeIntoJSONArray(_meals).get(0);
                     Picasso
-                            .with(RecipeDetailsActivity.this)
+                            .with(mContext)
                             .load(meal.getStrMealThumb())
                             .into(new Target() {
                                 @Override
@@ -151,7 +154,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(String message) {
-                            Toast.makeText(RecipeDetailsActivity.this, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -162,7 +165,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                             for (NinjaIngredient i: ninjaIngredients) {
                                 Log.v("Meal", String.valueOf(i.getCalories()));
                             }
-                            ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ninjaIngredients, RecipeDetailsActivity.this, new IngredientClickListener() {
+                            ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ninjaIngredients, mContext, new IngredientClickListener() {
                                 @Override
                                 public void onItemClick(NinjaIngredient ingredient) {
                                     Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
@@ -172,7 +175,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                                 }
                             });
 
-                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(RecipeDetailsActivity.this);
+                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
 
                             // setting ingredients recycler view
                             ingredientsRV.setLayoutManager(mLayoutManager);
@@ -197,7 +200,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                             }
 
                             else {
-                                Toast.makeText(RecipeDetailsActivity.this, "Source Not Found", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "Source Not Found", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -218,7 +221,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                                             Integer.parseInt(meal.getIdMeal()), ingredients[i], measures[i]);
                                     dbHandler.addItemToShoppingList(userID, ingredient);
                                 }
-                                Toast.makeText(RecipeDetailsActivity.this, "Ingredients has been added\nto your shopping list", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Ingredients has been added\nto your shopping list", Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -243,12 +246,13 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), BrowseActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
 
             case R.id.notification:
                 Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                intent.putExtra("layoutId", R.layout.activity_recipe_details);
 
                 if (getIntent().hasExtra("mealId")) {
                     Bundle extras = getIntent().getExtras();

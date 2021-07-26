@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -61,6 +62,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onError(String message) { }
 
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
@@ -140,7 +142,14 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Class activity = MainActivity.class;
+                int layoutId = getIntent().getIntExtra("layoutId", 0);
+                if (layoutId == R.layout.activity_recipe_details) {
+                    activity = RecipeDetailsActivity.class;
+                } else if (layoutId == R.layout.activity_browse) {
+                    activity = BrowseActivity.class;
+                }
+                startActivity(new Intent(getApplicationContext(), activity));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
         }

@@ -1,19 +1,26 @@
 package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import android.widget.AdapterView;
@@ -35,11 +42,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
+import sg.edu.np.mad.lettucecook.rv.BrowseAdapter;
 import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
@@ -49,16 +59,12 @@ import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class MainActivity extends AppCompatActivity {
+    Context mContext = this;
     ArrayList<ApiMeal> meals;
-    ApiService apiService = new ApiService(MainActivity.this);
+    ApiService apiService = new ApiService(mContext);
     ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
 
-    int browseType;
-    Spinner browseTypeSpinner, browseTypeChoiceSpinner;
-    Button browseButton;
     RecyclerView browseRV, communityRV;
-    ImageView featuredImage;
-    TextView featuredName;
 
     private DatabaseReference reference;
     private ArrayList<String> communityRecipeIDList = new ArrayList<>();
@@ -72,103 +78,66 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // First spinner
-        browseTypeSpinner = findViewById(R.id.main_browse_type_spinner); // First spinner, types of browse filters
-        browseTypeChoiceSpinner = findViewById(R.id.main_browse_type_choice_spinner); // Second spinner, filters based on the first spinner
-        browseButton = findViewById(R.id.main_browse_button); // Browse button
+        // Setup search within MealDB
+        SearchView searchView = findViewById(R.id.main_search);
+        searchView.setQueryHint("Search");
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(getBaseContext(), query, Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         browseRV = findViewById(R.id.main_browse_rv); // Browse recycler view
-
-        featuredImage = findViewById(R.id.featured_image);
-        featuredImage.setVisibility(View.VISIBLE);
-        featuredName = findViewById(R.id.main_featured_meal_name);
-        featuredName.setVisibility(View.VISIBLE);
-
         communityRV = findViewById(R.id.main_community_rv);
 
-        String query = "random.php";
-        apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
+//        String query = "random.php";
+//        apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
+//
+//            @Override
+//            public void onError(String message) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    JSONArray _meals = response.getJSONArray("meals");
+//
+//                    // Make arrays from the flat JSON structure
+//                    meals = apiJson.mergeIntoJSONArray(_meals);
+//
+//                    Picasso.with(mContext)
+//                            .load(meals.get(0).getStrMealThumb())
+//                            .into(featuredImage);
+//                    featuredName.setText(meals.get(0).getStrMeal());
+//
+//                    featuredImage.setOnClickListener(view -> {
+//                        Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
+//                        intent.putExtra("mealId", meals.get(0).getIdMeal());
+//                        startActivity(intent);
+//                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                    });
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
-            @Override
-            public void onError(String message) {
+        BrowseAdapter mAdapter = new BrowseAdapter(mContext);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
 
-            }
-
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray _meals = response.getJSONArray("meals");
-
-                    // Make arrays from the flat JSON structure
-                    meals = apiJson.mergeIntoJSONArray(_meals);
-
-                    Picasso.with(MainActivity.this)
-                            .load(meals.get(0).getStrMealThumb())
-                            .into(featuredImage);
-                    featuredName.setText(meals.get(0).getStrMeal());
-
-                    featuredImage.setOnClickListener(view -> {
-                        Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
-                        intent.putExtra("mealId", meals.get(0).getIdMeal());
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    });
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        // Populate the first spinner with the types of browse filters
-        fillSpinner(browseTypeSpinner, getResources().getStringArray(R.array.browse_types));
-        
-        // Changes the contents of the second dropdown list when a different item
-        // is selected in the first dropdown list.
-        browseTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                browseType = i;
-                int resource = i == 0 ? R.array.browse_categories : R.array.browse_areas;
-                fillSpinner(browseTypeChoiceSpinner, getResources().getStringArray(resource));
-            }
-
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-        });
-
-        // Retrieves meals from the API when the button is tapped.
-        browseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String filter = browseTypeChoiceSpinner.getSelectedItem().toString();
-                String query = "filter.php?" + (browseType == 0 ? "c=" : "a=") + filter; // Query for filtering
-
-                apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
-                    @Override
-                    public void onError(String message) {
-
-                    }
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray _meals = response.getJSONArray("meals");
-                            meals = apiJson.mergeIntoJSONArray(_meals);
-                            Log.v("Meal", String.valueOf(meals.get(0)));
-
-                            Bundle extras = getIntent().getExtras();
-                            ApiMealAdapter mAdapter = new ApiMealAdapter(meals, MainActivity.this);
-
-                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-
-                            browseRV.setLayoutManager(mLayoutManager);
-                            browseRV.setItemAnimator(new DefaultItemAnimator());
-                            browseRV.setAdapter(mAdapter);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
+        browseRV.setLayoutManager(mLayoutManager);
+        browseRV.setItemAnimator(new DefaultItemAnimator());
+        browseRV.setAdapter(mAdapter);
 
         reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -183,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                CommunityRecipesAdapter communityAdapter = new CommunityRecipesAdapter(communityRecipes, communityRecipeIDList,MainActivity.this);
-                LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                CommunityRecipesAdapter communityAdapter = new CommunityRecipesAdapter(communityRecipes, communityRecipeIDList,mContext);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
                 communityRV.setLayoutManager(mLayoutManager);
                 communityRV.setItemAnimator(new DefaultItemAnimator());
                 communityRV.setAdapter(communityAdapter);
@@ -193,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             // Validation in case cancelled
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(MainActivity.this, "Unable to retrieve community information!", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Unable to retrieve community information!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -244,17 +213,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return false;
-    }
-
-    // Populating a spinner
-    private void fillSpinner(Spinner spinner, String[] items) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                MainActivity.this,
-                android.R.layout.simple_spinner_item,
-                items);
-
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(arrayAdapter);
     }
 
     @Override

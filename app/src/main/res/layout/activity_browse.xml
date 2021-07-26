@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity" >
+    tools:context=".activities.BrowseActivity" >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,56 +23,24 @@
                 layout="@layout/toolbar" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/main_search_card"
+                android:id="@+id/browse_search_card"
                 android:layout_below="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 app:cardCornerRadius="24dp" >
                 <androidx.appcompat.widget.SearchView
-                    android:id="@+id/main_search"
+                    android:id="@+id/browse_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/main_browse_title"
-                android:layout_below="@+id/main_search_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginVertical="24dp"
-                android:textSize="24sp"
-                android:text="@string/browse"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/main_browse_rv"
-                android:layout_below="@+id/main_browse_title"
+                android:id="@+id/browse_browse_rv"
+                android:layout_below="@+id/browse_search_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp" />
-
-            <TextView
-                android:id="@+id/main_community_title"
-                android:layout_below="@id/main_browse_rv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="12dp"
-                android:textSize="24sp"
-                android:text="Community"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/main_community_rv"
-                android:layout_below="@+id/main_community_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="48dp"/>
 
         </RelativeLayout>
     </ScrollView>
