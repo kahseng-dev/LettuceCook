@@ -91,11 +91,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_recipe); // Set ContentView of Activity
 
-        // Get userID from Firebase
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = user.getUid();
-
         // Find Spinner IDs
         recipeAreaSpinner = findViewById(R.id.create_recipe_area_spinner);
         recipeCategorySpinner = findViewById(R.id.create_recipe_category_spinner);
@@ -113,144 +108,157 @@ public class CreateRecipeActivity extends AppCompatActivity {
         addRecipeImageButton = findViewById(R.id.add_recipe_image_button);
         recipeImage = findViewById(R.id.create_recipe_image);
 
-        // Activity Result Launcher to add image
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                // if codes all match
-                    Bundle bundle = result.getData().getExtras();
-                    Bitmap recipePhoto = (Bitmap) bundle.get("data");
-                    recipeImage.setImageBitmap(recipePhoto);
+        // Get userID from Firebase
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            Toast.makeText(CreateRecipeActivity.this, "Please Login to use this feature", Toast.LENGTH_LONG).show();
+            createRecipeButton.setEnabled(false);
+        }
+
+        else {
+            reference = FirebaseDatabase.getInstance().getReference("Users");
+            userID = user.getUid();
+
+            // Activity Result Launcher to add image
+            activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        // if codes all match
+                        Bundle bundle = result.getData().getExtras();
+                        Bitmap recipePhoto = (Bitmap) bundle.get("data");
+                        recipeImage.setImageBitmap(recipePhoto);
+                    }
                 }
-            }
-        });
+            });
 
-        // Add Recipe Image button click
-        addRecipeImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                // If device supports camera feature
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    activityResultLauncher.launch(intent);
+            // Add Recipe Image button click
+            addRecipeImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // If device supports camera feature
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        activityResultLauncher.launch(intent);
+                    }
+                    else {
+                        Toast.makeText(CreateRecipeActivity.this, "There is no app that supports this action", Toast.LENGTH_LONG).show();
+                    }
                 }
-                else {
-                    Toast.makeText(CreateRecipeActivity.this, "There is no app that supports this action", Toast.LENGTH_LONG).show();
+            });
+
+            // Set string to call Area list for API
+            String areaQuery = "list.php?a=list";
+            apiService.get(ApiURL.MealDB, areaQuery, new VolleyResponseListener() {
+                @Override
+                public void onError(String message) {
+
                 }
-            }
-        });
 
-        // Set string to call Area list for API
-        String areaQuery = "list.php?a=list";
-        apiService.get(ApiURL.MealDB, areaQuery, new VolleyResponseListener() {
-            @Override
-            public void onError(String message) {
-
-            }
-
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray _filters = response.getJSONArray("meals");
-                    String[] filters = apiJson.parseFilterArray(_filters);
-                    fillSpinner(recipeAreaSpinner, filters); // Fill up spinner with response
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray _filters = response.getJSONArray("meals");
+                        String[] filters = apiJson.parseFilterArray(_filters);
+                        fillSpinner(recipeAreaSpinner, filters); // Fill up spinner with response
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-        });
+                public void onNothingSelected(AdapterView<?> adapterView) { }
+            });
 
-        // Set string to call Category list for API
-        String categoryQuery = "list.php?c=list";
-        apiService.get(ApiURL.MealDB, categoryQuery, new VolleyResponseListener() {
-            @Override
-            public void onError(String message) { }
+            // Set string to call Category list for API
+            String categoryQuery = "list.php?c=list";
+            apiService.get(ApiURL.MealDB, categoryQuery, new VolleyResponseListener() {
+                @Override
+                public void onError(String message) { }
 
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray _filters = response.getJSONArray("meals");
-                    String[] filters = apiJson.parseFilterArray(_filters);
-                    fillSpinner(recipeCategorySpinner, filters); // Fill up spinner with response
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray _filters = response.getJSONArray("meals");
+                        String[] filters = apiJson.parseFilterArray(_filters);
+                        fillSpinner(recipeCategorySpinner, filters); // Fill up spinner with response
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-        });
+                public void onNothingSelected(AdapterView<?> adapterView) { }
+            });
 
-        // Set add button on click
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addView();
-            }
-        });
+            // Set add button on click
+            buttonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addView();
+                }
+            });
 
-        // Create recipes button
-        createRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    // Get values of user inputs
-                    recipeAreaSpinnerValue = recipeAreaSpinner.getSelectedItem().toString();
-                    recipeCategorySpinnerValue = recipeCategorySpinner.getSelectedItem().toString();
-                    recipeNameValue = recipeName.getText().toString();
-                    recipeInstructionsValue = recipeInstructions.getText().toString();
+            // Create recipes button
+            createRecipeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        // Get values of user inputs
+                        recipeAreaSpinnerValue = recipeAreaSpinner.getSelectedItem().toString();
+                        recipeCategorySpinnerValue = recipeCategorySpinner.getSelectedItem().toString();
+                        recipeNameValue = recipeName.getText().toString();
+                        recipeInstructionsValue = recipeInstructions.getText().toString();
 
-                    // Create new CreatedRecipe object
-                    CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, ingredientList);
+                        // Create new CreatedRecipe object
+                        CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, ingredientList);
 
-                    String ninjaQuery = checkIfValidAndRead();
-                    // Request ingredients' nutritional information
-                    apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
+                        String ninjaQuery = checkIfValidAndRead();
+                        // Request ingredients' nutritional information
+                        apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
 
-                        @Override
-                        public void onError(String message) {
-                            Toast.makeText(mContext, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
-                        }
+                            @Override
+                            public void onError(String message) {
+                                Toast.makeText(mContext, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
+                            }
 
-                        @Override
-                        public void onResponse(JSONObject response) throws JSONException {
-                            ArrayList<NinjaIngredient> ninjaIngredients = apiJson.parseNinjaIngredients
-                                    (response.getJSONArray("items"), ingredientList);
+                            @Override
+                            public void onResponse(JSONObject response) throws JSONException {
+                                ArrayList<NinjaIngredient> ninjaIngredients = apiJson.parseNinjaIngredients
+                                        (response.getJSONArray("items"), ingredientList);
 
-                            // Ingredients whose nutritional information could not be found
-                            String errorIngredients = "";
-                            for (NinjaIngredient i : ninjaIngredients) {
-                                if (i.getCalories() < 0) errorIngredients += i.getMeasure() + " " + i.getName() + "\n";
+                                // Ingredients whose nutritional information could not be found
+                                String errorIngredients = "";
+                                for (NinjaIngredient i : ninjaIngredients) {
+                                    if (i.getCalories() < 0) errorIngredients += i.getMeasure() + " " + i.getName() + "\n";
 //                                    errorIngredients.add(i);
-                            }
+                                }
 
-                            if (errorIngredients.length() > 0) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                                builder
-                                        .setTitle("Ingredients' nutritional information not found")
-                                        .setMessage(errorIngredients)
-                                        .setCancelable(true)
-                                        .setNegativeButton("Continue editing", null)
-                                        .setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                addRecipeToFirebase(createdRecipe);
-                                            }
-                                        })
-                                        .show();
-                            } else {
-                                addRecipeToFirebase(createdRecipe);
+                                if (errorIngredients.length() > 0) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                    builder
+                                            .setTitle("Ingredients' nutritional information not found")
+                                            .setMessage(errorIngredients)
+                                            .setCancelable(true)
+                                            .setNegativeButton("Continue editing", null)
+                                            .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    addRecipeToFirebase(createdRecipe);
+                                                }
+                                            })
+                                            .show();
+                                } else {
+                                    addRecipeToFirebase(createdRecipe);
+                                }
                             }
-                        }
-                    });
-                } catch (Exception e) {
-                    Toast.makeText(mContext, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
+                        });
+                    } catch (Exception e) {
+                        Toast.makeText(mContext, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-
+            });
+        }
+        
         // setting id of navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
