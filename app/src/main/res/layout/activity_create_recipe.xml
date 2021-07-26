@@ -35,6 +35,25 @@
                 android:hint="@string/createRecipeName"
                 android:inputType="text" />
 
+            <ImageView
+                android:id="@+id/create_recipe_image"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_baseline_image_24" />
+
+            <Button
+                android:id="@+id/add_recipe_image_button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:text="Take Photo" />
+
             <Spinner
                 android:id="@+id/create_recipe_category_spinner"
                 android:layout_width="match_parent"
