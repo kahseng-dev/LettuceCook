@@ -56,8 +56,8 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         if (area != null) holder.area.setText(area);
         if (category != null) holder.category.setText(category);
 
-        // Make image clickable, show recipe details page when clicked
-        holder.thumbnail.setOnClickListener(view -> {
+        // Make view clickable, show recipe details page when clicked
+        holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
             intent.putExtra("mealId", meal.getIdMeal());
             mContext.startActivity(intent);

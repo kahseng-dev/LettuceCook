@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.activities.CustomRecipeActivity;
-import sg.edu.np.mad.lettucecook.activities.RecipeDetailsActivity;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 
 public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecipesViewHolder> {
@@ -33,7 +32,7 @@ public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecip
     @Override
     public CommunityRecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.meal_item,
+                R.layout.browse_item,
                 parent,
                 false);
 

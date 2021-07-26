@@ -18,8 +18,9 @@
         <item name="category">Category</item>
         <item name="area">Area</item>
     </string-array>
-    
+
     <string-array name="browse_categories">
+        <item>Random</item>
         <item>Beef</item>
         <item>Breakfast</item>
         <item>Chicken</item>
@@ -34,6 +35,41 @@
         <item>Starter</item>
         <item>Vegan</item>
         <item>Vegetarian</item>
+    </string-array>
+
+    <!-- Image file names for displaying browse categories -->
+    <!-- https://www.themealdb.com/images/media/meals/<image>.jpg -->
+    <string-array name="browse_categories_images">
+        <!-- Random - to be replaced -->
+        <item>random</item>
+        <!-- Beef -->
+        <item>vtqxtu1511784197</item>
+        <!-- Breakfast -->
+        <item>1550441882</item>
+        <!-- Chicken -->
+        <item>wruvqv1511880994</item>
+        <!-- Dessert -->
+        <item>wyrqqq1468233628</item>
+        <!-- Goat -->
+        <item>cuio7s1555492979</item>
+        <!-- Lamb -->
+        <item>uttrxw1511637813</item>
+        <!-- Miscellaneous -->
+        <item>yvpuuy1511797244</item>
+        <!-- Pasta -->
+        <item>usywpp1511189717</item>
+        <!-- Pork -->
+        <item>md8w601593348504</item>
+        <!-- Seafood -->
+        <item>1548772327</item>
+        <!-- Side -->
+        <item>qqpwsy1511796276</item>
+        <!-- Starter -->
+        <item>wurrux1468416624</item>
+        <!-- Vegan -->
+        <item>rvxxuy1468312893</item>
+        <!-- Vegetarian -->
+        <item>tvtxpq1511464705</item>
     </string-array>
 
     <string-array name="browse_areas">
@@ -63,6 +99,21 @@
         <item>Turkish</item>
         <item>Unknown</item>
         <item>Vietnamese</item>
+    </string-array>
+
+    <!-- Image file names for displaying a random meal -->
+    <!-- https://www.themealdb.com/images/media/meals/<image>.jpg -->
+    <string-array name="browse_random_images">
+        <item>1550442508</item>
+        <item>1544384070</item>
+        <item>wtqrqw1511639627</item>
+        <item>sxwquu1511793428</item>
+        <item>xutquv1505330523</item>
+        <item>wssvvs1511785879</item>
+        <item>qxytrx1511304021</item>
+        <item>yrstur1511816601</item>
+        <item>a15wsa1614349126</item>
+        <item>4i5cnx1587672171</item>
     </string-array>
 
     <!-- Recipe Details Activity strings-->
