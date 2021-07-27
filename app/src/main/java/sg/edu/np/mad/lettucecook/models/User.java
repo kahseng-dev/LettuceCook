@@ -2,7 +2,6 @@ package sg.edu.np.mad.lettucecook.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class User {
     public String username;

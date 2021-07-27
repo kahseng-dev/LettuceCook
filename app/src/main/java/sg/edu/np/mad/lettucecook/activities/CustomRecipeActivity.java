@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,7 +45,6 @@ import sg.edu.np.mad.lettucecook.rv.NinjaIngredientAdapter;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
 import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
@@ -119,7 +117,7 @@ public class CustomRecipeActivity extends AppCompatActivity {
 
         String ninjaQuery = apiJson.createNinjaQuery(createdRecipe.getIngredientList());
         
-        apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
+        apiService.getIngredient(ninjaQuery, new VolleyResponseListener() {
 
             @Override
             public void onError(String message) {
@@ -150,6 +148,7 @@ public class CustomRecipeActivity extends AppCompatActivity {
             }
         });
 
+        // Delete recipe from firebase
         deleteRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,10 +203,6 @@ public class CustomRecipeActivity extends AppCompatActivity {
                 });
             }
         }
-    }
-
-    private void deleteData (String recipeName) {
-
     }
 
     // if the user clicks on the back button in the toolbar, bring them back to login activity.

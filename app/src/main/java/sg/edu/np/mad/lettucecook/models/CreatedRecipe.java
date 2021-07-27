@@ -2,10 +2,6 @@ package sg.edu.np.mad.lettucecook.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
 
 public class CreatedRecipe implements Serializable {
 

@@ -16,7 +16,7 @@
         android:theme="@style/Theme.LettuceCook"
         android:hardwareAccelerated="true">
 
-        <activity android:name=".activities.AccountFavouritesActivity"></activity>
+        <activity android:name=".activities.AccountFavouritesActivity" />
         <activity android:name=".activities.BrowseActivity" />
         <activity android:name=".activities.AccountRecipesActivity" />
         <activity

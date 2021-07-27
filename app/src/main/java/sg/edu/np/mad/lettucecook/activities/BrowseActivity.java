@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -27,7 +29,6 @@ import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
 import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
@@ -45,6 +46,10 @@ public class BrowseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse);
 
         dataSingleton.setMeal(null);
+        dataSingleton.setReturnTo(1);
+
+        // TextView showing no results
+        TextView noResults = findViewById(R.id.browse_no_results);
 
         RecyclerView browseRV = findViewById(R.id.browse_browse_rv);
         ApiMealAdapter mAdapter = new ApiMealAdapter(mContext);
@@ -87,7 +92,7 @@ public class BrowseActivity extends AppCompatActivity {
 
             private void showToast() {
                 int nResults = mAdapter.getItemCount(); // No. of results
-                String text = nResults + (nResults == 1 ? " result" : " results");
+                String text = "Showing " + nResults + (nResults == 1 ? " result" : " results");
                 Toast.makeText(getBaseContext(), text, Toast.LENGTH_SHORT).show();
             }
         });
@@ -99,6 +104,7 @@ public class BrowseActivity extends AppCompatActivity {
         if (meals != null) {
             mAdapter.setData(meals);
             mAdapter.notifyDataSetChanged();
+            noResults.setVisibility(View.GONE);
         } else {
             dataSingleton.setMeals(new ArrayList<>());
 
@@ -106,7 +112,7 @@ public class BrowseActivity extends AppCompatActivity {
             String[] browseAreas = getResources().getStringArray(R.array.browse_areas);
             String[] queryList;
 
-            if (dataSingletonQuery.equals("Random")) {
+            if (dataSingletonQuery == null || dataSingletonQuery.equals("Random")) {
                 queryList = new String[] { "randomselection.php" };
             } else if (dataSingletonQuery.length() == 1) {
                 queryList = new String[] { "filter.php?f=" + dataSingletonQuery };
@@ -123,7 +129,7 @@ public class BrowseActivity extends AppCompatActivity {
                 };
             }
             for (String query : queryList) {
-                apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
+                apiService.get(query, new VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
 
@@ -134,8 +140,16 @@ public class BrowseActivity extends AppCompatActivity {
                         try {
                             JSONArray _meals = response.getJSONArray("meals");
                             meals = apiJson.mergeIntoJSONArray(_meals);
+
                             mAdapter.addData(meals);
                             mAdapter.notifyDataSetChanged();
+
+                            // Show no results if meals is empty
+                            noResults.setVisibility(View.GONE); // Hide no results message if not empty
+                            if (mAdapter.getItemCount() == 0) {
+                                browseRV.setVisibility(View.GONE); // Hide recyclerview if empty
+                                noResults.setVisibility(View.VISIBLE); // Show no results message if empty
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

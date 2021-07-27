@@ -31,29 +31,29 @@ public class ApiMeal {
 
     private String dateModified;
 
-    public ApiMeal(String idMeal, String strMeal, String strMealThumb) {
-        this.idMeal = idMeal;
-        this.strMeal = strMeal;
-        this.strMealThumb = strMealThumb;
-    }
-
-    public ApiMeal(String idMeal, String strMeal, String strDrinkAlternate, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String[] arrIngredients, String[] arrMeasures, String strSource, String strImageSource, String strCreativeCommonsConfirmed, String dateModified) {
-        this.idMeal = idMeal;
-        this.strMeal = strMeal;
-        this.strDrinkAlternate = strDrinkAlternate;
-        this.strCategory = strCategory;
-        this.strArea = strArea;
-        this.strInstructions = strInstructions;
-        this.strMealThumb = strMealThumb;
-        this.strTags = strTags;
-        this.strYoutube = strYoutube;
-        this.arrIngredients = arrIngredients;
-        this.arrMeasures = arrMeasures;
-        this.strSource = strSource;
-        this.strImageSource = strImageSource;
-        this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
-        this.dateModified = dateModified;
-    }
+//    public ApiMeal(String idMeal, String strMeal, String strMealThumb) {
+//        this.idMeal = idMeal;
+//        this.strMeal = strMeal;
+//        this.strMealThumb = strMealThumb;
+//    }
+//
+//    public ApiMeal(String idMeal, String strMeal, String strDrinkAlternate, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String[] arrIngredients, String[] arrMeasures, String strSource, String strImageSource, String strCreativeCommonsConfirmed, String dateModified) {
+//        this.idMeal = idMeal;
+//        this.strMeal = strMeal;
+//        this.strDrinkAlternate = strDrinkAlternate;
+//        this.strCategory = strCategory;
+//        this.strArea = strArea;
+//        this.strInstructions = strInstructions;
+//        this.strMealThumb = strMealThumb;
+//        this.strTags = strTags;
+//        this.strYoutube = strYoutube;
+//        this.arrIngredients = arrIngredients;
+//        this.arrMeasures = arrMeasures;
+//        this.strSource = strSource;
+//        this.strImageSource = strImageSource;
+//        this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
+//        this.dateModified = dateModified;
+//    }
 
     public String getIdMeal() {
         return idMeal;

@@ -2,7 +2,6 @@ package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,9 +41,11 @@ import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.Ingredient;
 import sg.edu.np.mad.lettucecook.models.User;
 import sg.edu.np.mad.lettucecook.rv.ShoppingListAdapter;
+import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 
 public class ShoppingListActivity extends AppCompatActivity {
     Context mContext = this;
+    DataSingleton dataSingleton = DataSingleton.getInstance();
 
     private RecyclerView shoppingListRV;
     private ImageView cartIcon;
@@ -61,6 +62,8 @@ public class ShoppingListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
+
+        dataSingleton.setReturnTo(3);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -85,9 +88,6 @@ public class ShoppingListActivity extends AppCompatActivity {
                     shoppingListRV.setVisibility(View.INVISIBLE);
                     cartIcon.setVisibility(View.VISIBLE);
                     shoppingListText.setVisibility(View.VISIBLE);
-
-                    // display the not logged in message.
-                    String notLoggedInMessage = "Please Sign In to view your shopping items!";
                 }
 
                 else {

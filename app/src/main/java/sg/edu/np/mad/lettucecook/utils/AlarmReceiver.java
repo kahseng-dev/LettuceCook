@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
 
@@ -21,6 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // Get id & message from intent.
         int notificationId = intent.getIntExtra("notificationId", 0);
+        int requestId = intent.getIntExtra("requestId", 0);
         String message = intent.getStringExtra("message");
 
         PendingIntent contentIntent;
@@ -29,13 +29,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             // Call RecipeDetails when notification is tapped.
             Intent recipeDetailsIntent = new Intent(context, RecipeDetailsActivity.class);
             recipeDetailsIntent.putExtra("mealId", intent.getStringExtra("mealId"));
-            contentIntent = PendingIntent.getActivity(context, 0, recipeDetailsIntent, 0);
+            recipeDetailsIntent.putExtra("notification", true);
+            contentIntent = PendingIntent.getActivity(context, requestId, recipeDetailsIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         }
 
         else {
             // Call MainActivity when notification is tapped.
             Intent mainIntent = new Intent(context, MainActivity.class);
-            contentIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);
+            contentIntent = PendingIntent.getActivity(context, requestId, mainIntent, 0);
         }
 
         // NotificationManager

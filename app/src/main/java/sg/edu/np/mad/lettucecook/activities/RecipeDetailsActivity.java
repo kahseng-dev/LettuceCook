@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -57,7 +58,6 @@ import sg.edu.np.mad.lettucecook.rv.YoutubeVideo;
 import sg.edu.np.mad.lettucecook.rv.NinjaIngredientAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
     Context mContext = this;
@@ -138,7 +138,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         } else {
             // get the mealId to be viewed
             String mealId = getIntent().getStringExtra("mealId");
-            apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
+            apiService.get("lookup.php?i=" + mealId, new VolleyResponseListener() {
                 @Override
                 public void onError(String message) { }
 
@@ -194,7 +194,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         // Remove the trailing ", "
         ninjaQuery = ninjaQuery.substring(0, ninjaQuery.length() - 2);
 
-        apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
+        apiService.getIngredient(ninjaQuery, new VolleyResponseListener() {
 
             @Override
             public void onError(String message) {
@@ -247,7 +247,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                                 Integer.parseInt(meal.getIdMeal()), ingredients[i], measures[i]);
                         dbHandler.addItemToShoppingList(userID, ingredient);
                     }
-                    Toast.makeText(mContext, "Ingredients has been added\nto your shopping list", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Ingredients have been added\nto your shopping list", Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -337,7 +337,21 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), BrowseActivity.class));
+                Class activity;
+                int returnTo = dataSingleton.getReturnTo();
+
+                // Opened from notification
+                if (returnTo == 0 || getIntent().hasExtra("notification"))
+                    activity = MainActivity.class;
+                else if (returnTo == 1) // Opened from Browse
+                    activity = BrowseActivity.class;
+                else if (returnTo == 2) // Opened from AccountFavourites
+                    activity = AccountFavouritesActivity.class;
+                else
+                    activity = ShoppingListActivity.class;
+
+                // Go back to the activity it was opened from
+                startActivity(new Intent(mContext, activity));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
 

@@ -1,8 +1,5 @@
 package sg.edu.np.mad.lettucecook.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public class CreatedIngredient implements Serializable {
