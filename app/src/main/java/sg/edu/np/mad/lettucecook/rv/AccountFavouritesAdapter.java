@@ -44,18 +44,7 @@ public class AccountFavouritesAdapter extends RecyclerView.Adapter<AccountFavour
         Picasso
                 .with(mContext)
                 .load(meal.getStrMealThumb())
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    holder.favouritesThumbnail.setBackground(new BitmapDrawable(mContext.getResources(), bitmap));
-                }
-
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) { }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) { }
-        });
+                .into(holder.favouritesThumbnail);
 
         holder.favouriteRecipeName.setText(meal.getStrMeal());
 
