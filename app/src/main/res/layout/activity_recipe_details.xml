@@ -172,60 +172,85 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/date_modified_card"
-                    android:layout_below="@+id/recipe_details_youtube_rv"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="160dp"
-                    android:layout_height="64dp"
-                    app:cardCornerRadius="4dp"
-                    app:cardBackgroundColor="@color/light_green"
-                    app:cardElevation="0dp" >
-
                     <LinearLayout
+                        android:id="@+id/recipe_details_linear_layout"
+                        android:layout_below="@+id/recipe_details_youtube_rv"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:layout_margin="8dp">
+                        android:layout_height="wrap_content">
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/date_modified_card"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="0dp"
+                            android:layout_height="64dp"
+                            android:layout_weight=".5"
+                            android:layout_marginEnd="6dp"
+                            app:cardCornerRadius="4dp"
+                            app:cardBackgroundColor="@color/light_green"
+                            app:cardElevation="0dp" >
 
-                    <TextView
-                        android:id="@+id/recipe_details_date_modified_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dateModifiedLabel"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/dark_green" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:layout_margin="8dp">
+                                <TextView
+                                    android:id="@+id/recipe_details_date_modified_label"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/dateModifiedLabel"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/dark_green" />
 
-                    <TextView
-                        android:id="@+id/recipe_details_date_modified_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/dark_green"
-                        android:text="Unknown" />
+                                <TextView
+                                    android:id="@+id/recipe_details_date_modified_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/dark_green"
+                                    android:text="Unknown" />
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/recipe_details_view_source_card"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="0dp"
+                            android:layout_height="64dp"
+                            android:layout_weight=".5"
+                            android:layout_marginStart="6dp"
+                            app:cardCornerRadius="4dp"
+                            app:cardBackgroundColor="@color/light_green"
+                            app:cardElevation="0dp" >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:layout_margin="8dp">
+                                <TextView
+                                    android:id="@+id/recipe_details_view_source_label"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="View Source"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/dark_green" />
+
+                                <TextView
+                                    android:id="@+id/recipe_details_view_source_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/dark_green"
+                                    android:text="Unknown"
+                                    android:scrollHorizontally="true"
+                                    android:ellipsize="end"
+                                    android:maxLines="1" />
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <Button
-                    android:id="@+id/recipe_details_source_button"
-                    android:layout_toEndOf="@id/date_modified_card"
-                    android:layout_below="@+id/recipe_details_youtube_rv"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="77dp"
-                    android:text="@string/sourceLabel"
-                    android:textSize="18sp"
-                    android:textColor="@color/dark_green"
-                    app:backgroundTint="@color/light_green"
-                    android:textStyle="bold"
-                    android:textAllCaps="false"
-                    app:elevation="0dp"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
-
                 <Button
                     android:id="@+id/recipe_details_add_to_shopping_list_button"
-                    android:layout_below="@+id/date_modified_card"
+                    android:layout_below="@+id/recipe_details_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:text="@string/addShoppingList"

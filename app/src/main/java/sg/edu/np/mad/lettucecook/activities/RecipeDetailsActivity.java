@@ -3,6 +3,7 @@ package sg.edu.np.mad.lettucecook.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -68,11 +69,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
     private DBHandler dbHandler = new DBHandler(this , null, null, 1);
     private ImageView mealThumbnail, addToFavourites;
-    private TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText;
+    private TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText, viewSourceText;
     private RecyclerView ytRecyclerView;
     private ArrayList<NinjaIngredient> ninjaIngredients;
     private NinjaIngredientAdapter ingredientAdapter;
-    private Button addToShoppingList, sourceLinkButton;
+    private CardView viewSourceCard;
+    private Button addToShoppingList;
     private Vector<YoutubeVideo> youtubeVideos = new Vector<>();
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -123,9 +125,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         ytRecyclerView.setHasFixedSize(true);
         ytRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Setting ViewById for buttons
+        // Setting ViewById for View Source
+        viewSourceCard = findViewById(R.id.recipe_details_view_source_card);
+        viewSourceText = findViewById(R.id.recipe_details_view_source_text);
+
+        // Setting ViewById for shopping lis button
         addToShoppingList = findViewById(R.id.recipe_details_add_to_shopping_list_button);
-        sourceLinkButton = findViewById(R.id.recipe_details_source_button);
 
         // Setting ViewById for favourites
         addToFavourites = findViewById(R.id.add_to_favourites);
@@ -214,11 +219,14 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         YoutubeAdapter videoAdapter = new YoutubeAdapter(youtubeVideos);
         ytRecyclerView.setAdapter(videoAdapter);
 
-        // if user clicks on View Source button, it will lead user to the source website.
-        sourceLinkButton.setOnClickListener(new View.OnClickListener() {
+        // View Source
+        String url = meal.getStrSource();
+        if (url != null || !url.isEmpty()) viewSourceText.setText(url);
+
+        // if user clicks on View Source card, it will lead user to the source website.
+        viewSourceCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = meal.getStrSource();
                 if (url.startsWith("https://") || url.startsWith("http://")) {
                     Uri uri = Uri.parse(url);
                     startActivity(new Intent(Intent.ACTION_VIEW, uri));
