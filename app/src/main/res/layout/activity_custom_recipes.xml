@@ -1,138 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ScrollView
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:background="@color/gray" >
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
-        <TextView
-            android:id="@+id/custom_recipe_name"
-            android:layout_below="@id/toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/black"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content" >
 
-        <ImageView
-            android:id="@+id/custom_recipe_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_below="@id/custom_recipe_name"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/custom_recipe_thumbnail_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/custom_recipe_area"
-            android:layout_below="@id/custom_recipe_image"
-            app:drawableStartCompat="@drawable/ic_location"
-            app:drawableTint="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/custom_recipe_category_label"
-            android:layout_below="@id/custom_recipe_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/black"
-            android:text="@string/categoryLabel"
-            android:textStyle="bold"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/custom_recipe_category"
-            android:layout_below="@id/custom_recipe_category_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/custom_recipe_instructions_label"
-            android:layout_below="@id/custom_recipe_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/black"
-            android:text="@string/instructionLabel"
-            android:textStyle="bold"
-            android:textSize="24sp" />
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/custom_recipe_instructions_sv"
-            android:layout_below="@+id/custom_recipe_instructions_label"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" >
-
-            <TextView
-                android:id="@+id/custom_recipe_instructions"
-                android:layout_below="@id/custom_recipe_instructions_label"
+            <ImageView
+                android:id="@+id/custom_recipe_image"
+                android:adjustViewBounds="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp" />
-        </androidx.core.widget.NestedScrollView>
+                android:scaleType="centerCrop"
+                android:src="@drawable/shadow_overlay_gradient" />
 
-        <TextView
-            android:id="@+id/custom_recipe_ingredients_label"
-            android:layout_below="@id/custom_recipe_instructions_sv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/black"
-            android:text="@string/ingredientLabel"
-            android:textStyle="bold"
-            android:textSize="24sp" />
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:layout_below="@id/custom_recipe_thumbnail_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/custom_recipe_ingredients_rv"
-            android:layout_below="@id/custom_recipe_ingredients_label"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            <TextView
+                android:id="@+id/custom_recipe_name"
+                android:layout_below="@id/custom_recipe_thumbnail_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="72dp"
+                android:maxLines="1"
+                android:text="@string/mealLabel"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:textStyle="bold"/>
 
-        <ToggleButton
-            android:id="@+id/publish_recipe"
-            android:layout_below="@id/custom_recipe_ingredients_rv"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="48dp"
-            android:textOff="Publish"
-            android:textOn="Unpublish"
-            android:textSize="18sp"
-            android:visibility="gone"/>
-    </RelativeLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/custom_recipe_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/custom_recipe_thumbnail_card"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="46dp"
+                android:drawablePadding="4dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/ic_location" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/custom_recipe_details_card"
+                android:layout_below="@id/custom_recipe_thumbnail_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-30dp"
+                android:layout_marginBottom="-24dp"
+                app:cardCornerRadius="24dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
+
+                    <TextView
+                        android:id="@+id/custom_recipe_category_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/categoryLabel"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="24dp" />
+
+                    <TextView
+                        android:id="@+id/custom_recipe_category"
+                        android:layout_below="@id/custom_recipe_category_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/custom_recipe_instructions_label"
+                        android:layout_below="@id/custom_recipe_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/instructionLabel"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="24dp" />
+
+                    <androidx.core.widget.NestedScrollView
+                        android:id="@+id/custom_recipe_instructions_sv"
+                        android:layout_below="@id/custom_recipe_instructions_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp" >
+
+                        <TextView
+                            android:id="@+id/custom_recipe_instructions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp" />
+                    </androidx.core.widget.NestedScrollView>
+
+                    <TextView
+                        android:id="@+id/custom_recipe_ingredients_label"
+                        android:layout_below="@id/custom_recipe_instructions_sv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ingredientLabel"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="24dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/custom_recipe_ingredients_rv"
+                        android:layout_below="@id/custom_recipe_ingredients_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"
+                        android:layout_marginTop="4dp"
+                        android:textSize="18sp" />
+
+                    <ToggleButton
+                        android:id="@+id/publish_recipe"
+                        android:layout_below="@id/custom_recipe_ingredients_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="48dp"
+                        android:textOff="Publish"
+                        android:textOn="Unpublish"
+                        android:textSize="18sp"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
