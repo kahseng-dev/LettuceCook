@@ -59,15 +59,6 @@
             android:resource="@array/preloaded_fonts" />
 
         <receiver android:name=".utils.AlarmReceiver" />
-        <receiver android:name=".OpenAppWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/recipe_add_widget_info" />
-        </receiver>
     </application>
 
 </manifest>
