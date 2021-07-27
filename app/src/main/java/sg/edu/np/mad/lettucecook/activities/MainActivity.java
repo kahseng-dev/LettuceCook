@@ -32,18 +32,12 @@ import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.rv.BrowseAdapter;
 import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.DataSingleton;
-import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
-import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class MainActivity extends AppCompatActivity {
     Context mContext = this;
-    ArrayList<ApiMeal> meals;
-    ApiService apiService = new ApiService(mContext);
-    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
     DataSingleton dataSingleton = DataSingleton.getInstance();
 
     RecyclerView browseRV, communityRV;

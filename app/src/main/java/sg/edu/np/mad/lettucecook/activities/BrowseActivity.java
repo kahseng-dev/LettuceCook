@@ -48,7 +48,7 @@ public class BrowseActivity extends AppCompatActivity {
         dataSingleton.setMeal(null);
 
         RecyclerView browseRV = findViewById(R.id.browse_browse_rv);
-        ApiMealAdapter mAdapter = new ApiMealAdapter(meals, mContext);
+        ApiMealAdapter mAdapter = new ApiMealAdapter(mContext);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
 
         browseRV.setLayoutManager(mLayoutManager);
@@ -68,16 +68,28 @@ public class BrowseActivity extends AppCompatActivity {
         query = dataSingleton.getMealQuery();
         searchView.setQueryHint("Search within \"" + query + "\"");
         searchView.setIconifiedByDefault(false);
+
+        // Search for results within the current data set
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getBaseContext(), query, Toast.LENGTH_LONG).show();
-                return false;
+                searchView.clearFocus();
+                mAdapter.filter(query);
+                showToast();
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                mAdapter.filter(newText);
+                showToast();
+                return true;
+            }
+
+            private void showToast() {
+                int nResults = mAdapter.getItemCount(); // No. of results
+                String text = nResults + (nResults == 1 ? " result" : " results");
+                Toast.makeText(getBaseContext(), text, Toast.LENGTH_SHORT).show();
             }
         });
 
