@@ -134,5 +134,16 @@
             android:textOn="Unpublish"
             android:textSize="18sp"
             android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/delete_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/publish_recipe"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="48dp"
+            android:text="Delete Recipe" />
     </RelativeLayout>
 </ScrollView>
