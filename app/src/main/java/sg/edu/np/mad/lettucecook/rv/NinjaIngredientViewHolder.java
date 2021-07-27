@@ -10,10 +10,10 @@ import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
 import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 
 // Viewholder for Ingredient in recipe details page
-public class ApiIngredientViewHolder extends RecyclerView.ViewHolder {
+public class NinjaIngredientViewHolder extends RecyclerView.ViewHolder {
     TextView measure, name, calorie;
 
-    public ApiIngredientViewHolder(View itemView) {
+    public NinjaIngredientViewHolder(View itemView) {
         super(itemView);
         this.measure = itemView.findViewById(R.id.api_ingredient_measure);
         this.name = itemView.findViewById(R.id.api_ingredient_name);
