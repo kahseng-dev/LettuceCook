@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -26,23 +26,35 @@ import java.util.ArrayList;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
-import sg.edu.np.mad.lettucecook.rv.BrowseAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
+import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
 public class BrowseActivity extends AppCompatActivity {
     Context mContext = this;
+    String query;
+    ArrayList<ApiMeal> meals;
     ApiService apiService = new ApiService(mContext);
     ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
+    DataSingleton dataSingleton = DataSingleton.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
 
+        dataSingleton.setMeal(null);
+
         RecyclerView browseRV = findViewById(R.id.browse_browse_rv);
+        ApiMealAdapter mAdapter = new ApiMealAdapter(meals, mContext);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+
+        browseRV.setLayoutManager(mLayoutManager);
+        browseRV.setItemAnimator(new DefaultItemAnimator());
+        browseRV.setAdapter(mAdapter);
+
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,13 +63,10 @@ public class BrowseActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        Intent intent = getIntent();
-        String _query = intent.getStringExtra("query");
-        String query = _query.equals("Random") ? "randomselection.php" : "filter.php?c=" + _query;
-
         // Setup search within results
         SearchView searchView = findViewById(R.id.browse_search);
-        searchView.setQueryHint("Search within \"" + _query + "\"");
+        query = dataSingleton.getMealQuery();
+        searchView.setQueryHint("Search within \"" + query + "\"");
         searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -67,35 +76,46 @@ public class BrowseActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
-            @Override
-            public void onError(String message) {
-
-            }
-
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray _meals = response.getJSONArray("meals");
-                    ArrayList<ApiMeal> meals = apiJson.mergeIntoJSONArray(_meals);
-
-                    ApiMealAdapter mAdapter = new ApiMealAdapter(meals, mContext);
-
-                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-
-                    browseRV.setLayoutManager(mLayoutManager);
-                    browseRV.setItemAnimator(new DefaultItemAnimator());
-                    browseRV.setAdapter(mAdapter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                public boolean onQueryTextChange(String newText) {
+                    return false;
                 }
-            }
-        });
+            });
+
+        // Get data from singleton.
+        // If null: from MainActivity, make a new request.
+        // Else: from RecipeDetails or Notification, display the same meals.
+        meals = dataSingleton.getMeals();
+        if (meals != null) {
+            Log.v("Meals", meals.get(0).getIdMeal());
+            mAdapter.setData(meals);
+            mAdapter.notifyDataSetChanged();
+        } else {
+            String queryUrl = query.equals("Random") ? "randomselection.php" : "filter.php?c=" + query;
+
+            apiService.get(ApiURL.MealDB, queryUrl, new VolleyResponseListener() {
+                @Override
+                public void onError(String message) {
+
+                }
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray _meals = response.getJSONArray("meals");
+                        meals = apiJson.mergeIntoJSONArray(_meals);
+
+                        // Set meals in DataSingleton so that the page is the same
+                        // if the user returns from RecipeDetails or Notification
+                        dataSingleton.setMeals(meals);
+
+                        mAdapter.setData(meals);
+                        mAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     @Override

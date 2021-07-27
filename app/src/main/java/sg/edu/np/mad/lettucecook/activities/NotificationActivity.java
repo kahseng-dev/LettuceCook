@@ -9,6 +9,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import sg.edu.np.mad.lettucecook.utils.AlarmReceiver;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
+import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
 public class NotificationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -39,6 +41,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+//        Log.v("Meall", DataSingleton.getInstance().getMeal().getIdMeal());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -143,12 +146,14 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         switch (item.getItemId()) {
             case android.R.id.home:
                 Class activity = MainActivity.class;
+
                 int layoutId = getIntent().getIntExtra("layoutId", 0);
                 if (layoutId == R.layout.activity_recipe_details) {
                     activity = RecipeDetailsActivity.class;
                 } else if (layoutId == R.layout.activity_browse) {
                     activity = BrowseActivity.class;
                 }
+
                 startActivity(new Intent(getApplicationContext(), activity));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
