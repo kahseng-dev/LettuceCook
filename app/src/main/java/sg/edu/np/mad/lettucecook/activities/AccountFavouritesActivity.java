@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.rv.AccountFavouritesAdapter;
+import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
@@ -46,6 +48,7 @@ public class AccountFavouritesActivity extends AppCompatActivity {
     private ApiService apiService = new ApiService(mContext);
     private ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
     private RecyclerView favouritesRV;
+    private TextView noAccountFavouritesText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,8 @@ public class AccountFavouritesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
         toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
+
+        noAccountFavouritesText = findViewById(R.id.account_no_favourites);
 
         // get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -110,6 +115,17 @@ public class AccountFavouritesActivity extends AppCompatActivity {
                                 }
                             }
                         });
+                    }
+
+                    // Check if favouritesList is empty
+                    if (!snapshot.hasChildren()) {
+                        favouritesRV.setVisibility(View.INVISIBLE); // Hide recyclerview if empty
+                        noAccountFavouritesText.setVisibility(View.VISIBLE); // Show no account favourites message if empty
+                    }
+
+                    else {
+                        favouritesRV.setVisibility(View.VISIBLE); // Show recyclerview if not empty
+                        noAccountFavouritesText.setVisibility(View.INVISIBLE); // Hide no account favourites message if not empty
                     }
                 }
 
