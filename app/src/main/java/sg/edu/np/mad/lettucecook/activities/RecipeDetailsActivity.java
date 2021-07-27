@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +47,6 @@ import java.util.Vector;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
-import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 import sg.edu.np.mad.lettucecook.models.User;
 import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
@@ -55,26 +55,21 @@ import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.Ingredient;
 import sg.edu.np.mad.lettucecook.rv.YoutubeAdapter;
 import sg.edu.np.mad.lettucecook.rv.YoutubeVideo;
-import sg.edu.np.mad.lettucecook.rv.NinjaIngredientAdapter;
+import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
     Context mContext = this;
-    ApiMeal meal;
-    ApiService apiService = new ApiService(this);
-    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
-    DataSingleton dataSingleton = DataSingleton.getInstance();
 
     private DBHandler dbHandler = new DBHandler(this , null, null, 1);
     private ImageView mealThumbnail, addToFavourites;
     private TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText;
-    private RecyclerView ytRecyclerView;
-    private ArrayList<NinjaIngredient> ninjaIngredients;
-    private NinjaIngredientAdapter ingredientAdapter;
+    private RecyclerView ytRecyclerView, ingredientsRV;
     private Button addToShoppingList, sourceLinkButton;
     private Vector<YoutubeVideo> youtubeVideos = new Vector<>();
+    private ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID, isFavouriteId;
@@ -82,7 +77,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("Meal Recipe", "create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
 
@@ -101,23 +95,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         mealCategory = findViewById(R.id.recipe_details_meal_category_text);
         areaText = findViewById(R.id.recipe_details_area_text);
         instructionsText = findViewById(R.id.recipe_details_instruction_text);
+        ingredientsRV = findViewById(R.id.recipe_details_ingredients_rv);
         dateModifiedText = findViewById(R.id.recipe_details_date_modified_text);
-
-        // Setting ingredients recycler view
-        RecyclerView ingredientsRV = findViewById(R.id.recipe_details_ingredients_rv);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-        ingredientAdapter = new NinjaIngredientAdapter(ninjaIngredients, mContext, new IngredientClickListener() {
-            @Override
-            public void onItemClick(NinjaIngredient ingredient) {
-                Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
-                intent.putExtra("ingredient", ingredient); // Send NinjaIngredient object to IngredientPopup
-                startActivity(intent);
-            }
-        });
-
-        ingredientsRV.setLayoutManager(mLayoutManager);
-        ingredientsRV.setItemAnimator(new DefaultItemAnimator());
-        ingredientsRV.setAdapter(ingredientAdapter);
 
         // Setting ViewById and attributes for YouTube recyclerView
         ytRecyclerView = findViewById(R.id.recipe_details_youtube_rv);
@@ -131,91 +110,54 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         // Setting ViewById for favourites
         addToFavourites = findViewById(R.id.add_to_favourites);
 
+        // get the mealId to be viewed
+        Bundle extras = getIntent().getExtras();
+        String mealId = extras.getString("mealId");
+
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        meal = dataSingleton.getMeal();
-        if (meal != null) {
-            setMealDetails(meal);
-        } else {
-            // get the mealId to be viewed
-            String mealId = getIntent().getStringExtra("mealId");
-            apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
-                @Override
-                public void onError(String message) { }
-
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        JSONArray _meals = response.getJSONArray("meals");
-                        meal = apiJson.mergeIntoJSONArray(_meals).get(0);
-                        dataSingleton.setMeal(meal);
-                        setMealDetails(meal);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-    }
-
-    private void setMealDetails(ApiMeal meal) {
-        // Set meal background image
-        Picasso
-                .with(mContext)
-                .load(meal.getStrMealThumb())
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        mealThumbnail.setBackground(new BitmapDrawable(getResources(), bitmap));
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) { }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) { }
-                });
-
-        // Setting meal details
-        mealName.setText(meal.getStrMeal());
-        mealCategory.setText(meal.getStrCategory());
-        areaText.setText(meal.getStrArea());
-        instructionsText.setText(meal.getStrInstructions());
-
-        if (!(meal.getDateModified() == null)) {
-            dateModifiedText.setText(meal.getDateModified());
-        }
-
-        String[] mealIngredients = meal.getArrIngredients();
-        String[] mealMeasures = meal.getArrMeasures();
-        String ninjaQuery = "";
-        for (int i = 0; i < mealIngredients.length; i++) {
-            ninjaQuery += mealMeasures[i] + " " + mealIngredients[i] + ", ";
-        }
-        // Remove the trailing ", "
-        ninjaQuery = ninjaQuery.substring(0, ninjaQuery.length() - 2);
-
-        apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
+        ApiService apiService = new ApiService(this);
+        apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
+            @Override
+            public void onError(String message) { }
 
             @Override
-            public void onError(String message) {
-                Toast.makeText(mContext, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
-            }
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray _meals = response.getJSONArray("meals");
+                    ApiMeal meal = apiJson.mergeIntoJSONArray(_meals).get(0);
+                    Picasso
+                            .with(mContext)
+                            .load(meal.getStrMealThumb())
+                            .into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                    mealThumbnail.setBackground(new BitmapDrawable(getResources(), bitmap));
+                                }
 
-            @Override
-            public void onResponse(JSONObject response) throws JSONException {
-                ninjaIngredients = apiJson.parseNinjaIngredients(response.getJSONArray("items"), mealIngredients, mealMeasures);
-                ingredientAdapter.setData(ninjaIngredients);
-                ingredientAdapter.notifyDataSetChanged();
-            }
-        });
+                                @Override
+                                public void onBitmapFailed(Drawable errorDrawable) { }
 
-        String[] mealIngredients = meal.getArrIngredients();
-        String[] mealMeasures = meal.getArrMeasures();
-        String ninjaQuery = "";
-        for (int i = 0; i < mealIngredients.length; i++) {
-            ninjaQuery += mealMeasures[i] + " " + mealIngredients[i] + ", ";
-        }
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) { }
+                            });
+
+                    // Setting meal details
+                    mealName.setText(meal.getStrMeal());
+                    mealCategory.setText(meal.getStrCategory());
+                    areaText.setText(meal.getStrArea());
+                    instructionsText.setText(meal.getStrInstructions());
+
+                    if (!(meal.getDateModified() == null)) {
+                        dateModifiedText.setText(meal.getDateModified());
+                    }
+
+                    String[] mealIngredients = meal.getArrIngredients();
+                    String[] mealMeasures = meal.getArrMeasures();
+                    String ninjaQuery = "";
+                    for (int i = 0; i < mealIngredients.length; i++) {
+                        ninjaQuery += mealMeasures[i] + " " + mealIngredients[i] + ", ";
+                    }
                     // Remove the trailing ", "
                     ninjaQuery = ninjaQuery.substring(0, ninjaQuery.length() - 2);
 
@@ -354,27 +296,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-
-        if (user != null) {
-            addToShoppingList.setEnabled(true);
-            findViewById(R.id.add_to_shopping_list_message).setVisibility(View.INVISIBLE);
-
-            addToShoppingList.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    reference = FirebaseDatabase.getInstance().getReference("Users");
-                    userID = user.getUid();
-                    String[] ingredients = meal.getArrIngredients();
-                    String[] measures = meal.getArrMeasures();
-                    for (int i = 0; i < ingredients.length; i++) {
-                        Ingredient ingredient = new Ingredient(
-                                Integer.parseInt(meal.getIdMeal()), ingredients[i], measures[i]);
-                        dbHandler.addItemToShoppingList(userID, ingredient);
-                    }
-                    Toast.makeText(mContext, "Ingredients has been added\nto your shopping list", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
     }
 
     private void setFavouriteButtonColor(ApiMeal meal) {
