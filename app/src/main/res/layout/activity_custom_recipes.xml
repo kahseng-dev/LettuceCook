@@ -137,6 +137,7 @@
                         android:layout_below="@id/custom_recipe_ingredients_label"
                         android:layout_width="match_parent"
                         android:layout_height="280dp"
+                        android:layout_marginBottom="12dp"
                         android:layout_marginTop="4dp"
                         android:textSize="18sp" />
 
@@ -145,8 +146,8 @@
                         android:layout_below="@id/custom_recipe_ingredients_rv"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="48dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="12dp"
                         android:textOff="Publish"
                         android:textOn="Unpublish"
                         android:textSize="18sp"
@@ -161,7 +162,8 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="48dp"
-                        android:text="Delete Recipe" />
+                        android:text="Delete Recipe"
+                        android:visibility="gone"/>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </RelativeLayout>

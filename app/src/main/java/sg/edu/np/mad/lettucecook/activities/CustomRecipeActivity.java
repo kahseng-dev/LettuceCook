@@ -187,12 +187,14 @@ public class CustomRecipeActivity extends AppCompatActivity {
                             publishStateButton.setChecked(createdRecipe.publishState);
                             publishStateButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick (View v){
-                                    if (publishStateButton.isChecked()) createdRecipe.publishState = true;
+                                public void onClick(View v) {
+                                    if (publishStateButton.isChecked())
+                                        createdRecipe.publishState = true;
                                     else createdRecipe.publishState = false;
                                     reference.child(userID).child("createdRecipesList").child(recipeID).child("publishState").setValue(createdRecipe.publishState);
                                 }
                             });
+                            deleteRecipeButton.setVisibility(View.VISIBLE);
                         }
                     }
 
