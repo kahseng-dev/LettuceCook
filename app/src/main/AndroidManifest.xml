@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sg.edu.np.mad.lettucecook">
-    <!-- Adding Camera, Writing External Storage Permission -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
@@ -13,29 +11,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LettuceCook"
-        android:hardwareAccelerated="true">
+        android:theme="@style/Theme.LettuceCook">
 
-        <activity android:name=".activities.AccountFavouritesActivity"></activity>
-        <activity android:name=".activities.BrowseActivity" />
-        <activity android:name=".activities.AccountRecipesActivity" />
+        <activity android:name=".LoginActivity" />
         <activity
-            android:name=".activities.CreateRecipeActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activities.LoginActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activities.CreateAccountActivity"
-            android:parentActivityName=".activities.LoginActivity" />
-        <activity
-            android:name=".activities.ForgotPasswordActivity"
-            android:parentActivityName=".activities.LoginActivity" />
-        <activity android:name=".activities.AccountActivity" />
-        <activity
-            android:name=".activities.MainActivity"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan">
+            android:name=".CreateAccountActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
@@ -43,22 +26,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.RecipeDetailsActivity"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.ShoppingListActivity" />
-        <activity
-            android:name=".activities.IngredientPopup"
-            android:theme="@style/IngredientPopup" />
-        <activity android:name=".activities.CustomRecipeActivity" />
-        <activity
-            android:name=".activities.NotificationActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:name=".RecipeDetailsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".ShoppingListActivity" />
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
 
-        <receiver android:name=".utils.AlarmReceiver" />
         <receiver android:name=".OpenAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
