@@ -116,7 +116,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             Toast.makeText(CreateRecipeActivity.this, "Please Login to use this feature", Toast.LENGTH_LONG).show();
             disableView(recipeName);
             disableView(recipeInstructions);
-            disableView(uploadRecipeButton);
+            disableView(saveRecipeImageButton);
             disableView(recipeImage);
             disableView(buttonAdd);
             disableView(createRecipeButton);
