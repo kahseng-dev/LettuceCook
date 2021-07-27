@@ -3,12 +3,20 @@ package sg.edu.np.mad.lettucecook.rv;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -18,7 +26,7 @@ import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 
 public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesViewHolder> {
     ArrayList<CreatedRecipe> recipeList;
-    ArrayList<String> recipeIDList = new ArrayList<>();
+    ArrayList<String> recipeIDList;
     String userID;
     Context context;
 
@@ -39,7 +47,9 @@ public class AccountRecipesAdapter extends RecyclerView.Adapter<AccountRecipesVi
     // Bind View Holder
     public void onBindViewHolder(AccountRecipesViewHolder holder, int position) {
         CreatedRecipe recipe = recipeList.get(position);
-        holder.accountRecipeName.setText(recipe.recipeName);
+
+        holder.accountRecipeName.setText(recipe.recipeName); // Set recipe name
+        Picasso.with(context).load(recipe.recipeImageURL).into(holder.accountRecipeImage); // Add recipe image
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
