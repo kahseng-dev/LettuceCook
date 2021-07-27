@@ -72,7 +72,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         SharedPreferences offlineStatePreferences = getSharedPreferences("offlineState", MODE_PRIVATE);
-        Boolean switchValue = offlineStatePreferences.getBoolean("switchValue", false);
+        boolean switchValue = offlineStatePreferences.getBoolean("switchValue", false);
 
         if (user == null) { // if the user is not logged in
             if (switchValue) {
@@ -219,7 +219,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                             );
 
                     SharedPreferences offlineStatePreferences = getSharedPreferences("offlineState", MODE_PRIVATE);
-                    Boolean switchValue = offlineStatePreferences.getBoolean("switchValue", false);
+                    boolean switchValue = offlineStatePreferences.getBoolean("switchValue", false);
 
                     offlineStateSwitch = (Switch) bottomSheetView.findViewById(R.id.offline_state_switch);
 

@@ -55,6 +55,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_recipes);
 
+        // setup toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -66,19 +67,23 @@ public class AccountRecipesActivity extends AppCompatActivity {
         createRecipeButton = findViewById(R.id.create_recipe_button);
         noAccountRecipeText = findViewById(R.id.account_no_recipe);
 
-        // Call recyclerview
+        // findviewby recipe recycler view
         RecyclerView recipeRecyclerView = findViewById(R.id.account_recipe_rv);
+        // create linear layout manager
         LinearLayoutManager mLayoutManger = new LinearLayoutManager(this);
 
+        // get user that is logged in
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        // If user is not logged in
+        // check if user is not logged in
         if (user == null) {
+            // bring them to login activity
             startActivity(new Intent(AccountRecipesActivity.this, LoginActivity.class));
             finish();
         }
 
         else {
+            // get user data
             reference = FirebaseDatabase.getInstance().getReference("Users");
             userID = user.getUid();
 
@@ -86,10 +91,12 @@ public class AccountRecipesActivity extends AppCompatActivity {
             reference.child(userID).child("createdRecipesList").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    // Loop through each createdRecipesList children and append to createdRecipeList
+                    // Loop through each created recipes list in the snapshot
                     for(DataSnapshot dataSnapshot : snapshot.getChildren())
                     {
+                        // add the created recipes' key into the recipeID list
                         recipeIDList.add(dataSnapshot.getKey());
+                        // add created recipe object into created recipe list
                         CreatedRecipe createdRecipe = dataSnapshot.getValue(CreatedRecipe.class);
                         createdRecipeList.add(createdRecipe);
                     }
@@ -103,7 +110,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
                         recipeRecyclerView.setVisibility(View.VISIBLE); // Show recyclerview if not empty
                         noAccountRecipeText.setVisibility(View.INVISIBLE); // Hide no account recipe message if not empty
 
-                        // Add customized created recipes to recycler view
+                        // Add created recipes to recycler view
                         AccountRecipesAdapter sAdapter = new AccountRecipesAdapter(createdRecipeList, AccountRecipesActivity.this, recipeIDList, userID);
                         recipeRecyclerView.setLayoutManager(mLayoutManger);
                         recipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -111,7 +118,6 @@ public class AccountRecipesActivity extends AppCompatActivity {
                     }
                 }
 
-                // Validation in case cancelled
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(AccountRecipesActivity.this, "Unable to retrieve information!", Toast.LENGTH_LONG).show();
@@ -119,7 +125,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
             });
         }
 
-        // Create Recipe Button onClick
+        // if create recipe button is clicked, bring user to create recipe activity
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +135,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
         });
     }
 
-    // if the user clicks on the back button in the toolbar, bring them back to login activity.
+    // if the user clicks on the back button in the toolbar, bring user back to account activity.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -142,6 +148,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // if the user clicks on the back button in the bottom navigation buttons, bring user back to account activity.
     @Override
     public void onBackPressed() {
         startActivity(new Intent(getApplicationContext(), AccountActivity.class));

@@ -43,6 +43,7 @@ public class BrowseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse);
 
         RecyclerView browseRV = findViewById(R.id.browse_browse_rv);
+
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,6 +52,7 @@ public class BrowseActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        // get query from intent
         Intent intent = getIntent();
         String _query = intent.getStringExtra("query");
         String query = _query.equals("Random") ? "randomselection.php" : "filter.php?c=" + _query;
@@ -74,9 +76,7 @@ public class BrowseActivity extends AppCompatActivity {
 
         apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
             @Override
-            public void onError(String message) {
-
-            }
+            public void onError(String message) {Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show(); }
 
             @Override
             public void onResponse(JSONObject response) {
@@ -106,16 +106,18 @@ public class BrowseActivity extends AppCompatActivity {
         return true;
     }
 
-    // if the user clicks on the back button in the toolbar, bring them back to main activity.
+    // toolbar buttons
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                // bring user back to the main activity
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
 
             case R.id.notification:
+                // bring user to notification activity
                 Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
                 intent.putExtra("layoutId", R.layout.activity_browse);
 

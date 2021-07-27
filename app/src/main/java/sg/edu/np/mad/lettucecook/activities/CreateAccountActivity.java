@@ -42,8 +42,10 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
+        // get firebase authentication instance
         mAuth = FirebaseAuth.getInstance();
 
+        // toolbar setup
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -51,16 +53,20 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
         toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
 
+        // setup create button on click
         createButton = (Button) findViewById(R.id.create_account_button);
         createButton.setOnClickListener(this);
 
+        // setup login account on click
         loginAccount = (TextView) findViewById(R.id.login_link);
         loginAccount.setOnClickListener(this);
 
+        // setup EditTexts
         editTextUsername = (EditText) findViewById(R.id.create_account_username);
         editTextEmail = (EditText) findViewById(R.id.create_account_email);
         editTextPassword = (EditText) findViewById(R.id.create_account_password);
 
+        // setup progress bar
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         // Text change listener to watch if all text fields are filled to enable button.
@@ -105,18 +111,21 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        // if email address input is not in email format
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Please provide valid email!");
             editTextEmail.requestFocus();
             return;
         }
 
+        // password length must be more than 6 due to firebase
         if (password.length() < 6) {
             editTextPassword.setError("Min password length is 6 characters!");
             editTextPassword.requestFocus();
             return;
         }
 
+        // creating firebase user account with email and password
         progressBar.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -165,6 +174,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         return super.onOptionsItemSelected(item);
     }
 
+    // if user clicks on the back button in bottom buttons, bring them back to login activity
     @Override
     public void onBackPressed() {
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));

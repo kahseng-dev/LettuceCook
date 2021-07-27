@@ -114,8 +114,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String mealId = extras.getString("mealId");
 
+        // get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // load recipe details
         ApiService apiService = new ApiService(this);
         apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
             @Override

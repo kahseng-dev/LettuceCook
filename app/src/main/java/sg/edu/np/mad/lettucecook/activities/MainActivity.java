@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // setup recycler view
         browseRV = findViewById(R.id.main_browse_rv); // Browse recycler view
         communityRV = findViewById(R.id.main_community_rv);
 
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        // setup browse recycler view
         BrowseAdapter mAdapter = new BrowseAdapter(mContext);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
 
@@ -139,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         browseRV.setItemAnimator(new DefaultItemAnimator());
         browseRV.setAdapter(mAdapter);
 
+        // get community recipes and display it on the community recycler view
         reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -166,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.browse);
 
