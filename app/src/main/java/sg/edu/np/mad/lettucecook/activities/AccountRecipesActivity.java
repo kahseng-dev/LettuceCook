@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,15 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
-import sg.edu.np.mad.lettucecook.models.DBHandler;
-import sg.edu.np.mad.lettucecook.models.User;
 import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
 
 public class AccountRecipesActivity extends AppCompatActivity {
@@ -86,6 +79,7 @@ public class AccountRecipesActivity extends AppCompatActivity {
             reference.child(userID).child("createdRecipesList").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                     // Loop through each createdRecipesList children and append to createdRecipeList
                     for(DataSnapshot dataSnapshot : snapshot.getChildren())
                     {
