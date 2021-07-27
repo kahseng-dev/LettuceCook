@@ -138,6 +138,7 @@
                         android:layout_below="@id/custom_recipe_ingredients_label"
                         android:layout_width="match_parent"
                         android:layout_height="280dp"
+                        android:layout_marginBottom="12dp"
                         android:layout_marginTop="4dp"
                         android:textSize="18sp" />
 
@@ -146,13 +147,14 @@
                         android:layout_below="@id/custom_recipe_ingredients_rv"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
+                        android:layout_marginBottom="12dp"
                         android:layout_marginTop="20dp"
                         android:textOff="Publish"
                         android:textOn="Unpublish"
                         android:textSize="18sp"
                         android:visibility="gone"/>
                   
-                    <Button
+                   <Button
                         android:id="@+id/delete_recipe"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
@@ -162,7 +164,9 @@
                         android:layout_marginRight="4dp"
                         android:textSize="18sp"
                         android:text="Delete Recipe"
+                        android:visibility="gone"
                         app:backgroundTint="@color/red"/>
+                  
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
