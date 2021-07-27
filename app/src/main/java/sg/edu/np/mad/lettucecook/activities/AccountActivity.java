@@ -38,17 +38,21 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+        // get current user that is logged in
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // if user is not logged in bring them to login activity
         if (user == null) {
             startActivity(new Intent(mContext, LoginActivity.class));
             finish();
         }
 
         else {
+            // get User data
             reference = FirebaseDatabase.getInstance().getReference("Users");
             userID = user.getUid();
 
+            // set ViewIds
             greeting = (TextView) findViewById(R.id.account_greeting);
             favourites = (LinearLayout) findViewById(R.id.account_favourites);
             recipes = (LinearLayout) findViewById(R.id.account_recipes);
@@ -57,8 +61,10 @@ public class AccountActivity extends AppCompatActivity {
             reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // convert user snapshot to user class
                     User userProfile = snapshot.getValue(User.class);
 
+                    // if user is in database
                     if (userProfile != null) {
                         String username = userProfile.username;
                         String greetingMessage = "Hello " + username + "!";
@@ -72,6 +78,7 @@ public class AccountActivity extends AppCompatActivity {
                 }
             });
 
+            // if user clicks on view favourites section bring them to the account favourites activity
             favourites.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,8 +87,7 @@ public class AccountActivity extends AppCompatActivity {
                 }
             });
 
-            // if the user clicks on the recipes section in account activity
-            // bring them to the account recipes activity
+            // if the user clicks on the recipes section in account activity bring them to the account recipes activity
             recipes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,7 +97,7 @@ public class AccountActivity extends AppCompatActivity {
             });
 
             // if the user clicks on the log out section in account activity
-            // bring them to the login activity without parsing the userId
+            // logout from firebase and bring them to the login activity
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -42,26 +42,33 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // setup create account on click
         createAccount = (TextView) findViewById(R.id.create_account_link);
         createAccount.setOnClickListener(this);
 
+        // setup forgot password on click
         forgotPassword = (TextView) findViewById(R.id.forgot_password);
         forgotPassword.setOnClickListener(this);
 
+        // setup login button on click
         loginButton = (Button) findViewById(R.id.login_button);
         loginButton.setOnClickListener(this);
 
+        // setup EditTexts for email and password
         editTextEmail = (EditText) findViewById(R.id.login_email);
         editTextPassword = (EditText) findViewById(R.id.login_password);
 
+        // setup progress bar
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        // firebase authentication instance
         mAuth = FirebaseAuth.getInstance();
 
         // Text change listener to watch if both text fields are filled to enable button.
         editTextEmail.addTextChangedListener(loginTextWatch);
         editTextPassword.addTextChangedListener(loginTextWatch);
 
+        // navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.account);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -123,12 +130,14 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        // check if email is in email format
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Please enter a valid email!");
             editTextEmail.requestFocus();
             return;
         }
 
+        // check if password is less than 6 characters
         if (password.length() < 6) {
             editTextPassword.setError("Min password length is 6 characters!");
             editTextPassword.requestFocus();

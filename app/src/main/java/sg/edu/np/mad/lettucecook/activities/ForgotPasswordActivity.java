@@ -34,6 +34,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
+        // toolbar setup
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -41,14 +42,20 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
         toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
 
+        // setup progress bar
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        // setup editTexts
         editTextEmail = (EditText) findViewById(R.id.forgot_password_email);
 
+        // setup reset password button on click
         resetPasswordButton = (Button) findViewById(R.id.reset_password_button);
         resetPasswordButton.setOnClickListener(this);
 
+        // get firebase authenticate instance
         mAuth = FirebaseAuth.getInstance();
 
+        // add text watch to email edit text to check for field input
         editTextEmail.addTextChangedListener(forgotPasswordTextWatch);
     }
 
@@ -64,6 +71,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private void resetPassword() {
         String email = editTextEmail.getText().toString().trim();
 
+        // check if email input is in email format
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Please provide valid email");
             editTextEmail.requestFocus();

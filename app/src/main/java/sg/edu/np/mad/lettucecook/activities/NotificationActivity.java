@@ -43,6 +43,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_notification);
 //        Log.v("Meall", DataSingleton.getInstance().getMeal().getIdMeal());
 
+        // setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -50,9 +51,11 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
         toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
 
+        // setup buttons on click
         findViewById(R.id.setButton).setOnClickListener(this);
         findViewById(R.id.cancelButton).setOnClickListener(this);
 
+        // if intent has a meal id extra display preset message for recipe reminder
         if (getIntent().hasExtra("mealId")) {
             ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
             alertMessage = findViewById(R.id.alertMessage);
@@ -92,6 +95,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
         intent.putExtra("notificationId", notificationId);
         intent.putExtra("message", alertMessage.getText().toString());
 
+        // if intent has meal id pass meal id so that when user clicks on notification it brings them to the recipe set
         if (getIntent().hasExtra("mealId")) {
             Bundle extras = getIntent().getExtras();
             String mealId = extras.getString("mealId");

@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         // Set DataSingleton meals to null so that Browse will make a new request
         dataSingleton.setMeals(null);
 
+        // setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,9 +74,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // setup recycler view
         browseRV = findViewById(R.id.main_browse_rv); // Browse recycler view
         communityRV = findViewById(R.id.main_community_rv);
 
+//        String query = "random.php";
+//        apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
+//
+//            @Override
+//            public void onError(String message) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    JSONArray _meals = response.getJSONArray("meals");
+//
+//                    // Make arrays from the flat JSON structure
+//                    meals = apiJson.mergeIntoJSONArray(_meals);
+//
+//                    Picasso.with(mContext)
+//                            .load(meals.get(0).getStrMealThumb())
+//                            .into(featuredImage);
+//                    featuredName.setText(meals.get(0).getStrMeal());
+//
+//                    featuredImage.setOnClickListener(view -> {
+//                        Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
+//                        intent.putExtra("mealId", meals.get(0).getIdMeal());
+//                        startActivity(intent);
+//                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                    });
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+        // setup browse recycler view
+        BrowseAdapter mAdapter = new BrowseAdapter(mContext);
         BrowseAdapter browseAdapter = new BrowseAdapter(mContext);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
 
@@ -83,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         browseRV.setItemAnimator(new DefaultItemAnimator());
         browseRV.setAdapter(browseAdapter);
 
+        // get community recipes and display it on the community recycler view
         reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -110,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.browse);
 
