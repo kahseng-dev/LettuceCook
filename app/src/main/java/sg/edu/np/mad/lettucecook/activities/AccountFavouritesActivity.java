@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -32,14 +32,15 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
-import sg.edu.np.mad.lettucecook.rv.AccountFavouritesAdapter;
-import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
+import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
+import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
 public class AccountFavouritesActivity extends AppCompatActivity {
+    DataSingleton dataSingleton = DataSingleton.getInstance();
+
     private Toolbar toolbar;
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -54,6 +55,8 @@ public class AccountFavouritesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_favourites);
+
+        dataSingleton.setReturnTo(2);
 
         // toolbar setup
         toolbar = findViewById(R.id.toolbar);
@@ -82,10 +85,19 @@ public class AccountFavouritesActivity extends AppCompatActivity {
             // setup favourites recycler view
             favouritesRV = findViewById(R.id.account_favourites_rv);
             LinearLayoutManager mLayoutManger = new LinearLayoutManager(AccountFavouritesActivity.this);
-            AccountFavouritesAdapter sAdapter = new AccountFavouritesAdapter(new ArrayList<>(), mContext);
+            ApiMealAdapter mAdapter = new ApiMealAdapter(mContext);
             favouritesRV.setLayoutManager(mLayoutManger);
             favouritesRV.setItemAnimator(new DefaultItemAnimator());
-            favouritesRV.setAdapter(sAdapter);
+            favouritesRV.setAdapter(mAdapter);
+
+            ArrayList<ApiMeal> meals = dataSingleton.getMeals();
+
+            // If coming from RecipeDetails, display same data
+            if (meals != null) {
+                mAdapter.setData(meals);
+                mAdapter.notifyDataSetChanged();
+                return;
+            }
 
             // Retrieve data from Firebase
             reference.child(userID).child("favouritesList").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -95,7 +107,7 @@ public class AccountFavouritesActivity extends AppCompatActivity {
                     for (DataSnapshot favouritesSnapshot : snapshot.getChildren())
                     {
                         // get each recipe details from MealDB
-                        apiService.get(ApiURL.MealDB, "lookup.php?i=" + favouritesSnapshot.getValue().toString(), new VolleyResponseListener() {
+                        apiService.get("lookup.php?i=" + favouritesSnapshot.getValue().toString(), new VolleyResponseListener() {
                             @Override
                             public void onError(String message) { }
 
@@ -105,9 +117,10 @@ public class AccountFavouritesActivity extends AppCompatActivity {
                                     JSONArray _meals = response.getJSONArray("meals");
                                     ApiMeal meal = apiJson.mergeIntoJSONArray(_meals).get(0);
 
+                                    dataSingleton.addMeal(meal);
                                     // add meal data to adapter and display on RV
-                                    sAdapter.addData(meal);
-                                    sAdapter.notifyDataSetChanged();
+                                    mAdapter.addData(meal);
+                                    mAdapter.notifyDataSetChanged();
                                 }
 
                                 catch (JSONException e) {
@@ -119,13 +132,13 @@ public class AccountFavouritesActivity extends AppCompatActivity {
 
                     // Check if favouritesList is empty
                     if (!snapshot.hasChildren()) {
-                        favouritesRV.setVisibility(View.INVISIBLE); // Hide recyclerview if empty
+                        favouritesRV.setVisibility(View.GONE); // Hide recyclerview if empty
                         noAccountFavouritesText.setVisibility(View.VISIBLE); // Show no account favourites message if empty
                     }
 
                     else {
                         favouritesRV.setVisibility(View.VISIBLE); // Show recyclerview if not empty
-                        noAccountFavouritesText.setVisibility(View.INVISIBLE); // Hide no account favourites message if not empty
+                        noAccountFavouritesText.setVisibility(View.GONE); // Hide no account favourites message if not empty
                     }
                 }
 
@@ -143,6 +156,7 @@ public class AccountFavouritesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                dataSingleton.setMeals(null);
                 startActivity(new Intent(getApplicationContext(), AccountActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;

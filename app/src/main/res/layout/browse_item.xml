@@ -20,46 +20,19 @@
             android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/browse_name"
+            android:layout_gravity="bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="12dp"
             android:maxLines="2"
             android:shadowColor="@color/shadow_gray"
             android:shadowRadius="4"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold" >
-            <TextView
-                android:id="@+id/browse_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:maxLines="2"
-                android:shadowColor="@color/shadow_gray"
-                android:shadowRadius="4"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/community_creator_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="8dp"
-                app:drawableStartCompat="@drawable/ic_person"
-                android:shadowColor="@color/shadow_gray"
-                android:shadowRadius="4"
-                android:textColor="@color/white"
-                app:drawableTint="@color/white"
-                android:layout_below="@+id/browse_name"
-                android:gravity="center_vertical"
-                android:textSize="12sp" />
-
-        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

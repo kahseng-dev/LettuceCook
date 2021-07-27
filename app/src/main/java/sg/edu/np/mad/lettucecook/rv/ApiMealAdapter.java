@@ -3,9 +3,11 @@ package sg.edu.np.mad.lettucecook.rv;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,8 +62,14 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         holder.name.setText(meal.getStrMeal());
 
         // Show the category and area if they are not null
-        if (area != null) holder.area.setText(area);
-        if (category != null) holder.category.setText(category);
+        // If area is null, then category is null
+        if (area != null) {
+            holder.area.setText(area);
+            holder.category.setText(category);
+        } else {
+            holder.area.setVisibility(View.GONE);
+            holder.category.setVisibility(View.GONE);
+        }
 
         // Make view clickable, show recipe details page when clicked
         holder.itemView.setOnClickListener(view -> {
@@ -85,14 +93,15 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         this.dataCopy.addAll(data);
     }
 
+    public void addData(ApiMeal meal) {
+        this.data.add(meal);
+    }
+
     public void addData(ArrayList<ApiMeal> data) {
         for (ApiMeal meal : data) {
             // Check for duplicates
             if (mealIdHashSet.add(meal.getIdMeal())) {
                 this.data.add(meal);
-
-                // Used as a comparison list when searching
-                // Data in this list should not be modified
                 this.dataCopy.add(meal);
                 dataSingleton.addMeal(meal);
             }

@@ -9,7 +9,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -21,14 +20,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Random;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.utils.AlarmReceiver;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
-import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
 public class NotificationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -41,7 +39,6 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-//        Log.v("Meall", DataSingleton.getInstance().getMeal().getIdMeal());
 
         // setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -64,7 +61,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             String mealId = extras.getString("mealId");
 
             ApiService apiService = new ApiService(this);
-            apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
+            apiService.get("lookup.php?i=" + mealId, new VolleyResponseListener() {
                 @Override
                 public void onError(String message) { }
 
@@ -101,10 +98,12 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             String mealId = extras.getString("mealId");
             intent.putExtra("mealId", mealId);
         }
+        int requestId = new Random().nextInt(500000);
+        intent.putExtra("requestId", requestId);
 
         // PendingIntent
         PendingIntent alarmIntent = PendingIntent.getBroadcast(
-            NotificationActivity.this, 0,intent, PendingIntent.FLAG_CANCEL_CURRENT
+            NotificationActivity.this, requestId, intent, PendingIntent.FLAG_CANCEL_CURRENT
         );
 
         // AlarmManager

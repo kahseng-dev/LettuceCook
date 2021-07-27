@@ -24,8 +24,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
-
 import sg.edu.np.mad.lettucecook.R;
 
 public class LoginActivity extends AppCompatActivity implements  View.OnClickListener {

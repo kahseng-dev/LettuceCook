@@ -19,7 +19,7 @@ import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.activities.CustomRecipeActivity;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 
-public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecipesViewHolder> {
+public class CommunityRecipesAdapter extends RecyclerView.Adapter<BrowseViewHolder> {
     ArrayList<CreatedRecipe> data;
     ArrayList<String> recipeIDList;
     Context mContext;
@@ -32,23 +32,23 @@ public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecip
 
     @NonNull
     @Override
-    public CommunityRecipesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BrowseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.browse_item,
                 parent,
                 false);
 
-        return new CommunityRecipesViewHolder(item);
+        return new BrowseViewHolder(item);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommunityRecipesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BrowseViewHolder holder, int position) {
         CreatedRecipe meal = data.get(position);
         holder.name.setText(meal.getRecipeName()); // Add recipe name
         Picasso.with(mContext).load(meal.recipeImageURL).into(holder.thumbnail); // Add recipe image
 
-        // Make thumbnail clickable
-        holder.thumbnail.setOnClickListener(view -> {
+        // Make view clickable
+        holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, CustomRecipeActivity.class);
             intent.putExtra("Recipe", data.get(position));
             intent.putExtra("recipeId", recipeIDList.get(position));

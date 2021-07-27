@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.models.DBHandler;
 import sg.edu.np.mad.lettucecook.models.User;
 
 public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener {

@@ -36,12 +36,11 @@ public class AccountRecipesActivity extends AppCompatActivity {
 
     Button createRecipeButton;
     TextView noAccountRecipeText;
-    String addRecipeName, addRecipeArea, addRecipeCategory, addRecipeInstructions;
 
     private Toolbar toolbar;
     private FirebaseUser user;
     private DatabaseReference reference;
-    private String userID, recipeID;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
