@@ -99,25 +99,28 @@ public class CreateRecipeActivity extends AppCompatActivity {
         recipeName = findViewById(R.id.create_recipe_name);
         recipeInstructions = findViewById(R.id.create_recipe_instructions);
 
-        // Find buttons and layout lists
-        layoutList = findViewById(R.id.create_recipe_layout_list);
-        buttonAdd = findViewById(R.id.addIngredientButton);
-        createRecipeButton = findViewById(R.id.create_recipe_create_button);
-
         // Add Recipe Image IDs
         uploadRecipeButton = findViewById(R.id.upload_recipe_image_button);
         recipeImage = findViewById(R.id.create_recipe_image);
         progressBar = findViewById(R.id.create_recipe_progress_bar);
+
+        // Find buttons and layout lists
+        layoutList = findViewById(R.id.create_recipe_layout_list);
+        buttonAdd = findViewById(R.id.addIngredientButton);
+        createRecipeButton = findViewById(R.id.create_recipe_create_button);
 
         // Get userID from Firebase
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user == null) {
             Toast.makeText(CreateRecipeActivity.this, "Please Login to use this feature", Toast.LENGTH_LONG).show();
-            createRecipeButton.setEnabled(false);
-        }
-
-        else {
+            disableView(recipeName);
+            disableView(recipeInstructions);
+            disableView(uploadRecipeButton);
+            disableView(recipeImage);
+            disableView(buttonAdd);
+            disableView(createRecipeButton);
+        } else {
             reference = FirebaseDatabase.getInstance().getReference("Users");
             userID = user.getUid();
 
@@ -303,6 +306,17 @@ public class CreateRecipeActivity extends AppCompatActivity {
         });
     }
 
+    private void disableView(View view) {
+        view.setEnabled(false);
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CreateRecipeActivity.this, "Please Login to use this feature", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -350,6 +364,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     }
 
     // Function to validate user input for Create Recipe form
+    // returns a query to be used for CalorieNinjas
     private String checkIfValidAndRead() throws Exception {
         ingredientList.clear();
         String ninjaQuery = "";
@@ -366,8 +381,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             // Check if both Recipe Name & Recipe Measure inputs are empty
             if (!editName.getText().toString().equals("") && !editMeasure.getText().toString().equals("")) {
-                String ingredientName = editName.getText().toString();
-                String ingredientMeasure = editMeasure.getText().toString();
+                String ingredientName = editName.getText().toString().toLowerCase();
+                String ingredientMeasure = editMeasure.getText().toString().toLowerCase();
                 ingredient.setIngredientName(ingredientName);
                 ingredient.setIngredientMeasure(ingredientMeasure);
                 ninjaQuery += ingredientMeasure + " " + ingredientName + ", ";
@@ -415,8 +430,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
     public void addView() {
         View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient, null, false);
 
-        EditText editTextName = ingredientView.findViewById(R.id.row_add_ingredient_edit_name);
-        EditText editTextMeasure = ingredientView.findViewById(R.id.edit_ingredient_measure);
         ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
 
         layoutList.addView(ingredientView); // Add user view to layout list

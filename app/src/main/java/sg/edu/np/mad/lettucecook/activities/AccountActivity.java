@@ -3,9 +3,9 @@ package sg.edu.np.mad.lettucecook.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -25,6 +25,8 @@ import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.User;
 
 public class AccountActivity extends AppCompatActivity {
+    Context mContext = this;
+
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
@@ -39,7 +41,7 @@ public class AccountActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user == null) {
-            startActivity(new Intent(AccountActivity.this, LoginActivity.class));
+            startActivity(new Intent(mContext, LoginActivity.class));
             finish();
         }
 
@@ -66,14 +68,14 @@ public class AccountActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(AccountActivity.this, "Oops! something went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Oops! something went wrong", Toast.LENGTH_LONG).show();
                 }
             });
 
             favourites.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent (AccountActivity.this, AccountFavouritesActivity.class));
+                    startActivity(new Intent (mContext, AccountFavouritesActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             });
@@ -83,7 +85,7 @@ public class AccountActivity extends AppCompatActivity {
             recipes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent (AccountActivity.this, AccountRecipesActivity.class));
+                    startActivity(new Intent (mContext, AccountRecipesActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             });
@@ -94,7 +96,7 @@ public class AccountActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent (AccountActivity.this, LoginActivity.class));
+                    startActivity(new Intent (mContext, LoginActivity.class));
                 }
             });
 
@@ -116,7 +118,7 @@ public class AccountActivity extends AppCompatActivity {
                             return true;
 
                         case R.id.create_recipe:
-                            // if the user clicks on create recipe, bring user to create recipe activity
+                            // bring user to CreateRecipeActivity
                             startActivity(new Intent(getApplicationContext(), CreateRecipeActivity.class));
                             overridePendingTransition(0, 0);
                             return true;
