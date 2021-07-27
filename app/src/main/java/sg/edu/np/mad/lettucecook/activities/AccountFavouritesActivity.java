@@ -55,6 +55,7 @@ public class AccountFavouritesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_favourites);
 
+        // toolbar setup
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -67,16 +68,18 @@ public class AccountFavouritesActivity extends AppCompatActivity {
         // get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // if user is not logged in bring them to login activity
         if (user == null) {
             startActivity(new Intent(AccountFavouritesActivity.this, LoginActivity.class));
             finish();
         }
 
         else {
+            // get user data
             reference = FirebaseDatabase.getInstance().getReference("Users");
             userID = user.getUid();
 
-            // Call recyclerview
+            // setup favourites recycler view
             favouritesRV = findViewById(R.id.account_favourites_rv);
             LinearLayoutManager mLayoutManger = new LinearLayoutManager(AccountFavouritesActivity.this);
             AccountFavouritesAdapter sAdapter = new AccountFavouritesAdapter(new ArrayList<>(), mContext);
@@ -88,9 +91,10 @@ public class AccountFavouritesActivity extends AppCompatActivity {
             reference.child(userID).child("favouritesList").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    // Loop through each createdRecipesList children and append to createdRecipeList
+                    // Loop through each favourite recipe in favouritesList
                     for (DataSnapshot favouritesSnapshot : snapshot.getChildren())
                     {
+                        // get each recipe details from MealDB
                         apiService.get(ApiURL.MealDB, "lookup.php?i=" + favouritesSnapshot.getValue().toString(), new VolleyResponseListener() {
                             @Override
                             public void onError(String message) { }
@@ -100,6 +104,8 @@ public class AccountFavouritesActivity extends AppCompatActivity {
                                 try {
                                     JSONArray _meals = response.getJSONArray("meals");
                                     ApiMeal meal = apiJson.mergeIntoJSONArray(_meals).get(0);
+
+                                    // add meal data to adapter and display on RV
                                     sAdapter.addData(meal);
                                     sAdapter.notifyDataSetChanged();
                                 }
@@ -132,7 +138,7 @@ public class AccountFavouritesActivity extends AppCompatActivity {
         }
     }
 
-    // if the user clicks on the back button in the toolbar, bring them back to main activity.
+    // if the user clicks on the back button in the toolbar, bring user back to account activity.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

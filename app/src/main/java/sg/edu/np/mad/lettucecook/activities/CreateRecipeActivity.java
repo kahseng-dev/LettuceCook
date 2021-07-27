@@ -78,7 +78,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     Spinner recipeAreaSpinner, recipeCategorySpinner;
 
     LinearLayout layoutList;
-    Button buttonAdd, createRecipeButton, uploadRecipeButton;
+    Button buttonAdd, createRecipeButton, saveRecipeImageButton;
     EditText recipeName, recipeInstructions;
     ImageView recipeImage;
 
@@ -100,7 +100,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         recipeInstructions = findViewById(R.id.create_recipe_instructions);
 
         // Add Recipe Image IDs
-        uploadRecipeButton = findViewById(R.id.upload_recipe_image_button);
+        saveRecipeImageButton = findViewById(R.id.upload_recipe_image_button);
         recipeImage = findViewById(R.id.create_recipe_image);
         progressBar = findViewById(R.id.create_recipe_progress_bar);
 
@@ -219,8 +219,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
                                             .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    if (savedRecipeImage == false) {
+
+                                                    if (!savedRecipeImage) {
                                                         Toast.makeText(mContext, "You have not saved your recipe image!", Toast.LENGTH_LONG).show();
+                                                    }
+                                                    else if (imageUri == null) {
+                                                        Toast.makeText(mContext, "Please add a recipe image!", Toast.LENGTH_LONG).show();
                                                     }
                                                     else {
                                                         addRecipeToFirebase(createdRecipe);
@@ -229,8 +233,11 @@ public class CreateRecipeActivity extends AppCompatActivity {
                                             })
                                             .show();
                                 }
-                                else if (savedRecipeImage == false) {
+                                else if (!savedRecipeImage) {
                                     Toast.makeText(mContext, "You have not saved your recipe image!", Toast.LENGTH_LONG).show();
+                                }
+                                else if (imageUri == null) {
+                                    Toast.makeText(mContext, "Please add a recipe image!", Toast.LENGTH_LONG).show();
                                 }
                                 else{
                                     addRecipeToFirebase(createdRecipe);
@@ -286,21 +293,22 @@ public class CreateRecipeActivity extends AppCompatActivity {
         recipeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent galleryIntent = new Intent();
-                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK);
                 galleryIntent.setType("image/*");
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(galleryIntent, GALLERY_ACTION_CODE);
             }
         });
 
-        uploadRecipeButton.setOnClickListener(new View.OnClickListener() {
+        saveRecipeImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (imageUri != null) {
                     uploadImageToFirebase(imageUri);
+                    savedRecipeImage = true;
                 }
                 else {
-                    Toast.makeText(mContext, "Please select a picture from your gallery!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Please select a picture from your gallery.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -336,7 +344,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         recipeImageURLValue = uri.toString(); // Set recipeImageURL to uri value
-                        savedRecipeImage = true;
                         progressBar.setVisibility(View.GONE); // Hide progress bar when successful
                         Toast.makeText(mContext, "Saved image to recipe.", Toast.LENGTH_LONG).show();
                     }
