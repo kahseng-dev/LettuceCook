@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                CommunityRecipesAdapter communityAdapter = new CommunityRecipesAdapter(communityRecipes, communityRecipeIDList,mContext);
+                CommunityRecipesAdapter communityAdapter = new CommunityRecipesAdapter(communityRecipes, communityRecipeIDList, mContext);
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
                 communityRV.setLayoutManager(mLayoutManager);
                 communityRV.setItemAnimator(new DefaultItemAnimator());
