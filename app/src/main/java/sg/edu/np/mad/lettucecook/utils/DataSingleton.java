@@ -41,4 +41,9 @@ public class DataSingleton {
     public void setMeals(ArrayList<ApiMeal> meals) {
         this.meals = meals;
     }
+
+    // For adding an individual meal to meals
+    public void addMeal(ApiMeal meal) {
+        this.meals.add(meal);
+    }
 }

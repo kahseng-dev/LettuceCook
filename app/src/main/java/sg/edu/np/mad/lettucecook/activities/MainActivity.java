@@ -32,9 +32,6 @@ import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.rv.BrowseAdapter;
 import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.DataSingleton;
-import sg.edu.np.mad.lettucecook.models.ApiMeal;
-import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
-import sg.edu.np.mad.lettucecook.utils.ApiService;
 
 public class MainActivity extends AppCompatActivity {
     Context mContext = this;
@@ -64,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (query.length() == 0) query = "Random";
                 dataSingleton.setMealQuery(query);
+                startActivity(new Intent(mContext, BrowseActivity.class));
                 return false;
             }
 

@@ -13,19 +13,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.activities.RecipeDetailsActivity;
+import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 
 public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     ArrayList<ApiMeal> data;
     ArrayList<ApiMeal> dataCopy;
+    HashSet<String> mealIdHashSet; // For checking duplicates
     Context mContext;
+    DataSingleton dataSingleton = DataSingleton.getInstance();
 
     public ApiMealAdapter(Context mContext) {
         this.data = new ArrayList<>();
         this.dataCopy = new ArrayList<>();
+        this.mealIdHashSet = new HashSet<>();
         this.mContext = mContext;
     }
 
@@ -80,6 +85,19 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         this.dataCopy.addAll(data);
     }
 
+    public void addData(ArrayList<ApiMeal> data) {
+        for (ApiMeal meal : data) {
+            // Check for duplicates
+            if (mealIdHashSet.add(meal.getIdMeal())) {
+                this.data.add(meal);
+
+                // Used as a comparison list when searching
+                // Data in this list should not be modified
+                this.dataCopy.add(meal);
+                dataSingleton.addMeal(meal);
+            }
+        }
+    }
     public void filter(String query) {
         // Clear data, meals will be added when user searches
         data.clear();
