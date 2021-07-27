@@ -337,9 +337,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent browseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
+                Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
 
                 if (getIntent().hasExtra("query")) {
+                    browseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
                     Bundle extras = getIntent().getExtras();
                     String query = extras.getString("query");
                     browseIntent.putExtra("query", query);
