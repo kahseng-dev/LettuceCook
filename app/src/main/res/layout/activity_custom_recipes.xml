@@ -26,9 +26,18 @@
             android:textSize="28sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/custom_recipe_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_below="@id/custom_recipe_name"/>
+
         <TextView
             android:id="@+id/custom_recipe_area"
-            android:layout_below="@id/custom_recipe_name"
+            android:layout_below="@id/custom_recipe_image"
             app:drawableStartCompat="@drawable/ic_location"
             app:drawableTint="@color/black"
             android:layout_width="match_parent"

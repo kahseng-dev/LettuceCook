@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +49,7 @@ public class CustomRecipeActivity extends AppCompatActivity {
     ApiService apiService = new ApiService(mContext);
 
     TextView createdRecipeName, createdRecipeArea, createdRecipeInstructions, createdRecipeCategory;
+    ImageView createdRecipeImage;
     ToggleButton publishStateButton;
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -73,6 +76,7 @@ public class CustomRecipeActivity extends AppCompatActivity {
         createdRecipeArea = findViewById(R.id.custom_recipe_area);
         createdRecipeInstructions = findViewById(R.id.custom_recipe_instructions);
         createdRecipeCategory = findViewById(R.id.custom_recipe_category);
+        createdRecipeImage = findViewById(R.id.custom_recipe_image);
 
         // Get created recipe
         CreatedRecipe createdRecipe = (CreatedRecipe) getIntent().getSerializableExtra("Recipe");
@@ -82,6 +86,7 @@ public class CustomRecipeActivity extends AppCompatActivity {
         createdRecipeArea.setText(createdRecipe.recipeArea);
         createdRecipeCategory.setText(createdRecipe.recipeCategory);
         createdRecipeInstructions.setText(createdRecipe.recipeInstructions);
+        Picasso.with(CustomRecipeActivity.this).load(createdRecipe.recipeImageURL).into(createdRecipeImage); // Add recipe image
 
         String ninjaQuery = apiJson.createNinjaQuery(createdRecipe.getIngredientList());
         
