@@ -84,7 +84,7 @@ public class BrowseActivity extends AppCompatActivity {
                     JSONArray _meals = response.getJSONArray("meals");
                     ArrayList<ApiMeal> meals = apiJson.mergeIntoJSONArray(_meals);
 
-                    ApiMealAdapter mAdapter = new ApiMealAdapter(meals, mContext);
+                    ApiMealAdapter mAdapter = new ApiMealAdapter(meals, _query, mContext);
 
                     LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
 
