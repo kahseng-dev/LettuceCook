@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
@@ -19,7 +21,7 @@ import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 
 public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecipesViewHolder> {
     ArrayList<CreatedRecipe> data;
-    ArrayList<String> recipeIDList = new ArrayList<>();
+    ArrayList<String> recipeIDList;
     Context mContext;
 
     public CommunityRecipesAdapter(ArrayList<CreatedRecipe> input, ArrayList<String> recipeIDList, Context context) {
@@ -42,14 +44,16 @@ public class CommunityRecipesAdapter extends RecyclerView.Adapter<CommunityRecip
     @Override
     public void onBindViewHolder(@NonNull CommunityRecipesViewHolder holder, int position) {
         CreatedRecipe meal = data.get(position);
-        holder.name.setText(meal.getRecipeName());
+        holder.name.setText(meal.getRecipeName()); // Add recipe name
+        Picasso.with(mContext).load(meal.recipeImageURL).into(holder.thumbnail); // Add recipe image
 
-        holder.name.setOnClickListener(view -> {
+        // Make thumbnail clickable
+        holder.thumbnail.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, CustomRecipeActivity.class);
             intent.putExtra("Recipe", data.get(position));
             intent.putExtra("recipeId", recipeIDList.get(position));
             mContext.startActivity(intent);
-            ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left); // Animation
         });
     }
 
