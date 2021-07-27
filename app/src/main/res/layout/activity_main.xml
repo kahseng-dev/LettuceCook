@@ -52,7 +52,10 @@
                 android:layout_below="@+id/main_browse_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:clipToPadding="false"
+                android:paddingEnd="12dp"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/main_community_title"
@@ -72,7 +75,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="48dp"/>
+                android:layout_marginBottom="48dp"
+                android:clipToPadding="false"
+                android:paddingEnd="12dp"
+                tools:ignore="RtlSymmetry" />
 
         </RelativeLayout>
     </ScrollView>

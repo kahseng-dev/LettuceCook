@@ -33,7 +33,7 @@ import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 
 public class BrowseActivity extends AppCompatActivity {
     Context mContext = this;
-    String query;
+    String dataSingletonQuery;
     ArrayList<ApiMeal> meals;
     ApiService apiService = new ApiService(mContext);
     ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
@@ -47,7 +47,7 @@ public class BrowseActivity extends AppCompatActivity {
         dataSingleton.setMeal(null);
 
         RecyclerView browseRV = findViewById(R.id.browse_browse_rv);
-        ApiMealAdapter mAdapter = new ApiMealAdapter(meals, mContext);
+        ApiMealAdapter mAdapter = new ApiMealAdapter(mContext);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
 
         browseRV.setLayoutManager(mLayoutManager);
@@ -64,19 +64,31 @@ public class BrowseActivity extends AppCompatActivity {
 
         // Setup search within results
         SearchView searchView = findViewById(R.id.browse_search);
-        query = dataSingleton.getMealQuery();
-        searchView.setQueryHint("Search within \"" + query + "\"");
+        dataSingletonQuery = dataSingleton.getMealQuery();
+        searchView.setQueryHint("Search within \"" + dataSingletonQuery + "\"");
         searchView.setIconifiedByDefault(false);
+
+        // Search for results within the current data set
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getBaseContext(), query, Toast.LENGTH_LONG).show();
-                return false;
+                searchView.clearFocus();
+                mAdapter.filter(query);
+                showToast();
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                mAdapter.filter(newText);
+                showToast();
+                return true;
+            }
+
+            private void showToast() {
+                int nResults = mAdapter.getItemCount(); // No. of results
+                String text = nResults + (nResults == 1 ? " result" : " results");
+                Toast.makeText(getBaseContext(), text, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -88,32 +100,58 @@ public class BrowseActivity extends AppCompatActivity {
             mAdapter.setData(meals);
             mAdapter.notifyDataSetChanged();
         } else {
-            String queryUrl = query.equals("Random") ? "randomselection.php" : "filter.php?c=" + query;
+            dataSingleton.setMeals(new ArrayList<>());
 
-            apiService.get(ApiURL.MealDB, queryUrl, new VolleyResponseListener() {
-                @Override
-                public void onError(String message) {
+            String[] browseCategories = getResources().getStringArray(R.array.browse_categories);
+            String[] browseAreas = getResources().getStringArray(R.array.browse_areas);
+            String[] queryList;
 
-                }
+            if (dataSingletonQuery.equals("Random")) {
+                queryList = new String[] { "randomselection.php" };
+            } else if (dataSingletonQuery.length() == 1) {
+                queryList = new String[] { "filter.php?f=" + dataSingletonQuery };
+            } else if (isQueryInStrArr(browseCategories, dataSingletonQuery)) {
+                queryList = new String[] { "filter.php?c=" + dataSingletonQuery };
+            } else if (isQueryInStrArr(browseAreas, dataSingletonQuery)) {
+                queryList = new String[] { "filter.php?a=" + dataSingletonQuery };
+            } else {
+                queryList = new String[] {
+                        "search.php?s=" + dataSingletonQuery,
+                        "filter.php?i=" + dataSingletonQuery,
+                        "filter.php?c=" + dataSingletonQuery,
+                        "filter.php?a=" + dataSingletonQuery,
+                };
+            }
+            for (String query : queryList) {
+                apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
+                    @Override
+                    public void onError(String message) {
 
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        JSONArray _meals = response.getJSONArray("meals");
-                        meals = apiJson.mergeIntoJSONArray(_meals);
-
-                        // Set meals in DataSingleton so that the page is the same
-                        // if the user returns from RecipeDetails or Notification
-                        dataSingleton.setMeals(meals);
-
-                        mAdapter.setData(meals);
-                        mAdapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            });
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray _meals = response.getJSONArray("meals");
+                            meals = apiJson.mergeIntoJSONArray(_meals);
+                            mAdapter.addData(meals);
+                            mAdapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
         }
+    }
+
+    private boolean isQueryInStrArr(String[] arr, String query) {
+        for (String str : arr) {
+            if (str.toLowerCase() == query.toLowerCase()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

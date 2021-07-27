@@ -64,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (query.length() == 0) query = "Random";
                 dataSingleton.setMealQuery(query);
+                startActivity(new Intent(mContext, BrowseActivity.class));
                 return false;
             }
 
