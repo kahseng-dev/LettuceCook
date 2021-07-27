@@ -31,10 +31,7 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
-import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.rv.AccountFavouritesAdapter;
-import sg.edu.np.mad.lettucecook.rv.AccountRecipesAdapter;
-import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
