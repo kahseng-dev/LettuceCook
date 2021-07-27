@@ -34,6 +34,7 @@
             android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="24sp"
+            android:shadowColor="@color/shadow_gray"
             android:shadowRadius="4"
             android:textStyle="bold" />
 
@@ -49,6 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:textColor="@color/white"
+                android:shadowColor="@color/shadow_gray"
+                android:shadowRadius="4"
                 android:textSize="16sp" />
 
             <TextView
@@ -58,6 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:textColor="@color/white"
+                android:shadowColor="@color/shadow_gray"
+                android:shadowRadius="4"
                 android:textSize="16sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

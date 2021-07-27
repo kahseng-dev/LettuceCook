@@ -1,69 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    tools:context=".activities.AccountRecipesActivity">
 
-    <RelativeLayout
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".activities.AccountRecipesActivity"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:background="@color/gray" >
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
-        <TextView
-            android:id="@+id/account_recipe_title"
-            android:layout_below="@id/toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="@string/accountRecipeTitle"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/account_recipe_rv"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/account_recipe_title"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp" />
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/account_no_recipe"
-            android:layout_below="@id/account_recipe_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="You do not have any recipes!"
-            android:textSize="18sp"
-            android:layout_marginTop="100dp"
-            android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/account_recipe_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/accountRecipeTitle"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:padding="20dp"
+                android:background="@color/white"/>
 
-        <LinearLayout
-            android:layout_below="@id/account_recipe_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="48dp"
-            android:gravity="center"
-            android:orientation="horizontal" >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/account_recipe_rv"
+                android:layout_below="@id/account_recipe_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/account_no_recipe"
+                android:layout_below="@id/account_recipe_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You do not have any recipes!"
+                android:textSize="18sp"
+                android:layout_marginTop="100dp"
+                android:layout_centerHorizontal="true" />
 
             <Button
                 android:id="@+id/create_recipe_button"
+                android:layout_below="@id/account_recipe_rv"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:text="@string/createRecipeButton" />
-        </LinearLayout>
-    </RelativeLayout>
-</ScrollView>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

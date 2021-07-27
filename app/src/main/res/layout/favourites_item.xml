@@ -20,9 +20,9 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:contentDescription=""
-            android:src="@drawable/shadow_overlay_gradient"
             android:scaleType="centerCrop"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:src="@drawable/shadow_overlay_gradient" />
 
         <TextView
             android:id="@+id/favourites_name"
@@ -34,6 +34,7 @@
             android:shadowRadius="4"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:shadowColor="@color/shadow_gray" />
     </androidx.cardview.widget.CardView>
 </LinearLayout>
