@@ -17,13 +17,11 @@ import java.util.ArrayList;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.activities.RecipeDetailsActivity;
-import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 
 public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     ArrayList<ApiMeal> data;
     String query;
     Context mContext;
-    DataSingleton dataSingleton = DataSingleton.getInstance();
 
     public ApiMealAdapter(ArrayList<ApiMeal> input, String query, Context mContext) {
         this.data = input;
@@ -73,9 +71,5 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     @Override
     public int getItemCount() {
         return data == null ? 0 : data.size();
-    }
-
-    public void setData(ArrayList<ApiMeal> data) {
-        this.data = data;
     }
 }

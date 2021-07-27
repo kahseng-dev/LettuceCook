@@ -1,8 +1,10 @@
 package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,11 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,8 +35,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,7 +51,6 @@ import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.rv.BrowseAdapter;
 import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
-import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
@@ -44,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<ApiMeal> meals;
     ApiService apiService = new ApiService(mContext);
     ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
-    DataSingleton dataSingleton = DataSingleton.getInstance();
 
     RecyclerView browseRV, communityRV;
 
@@ -57,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set DataSingleton meals to null so that Browse will make a new request
-        dataSingleton.setMeals(null);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                dataSingleton.setMealQuery(query);
+                Toast.makeText(getBaseContext(), query, Toast.LENGTH_LONG).show();
                 return false;
             }
 
@@ -83,12 +98,46 @@ public class MainActivity extends AppCompatActivity {
         browseRV = findViewById(R.id.main_browse_rv); // Browse recycler view
         communityRV = findViewById(R.id.main_community_rv);
 
-        BrowseAdapter browseAdapter = new BrowseAdapter(mContext);
+//        String query = "random.php";
+//        apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
+//
+//            @Override
+//            public void onError(String message) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    JSONArray _meals = response.getJSONArray("meals");
+//
+//                    // Make arrays from the flat JSON structure
+//                    meals = apiJson.mergeIntoJSONArray(_meals);
+//
+//                    Picasso.with(mContext)
+//                            .load(meals.get(0).getStrMealThumb())
+//                            .into(featuredImage);
+//                    featuredName.setText(meals.get(0).getStrMeal());
+//
+//                    featuredImage.setOnClickListener(view -> {
+//                        Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
+//                        intent.putExtra("mealId", meals.get(0).getIdMeal());
+//                        startActivity(intent);
+//                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                    });
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+        BrowseAdapter mAdapter = new BrowseAdapter(mContext);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
 
         browseRV.setLayoutManager(mLayoutManager);
         browseRV.setItemAnimator(new DefaultItemAnimator());
-        browseRV.setAdapter(browseAdapter);
+        browseRV.setAdapter(mAdapter);
 
         reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {

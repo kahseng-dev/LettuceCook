@@ -16,14 +16,14 @@ import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 
-public class NinjaIngredientAdapter extends RecyclerView.Adapter<NinjaIngredientViewHolder>{
+public class ApiIngredientsAdapter extends RecyclerView.Adapter<ApiIngredientViewHolder>{
     ArrayList<NinjaIngredient> data;
     Context mContext;
     ApiService apiService;
     private final IngredientClickListener listener;
     double totalCalories = 0;
 
-    public NinjaIngredientAdapter(ArrayList<NinjaIngredient> input, Context mContext, IngredientClickListener ingredientClickListener) {
+    public ApiIngredientsAdapter(ArrayList<NinjaIngredient> input, Context mContext, IngredientClickListener ingredientClickListener) {
         this.data = input;
         this.mContext = mContext;
         this.apiService = new ApiService(mContext);
@@ -32,18 +32,18 @@ public class NinjaIngredientAdapter extends RecyclerView.Adapter<NinjaIngredient
 
     @NonNull
     @Override
-    public NinjaIngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ApiIngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.api_ingredient,
                 parent,
                 false);
 
-        return new NinjaIngredientViewHolder(item);
+        return new ApiIngredientViewHolder(item);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull NinjaIngredientViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ApiIngredientViewHolder holder, int position) {
         NinjaIngredient ingredient = data.get(position);
         String measure = ingredient.getMeasure();
         String name = ingredient.getName();
@@ -57,9 +57,5 @@ public class NinjaIngredientAdapter extends RecyclerView.Adapter<NinjaIngredient
     @Override
     public int getItemCount() {
         return data == null ? 0 : data.size();
-    }
-
-    public void setData(ArrayList<NinjaIngredient> data) {
-        this.data = data;
     }
 }
