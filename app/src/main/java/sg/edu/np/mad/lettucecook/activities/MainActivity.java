@@ -17,6 +17,8 @@ import android.view.MenuItem;
 
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,18 +34,9 @@ import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.rv.BrowseAdapter;
 import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.DataSingleton;
-import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
-import sg.edu.np.mad.lettucecook.models.ApiMeal;
-import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
-import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
-import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class MainActivity extends AppCompatActivity {
     Context mContext = this;
-    ArrayList<ApiMeal> meals;
-    ApiService apiService = new ApiService(mContext);
-    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
     DataSingleton dataSingleton = DataSingleton.getInstance();
 
     RecyclerView browseRV, communityRV;
@@ -134,6 +127,14 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.create_recipe:
+                        // Get userID from Firebase
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user == null) {
+                            Toast.makeText(mContext, "Please Login to use this feature", Toast.LENGTH_LONG).show();
+                            return false;
+                        }
+
+                        // Bring user to CreateRecipeActivity
                         startActivity(new Intent(getApplicationContext(), CreateRecipeActivity.class));
                         overridePendingTransition(0, 0);
                         return true;

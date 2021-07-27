@@ -3,6 +3,7 @@ package sg.edu.np.mad.lettucecook.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,12 +22,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
 import sg.edu.np.mad.lettucecook.R;
 
 public class LoginActivity extends AppCompatActivity implements  View.OnClickListener {
+    Context mContext = this;
+
     private TextView createAccount, forgotPassword;
     private EditText editTextEmail, editTextPassword;
     private Button loginButton;
@@ -74,6 +78,14 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
 
                     // if the user clicks on create recipe
                     case R.id.create_recipe:
+                        // Get userID from Firebase
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user == null) {
+                            Toast.makeText(mContext, "Please Login to use this feature", Toast.LENGTH_LONG).show();
+                            return false;
+                        }
+
+                        // Bring user to CreateRecipeActivity
                         startActivity(new Intent(getApplicationContext(), CreateRecipeActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
@@ -128,12 +140,12 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    startActivity(new Intent(mContext, MainActivity.class));
                     progressBar.setVisibility(View.GONE);
                 }
 
                 else {
-                    Toast.makeText(LoginActivity.this, "Failed to login!\n" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Failed to login!\n" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                 }
             }
