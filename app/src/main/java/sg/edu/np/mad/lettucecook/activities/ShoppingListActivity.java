@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ import sg.edu.np.mad.lettucecook.models.User;
 import sg.edu.np.mad.lettucecook.rv.ShoppingListAdapter;
 
 public class ShoppingListActivity extends AppCompatActivity {
+    Context mContext = this;
+
     private RecyclerView shoppingListRV;
     private ImageView cartIcon;
     private TextView shoppingListText;
@@ -175,7 +178,14 @@ public class ShoppingListActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.create_recipe:
-                        // bring user to create recipe activity
+                        // Get userID from Firebase
+                        user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user == null) {
+                            Toast.makeText(mContext, "Please Login to use this feature", Toast.LENGTH_LONG).show();
+                            return false;
+                        }
+
+                        // Bring user to CreateRecipeActivity
                         startActivity(new Intent(getApplicationContext(), CreateRecipeActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
@@ -205,11 +215,11 @@ public class ShoppingListActivity extends AppCompatActivity {
                 return true;
 
             case R.id.setting:
-                if (user == null) Toast.makeText(ShoppingListActivity.this, "Please Login to use this feature", Toast.LENGTH_SHORT).show();
+                if (user == null) Toast.makeText(mContext, "Please Login to use this feature", Toast.LENGTH_SHORT).show();
 
                 else {
                     final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
-                            ShoppingListActivity.this, R.style.BottomSheetDialogTheme
+                            mContext, R.style.BottomSheetDialogTheme
                     );
 
                     View bottomSheetView = LayoutInflater.from(getApplicationContext())
@@ -265,7 +275,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                             ingredientList = dbHandler.getShoppingList(userID);
 
                             if (ingredientList.isEmpty()) {
-                                Toast.makeText(ShoppingListActivity.this, "There is nothing to backup", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "There is nothing to backup", Toast.LENGTH_SHORT).show();
                             } else {
                                 reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .child("shoppingList").setValue(ingredientList)
@@ -273,9 +283,9 @@ public class ShoppingListActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    Toast.makeText(ShoppingListActivity.this, "Backup Successfully!", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(mContext, "Backup Successfully!", Toast.LENGTH_SHORT).show();
                                                 } else {
-                                                    Toast.makeText(ShoppingListActivity.this, "Failed to Backup!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(mContext, "Failed to Backup!\n" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                                 }
                                             }
                                         });
@@ -296,7 +306,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
                                     if (userProfile != null) {
                                         if (userProfile.shoppingList == null) {
-                                            Toast.makeText(ShoppingListActivity.this, "Could not find previous backup", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(mContext, "Could not find previous backup", Toast.LENGTH_LONG).show();
                                         } else {
                                             ingredientList = userProfile.shoppingList;
 
@@ -308,7 +318,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                                                 dbHandler.addItemToShoppingList(userID, ingredientList.get(i));
                                             }
 
-                                            Toast.makeText(ShoppingListActivity.this, "Successfully Restored", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(mContext, "Successfully Restored", Toast.LENGTH_LONG).show();
                                             startActivity(getIntent());
                                         }
                                     }
@@ -316,7 +326,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-                                    Toast.makeText(ShoppingListActivity.this, "Failed to restore", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(mContext, "Failed to restore", Toast.LENGTH_LONG).show();
                                 }
                             });
                         }

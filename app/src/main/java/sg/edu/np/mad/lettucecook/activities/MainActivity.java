@@ -1,10 +1,8 @@
 package sg.edu.np.mad.lettucecook.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,38 +10,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -51,18 +33,11 @@ import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.rv.BrowseAdapter;
 import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
-import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
-import sg.edu.np.mad.lettucecook.models.ApiMeal;
-import sg.edu.np.mad.lettucecook.rv.ApiMealAdapter;
-import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
-import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
+import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 
 public class MainActivity extends AppCompatActivity {
     Context mContext = this;
-    ArrayList<ApiMeal> meals;
-    ApiService apiService = new ApiService(mContext);
-    ApiJsonSingleton apiJson = ApiJsonSingleton.getInstance();
+    DataSingleton dataSingleton = DataSingleton.getInstance();
 
     RecyclerView browseRV, communityRV;
 
@@ -75,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set DataSingleton meals to null so that Browse will make a new request
+        dataSingleton.setMeals(null);
+
         // setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getBaseContext(), query, Toast.LENGTH_LONG).show();
+                dataSingleton.setMealQuery(query);
                 return false;
             }
 
@@ -136,11 +114,12 @@ public class MainActivity extends AppCompatActivity {
 
         // setup browse recycler view
         BrowseAdapter mAdapter = new BrowseAdapter(mContext);
+        BrowseAdapter browseAdapter = new BrowseAdapter(mContext);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
 
         browseRV.setLayoutManager(mLayoutManager);
         browseRV.setItemAnimator(new DefaultItemAnimator());
-        browseRV.setAdapter(mAdapter);
+        browseRV.setAdapter(browseAdapter);
 
         // get community recipes and display it on the community recycler view
         reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -188,6 +167,14 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.create_recipe:
+                        // Get userID from Firebase
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user == null) {
+                            Toast.makeText(mContext, "Please Login to use this feature", Toast.LENGTH_LONG).show();
+                            return false;
+                        }
+
+                        // Bring user to CreateRecipeActivity
                         startActivity(new Intent(getApplicationContext(), CreateRecipeActivity.class));
                         overridePendingTransition(0, 0);
                         return true;

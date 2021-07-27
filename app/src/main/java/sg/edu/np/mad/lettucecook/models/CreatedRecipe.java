@@ -13,8 +13,19 @@ public class CreatedRecipe implements Serializable {
     public String recipeArea;
     public String recipeCategory;
     public String recipeInstructions;
+    public String recipeImageURL;
     public ArrayList<CreatedIngredient> ingredientList;
     public boolean publishState;
+
+    public CreatedRecipe(String recipeName, String recipeArea, String recipeCategory, String recipeInstructions, String recipeImageURL, ArrayList<CreatedIngredient> ingredientList) {
+        this.recipeName = recipeName;
+        this.recipeArea = recipeArea;
+        this.recipeCategory = recipeCategory;
+        this.recipeInstructions = recipeInstructions;
+        this.recipeImageURL = recipeImageURL;
+        this.ingredientList = ingredientList;
+        this.publishState = false;
+    }
 
     public CreatedRecipe(String recipeName, String recipeArea, String recipeCategory, String recipeInstructions, ArrayList<CreatedIngredient> ingredientList) {
         this.recipeName = recipeName;

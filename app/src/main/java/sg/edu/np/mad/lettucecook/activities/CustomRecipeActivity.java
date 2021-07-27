@@ -33,9 +33,8 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
-import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
+import sg.edu.np.mad.lettucecook.rv.NinjaIngredientAdapter;
 import sg.edu.np.mad.lettucecook.R;
-import sg.edu.np.mad.lettucecook.rv.CommunityRecipesAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
@@ -101,7 +100,7 @@ public class CustomRecipeActivity extends AppCompatActivity {
                 for (NinjaIngredient i: ninjaIngredients) {
                     Log.v("Meal", String.valueOf(i.getCalories()));
                 }
-                ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ninjaIngredients, mContext, new IngredientClickListener() {
+                NinjaIngredientAdapter adapter = new NinjaIngredientAdapter(ninjaIngredients, mContext, new IngredientClickListener() {
                     @Override
                     public void onItemClick(NinjaIngredient ingredient) {
                         Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);

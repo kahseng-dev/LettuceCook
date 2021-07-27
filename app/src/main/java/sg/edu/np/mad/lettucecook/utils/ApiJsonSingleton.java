@@ -115,7 +115,7 @@ public class ApiJsonSingleton {
     public String createNinjaQuery(ArrayList<CreatedIngredient> createdIngredients) {
         String ninjaQuery = "";
         for (CreatedIngredient i : createdIngredients) {
-            ninjaQuery += i.getIngredientMeasure() + " " + i.getIngredientName() + ", ";
+            ninjaQuery += i.getIngredientMeasure().toLowerCase() + " " + i.getIngredientName().toLowerCase() + ", ";
         }
         return ninjaQuery;
     }

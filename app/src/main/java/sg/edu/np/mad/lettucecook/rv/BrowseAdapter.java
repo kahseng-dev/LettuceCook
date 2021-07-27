@@ -17,9 +17,11 @@ import java.util.Random;
 
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.activities.BrowseActivity;
+import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 
 public class BrowseAdapter extends RecyclerView.Adapter<BrowseViewHolder>{
     Context mContext;
+    DataSingleton dataSingleton = DataSingleton.getInstance();
     String[] data;
     String[] images;
 
@@ -59,9 +61,9 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseViewHolder>{
 
         // Make image clickable, show recipe details page when clicked
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(mContext, BrowseActivity.class);
-            intent.putExtra("query", meal);
-            mContext.startActivity(intent);
+            // Set meal query in DataSingleton for multiple activities to access
+            dataSingleton.setMealQuery(meal);
+            mContext.startActivity(new Intent(mContext, BrowseActivity.class));
             ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             Toast.makeText(mContext, meal, Toast.LENGTH_SHORT).show();
         });

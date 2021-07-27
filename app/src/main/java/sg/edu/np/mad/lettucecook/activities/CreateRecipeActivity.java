@@ -1,44 +1,43 @@
 package sg.edu.np.mad.lettucecook.activities;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
-import android.content.ContentValues;
+
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,25 +48,26 @@ import java.util.ArrayList;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
-import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
-import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
+
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
-import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class CreateRecipeActivity extends AppCompatActivity {
-    private static final int CAMERA_ACTION_CODE = 1;
-    private static final int PERMISSION_CODE = 2;
+    private static final int GALLERY_ACTION_CODE = 2;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
     private Context mContext = CreateRecipeActivity.this;
 
+    private ProgressBar progressBar;
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    private Uri imageUri;
+
+
     // Initiate arrays
-    ArrayList<ApiMeal> meals;
     ArrayList<CreatedIngredient> ingredientList = new ArrayList<>();
 
     // Initiate API meal
@@ -78,13 +78,13 @@ public class CreateRecipeActivity extends AppCompatActivity {
     Spinner recipeAreaSpinner, recipeCategorySpinner;
 
     LinearLayout layoutList;
-    Button buttonAdd, createRecipeButton, addRecipeImageButton;
+    Button buttonAdd, createRecipeButton, uploadRecipeButton;
     EditText recipeName, recipeInstructions;
     ImageView recipeImage;
 
-    String recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeNameValue, recipeInstructionsValue;
+    String recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeNameValue, recipeInstructionsValue, recipeImageURLValue;
 
-    ActivityResultLauncher<Intent> activityResultLauncher;
+    boolean savedRecipeImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,54 +99,30 @@ public class CreateRecipeActivity extends AppCompatActivity {
         recipeName = findViewById(R.id.create_recipe_name);
         recipeInstructions = findViewById(R.id.create_recipe_instructions);
 
+        // Add Recipe Image IDs
+        uploadRecipeButton = findViewById(R.id.upload_recipe_image_button);
+        recipeImage = findViewById(R.id.create_recipe_image);
+        progressBar = findViewById(R.id.create_recipe_progress_bar);
+
         // Find buttons and layout lists
         layoutList = findViewById(R.id.create_recipe_layout_list);
         buttonAdd = findViewById(R.id.addIngredientButton);
         createRecipeButton = findViewById(R.id.create_recipe_create_button);
-
-        // Add Recipe Image IDs
-        addRecipeImageButton = findViewById(R.id.add_recipe_image_button);
-        recipeImage = findViewById(R.id.create_recipe_image);
 
         // Get userID from Firebase
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user == null) {
             Toast.makeText(CreateRecipeActivity.this, "Please Login to use this feature", Toast.LENGTH_LONG).show();
-            createRecipeButton.setEnabled(false);
-        }
-
-        else {
+            disableView(recipeName);
+            disableView(recipeInstructions);
+            disableView(uploadRecipeButton);
+            disableView(recipeImage);
+            disableView(buttonAdd);
+            disableView(createRecipeButton);
+        } else {
             reference = FirebaseDatabase.getInstance().getReference("Users");
             userID = user.getUid();
-
-            // Activity Result Launcher to add image
-            activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        // if codes all match
-                        Bundle bundle = result.getData().getExtras();
-                        Bitmap recipePhoto = (Bitmap) bundle.get("data");
-                        recipeImage.setImageBitmap(recipePhoto);
-                    }
-                }
-            });
-
-            // Add Recipe Image button click
-            addRecipeImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // If device supports camera feature
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        activityResultLauncher.launch(intent);
-                    }
-                    else {
-                        Toast.makeText(CreateRecipeActivity.this, "There is no app that supports this action", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
 
             // Set string to call Area list for API
             String areaQuery = "list.php?a=list";
@@ -210,7 +186,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                         recipeInstructionsValue = recipeInstructions.getText().toString();
 
                         // Create new CreatedRecipe object
-                        CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, ingredientList);
+                        CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, recipeImageURLValue, ingredientList);
 
                         String ninjaQuery = checkIfValidAndRead();
                         // Request ingredients' nutritional information
@@ -243,11 +219,20 @@ public class CreateRecipeActivity extends AppCompatActivity {
                                             .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    addRecipeToFirebase(createdRecipe);
+                                                    if (savedRecipeImage == false) {
+                                                        Toast.makeText(mContext, "You have not saved your recipe image!", Toast.LENGTH_LONG).show();
+                                                    }
+                                                    else {
+                                                        addRecipeToFirebase(createdRecipe);
+                                                    }
                                                 }
                                             })
                                             .show();
-                                } else {
+                                }
+                                else if (savedRecipeImage == false) {
+                                    Toast.makeText(mContext, "You have not saved your recipe image!", Toast.LENGTH_LONG).show();
+                                }
+                                else{
                                     addRecipeToFirebase(createdRecipe);
                                 }
                             }
@@ -258,8 +243,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 }
             });
         }
-        
-        // setting id of navigation bar
+
+        // Setting id of navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // Switch pages when different navigation buttons are tapped
@@ -296,9 +281,90 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        // Add Recipe Image button click
+        recipeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GALLERY_ACTION_CODE);
+            }
+        });
+
+        uploadRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageUri != null) {
+                    uploadImageToFirebase(imageUri);
+                }
+                else {
+                    Toast.makeText(mContext, "Please select a picture from your gallery!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void disableView(View view) {
+        view.setEnabled(false);
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CreateRecipeActivity.this, "Please Login to use this feature", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_ACTION_CODE && resultCode == RESULT_OK && data != null) {
+            imageUri = data.getData();
+            recipeImage.setImageURI(imageUri); // Set image to display on ImageView
+        }
+    }
+
+    // upload Image to Firebase storage
+    private void uploadImageToFirebase(Uri uri) {
+        final StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
+        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        recipeImageURLValue = uri.toString(); // Set recipeImageURL to uri value
+                        savedRecipeImage = true;
+                        progressBar.setVisibility(View.GONE); // Hide progress bar when successful
+                        Toast.makeText(mContext, "Saved image to recipe.", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                progressBar.setVisibility(View.VISIBLE); // Show progress bar when loading
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE); // Hide progress bar when failed
+                Toast.makeText(mContext, "Image saving failed!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    // Get file extension according to attached image
+    private String getFileExtension(Uri mUri) {
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(mUri));
     }
 
     // Function to validate user input for Create Recipe form
+    // returns a query to be used for CalorieNinjas
     private String checkIfValidAndRead() throws Exception {
         ingredientList.clear();
         String ninjaQuery = "";
@@ -315,8 +381,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             // Check if both Recipe Name & Recipe Measure inputs are empty
             if (!editName.getText().toString().equals("") && !editMeasure.getText().toString().equals("")) {
-                String ingredientName = editName.getText().toString();
-                String ingredientMeasure = editMeasure.getText().toString();
+                String ingredientName = editName.getText().toString().toLowerCase();
+                String ingredientMeasure = editMeasure.getText().toString().toLowerCase();
                 ingredient.setIngredientName(ingredientName);
                 ingredient.setIngredientMeasure(ingredientMeasure);
                 ninjaQuery += ingredientMeasure + " " + ingredientName + ", ";
@@ -359,12 +425,11 @@ public class CreateRecipeActivity extends AppCompatActivity {
         Intent intent = new Intent(mContext, AccountRecipesActivity.class);
         startActivity(intent);
     }
+
     // Function to addView everytime user clicks on click
     public void addView() {
         View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient, null, false);
 
-        EditText editTextName = ingredientView.findViewById(R.id.row_add_ingredient_edit_name);
-        EditText editTextMeasure = ingredientView.findViewById(R.id.edit_ingredient_measure);
         ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
 
         layoutList.addView(ingredientView); // Add user view to layout list
