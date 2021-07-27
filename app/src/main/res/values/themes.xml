@@ -24,11 +24,6 @@
         <item name="colorAccent">@color/dark_green</item>
     </style>
 
-    <style name="ThemeOverlay.LettuceCook.AppWidgetContainer" parent="">
-        <item name="appWidgetBackgroundColor">@color/dark_green</item>
-        <item name="appWidgetTextColor">@color/white</item>
-    </style>
-
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
