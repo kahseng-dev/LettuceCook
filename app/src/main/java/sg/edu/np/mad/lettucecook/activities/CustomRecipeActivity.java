@@ -2,6 +2,9 @@ package sg.edu.np.mad.lettucecook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +69,7 @@ public class CustomRecipeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_black_arrow_back);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_white_arrow_back);
         toolbar.findViewById(R.id.app_logo).setVisibility(View.INVISIBLE);
 
         // Setting publish button
@@ -86,7 +90,24 @@ public class CustomRecipeActivity extends AppCompatActivity {
         createdRecipeArea.setText(createdRecipe.recipeArea);
         createdRecipeCategory.setText(createdRecipe.recipeCategory);
         createdRecipeInstructions.setText(createdRecipe.recipeInstructions);
-        Picasso.with(CustomRecipeActivity.this).load(createdRecipe.recipeImageURL).into(createdRecipeImage); // Add recipe image
+        Picasso.with(CustomRecipeActivity.this)
+                .load(createdRecipe.recipeImageURL)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        createdRecipeImage.setBackground(new BitmapDrawable(getResources(), bitmap));
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                }); // Add recipe image
 
         String ninjaQuery = apiJson.createNinjaQuery(createdRecipe.getIngredientList());
         
