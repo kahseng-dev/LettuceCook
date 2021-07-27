@@ -134,7 +134,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         meal = dataSingleton.getMeal();
         if (meal != null) {
-            Log.v("Meall", meal.getStrCategory());
             setMealDetails(meal);
         } else {
             // get the mealId to be viewed
@@ -215,6 +214,20 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         YoutubeAdapter videoAdapter = new YoutubeAdapter(youtubeVideos);
         ytRecyclerView.setAdapter(videoAdapter);
 
+        // if user clicks on View Source button, it will lead user to the source website.
+        sourceLinkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = meal.getStrSource();
+                if (url.startsWith("https://") || url.startsWith("http://")) {
+                    Uri uri = Uri.parse(url);
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                } else {
+                    Toast.makeText(mContext, "Source Not Found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         if (user != null) {
             reference = FirebaseDatabase.getInstance().getReference("Users");
             userID = user.getUid();
@@ -259,9 +272,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                                 Toast.makeText(RecipeDetailsActivity.this, "Removed from Favourites", Toast.LENGTH_SHORT).show();
                                 isFavourite = false;
                                 addToFavourites.setColorFilter(Color.argb(255, 255, 255, 255));
-                            }
-
-                            else {
+                            } else {
                                 reference.child(userID).child("favouritesList").push().setValue(meal.getIdMeal())
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
@@ -270,9 +281,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                                                     Toast.makeText(RecipeDetailsActivity.this, "Added to Favourites", Toast.LENGTH_SHORT).show();
                                                     isFavourite = true;
                                                     addToFavourites.setColorFilter(Color.argb(255, 253, 62, 129));
-                                                }
-
-                                                else {
+                                                } else {
                                                     Toast.makeText(RecipeDetailsActivity.this, "Failed to add to favourites", Toast.LENGTH_LONG).show();
                                                 }
                                             }
@@ -328,16 +337,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
-
-                if (getIntent().hasExtra("query")) {
-                    browseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
-                    Bundle extras = getIntent().getExtras();
-                    String query = extras.getString("query");
-                    browseIntent.putExtra("query", query);
-                }
-
-                startActivity(browseIntent);
+                startActivity(new Intent(getApplicationContext(), BrowseActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
 
