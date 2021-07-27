@@ -28,7 +28,7 @@ public class AccountActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
-    private LinearLayout logout, recipes;
+    private LinearLayout favourites, recipes, logout;
     private TextView greeting;
 
     @Override
@@ -48,8 +48,9 @@ public class AccountActivity extends AppCompatActivity {
             userID = user.getUid();
 
             greeting = (TextView) findViewById(R.id.account_greeting);
-            logout = (LinearLayout) findViewById(R.id.account_logout);
+            favourites = (LinearLayout) findViewById(R.id.account_favourites);
             recipes = (LinearLayout) findViewById(R.id.account_recipes);
+            logout = (LinearLayout) findViewById(R.id.account_logout);
 
             reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -69,13 +70,11 @@ public class AccountActivity extends AppCompatActivity {
                 }
             });
 
-            // if the user clicks on the log out section in account activity
-            // bring them to the login activity without parsing the userId
-            logout.setOnClickListener(new View.OnClickListener() {
+            favourites.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent (AccountActivity.this, LoginActivity.class));
+                    startActivity(new Intent (AccountActivity.this, AccountFavouritesActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             });
 
@@ -86,6 +85,16 @@ public class AccountActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     startActivity(new Intent (AccountActivity.this, AccountRecipesActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                }
+            });
+
+            // if the user clicks on the log out section in account activity
+            // bring them to the login activity without parsing the userId
+            logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent (AccountActivity.this, LoginActivity.class));
                 }
             });
 

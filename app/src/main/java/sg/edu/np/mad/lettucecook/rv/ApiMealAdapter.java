@@ -21,11 +21,13 @@ import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 
 public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     ArrayList<ApiMeal> data;
+    String query;
     Context mContext;
     DataSingleton dataSingleton = DataSingleton.getInstance();
 
-    public ApiMealAdapter(ArrayList<ApiMeal> input, Context mContext) {
+    public ApiMealAdapter(ArrayList<ApiMeal> input, String query, Context mContext) {
         this.data = input;
+        this.query = query;
         this.mContext = mContext;
     }
 
@@ -62,6 +64,7 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
             intent.putExtra("mealId", meal.getIdMeal());
+            intent.putExtra("query", query);
             mContext.startActivity(intent);
             ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });

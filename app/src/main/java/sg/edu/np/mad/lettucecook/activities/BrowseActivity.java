@@ -76,10 +76,10 @@ public class BrowseActivity extends AppCompatActivity {
             }
 
             @Override
-                public boolean onQueryTextChange(String newText) {
-                    return false;
-                }
-            });
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         // Get data from singleton.
         // If null: from MainActivity, make a new request.

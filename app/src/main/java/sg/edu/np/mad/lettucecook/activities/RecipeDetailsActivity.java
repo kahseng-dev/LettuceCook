@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -24,10 +25,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -41,6 +47,7 @@ import java.util.Vector;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
 import sg.edu.np.mad.lettucecook.utils.DataSingleton;
+import sg.edu.np.mad.lettucecook.models.User;
 import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
@@ -61,7 +68,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     DataSingleton dataSingleton = DataSingleton.getInstance();
 
     private DBHandler dbHandler = new DBHandler(this , null, null, 1);
-    private ImageView mealThumbnail;
+    private ImageView mealThumbnail, addToFavourites;
     private TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText;
     private RecyclerView ytRecyclerView;
     private ArrayList<NinjaIngredient> ninjaIngredients;
@@ -70,7 +77,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private Vector<YoutubeVideo> youtubeVideos = new Vector<>();
     private FirebaseUser user;
     private DatabaseReference reference;
-    private String userID;
+    private String userID, isFavouriteId;
+    private boolean isFavourite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,11 +128,13 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         addToShoppingList = findViewById(R.id.recipe_details_add_to_shopping_list_button);
         sourceLinkButton = findViewById(R.id.recipe_details_source_button);
 
+        // Setting ViewById for favourites
+        addToFavourites = findViewById(R.id.add_to_favourites);
+
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         meal = dataSingleton.getMeal();
         if (meal != null) {
-            Log.v("Meall", meal.getStrCategory());
             setMealDetails(meal);
         } else {
             // get the mealId to be viewed
@@ -200,23 +210,147 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             }
         });
 
-        // embedding youtube videos
-        youtubeVideos.add(new YoutubeVideo(meal.getStrYoutube()));
-        YoutubeAdapter videoAdapter = new YoutubeAdapter(youtubeVideos);
-        ytRecyclerView.setAdapter(videoAdapter);
+        String[] mealIngredients = meal.getArrIngredients();
+        String[] mealMeasures = meal.getArrMeasures();
+        String ninjaQuery = "";
+        for (int i = 0; i < mealIngredients.length; i++) {
+            ninjaQuery += mealMeasures[i] + " " + mealIngredients[i] + ", ";
+        }
+                    // Remove the trailing ", "
+                    ninjaQuery = ninjaQuery.substring(0, ninjaQuery.length() - 2);
 
-        // if user clicks on View Source button, it will lead user to the source website.
-        sourceLinkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = meal.getStrSource();
-                if (url.startsWith("https://") || url.startsWith("http://")) {
-                    Uri uri = Uri.parse(url);
-                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
+
+                        @Override
+                        public void onError(String message) {
+                            Toast.makeText(mContext, "Error retrieving ingredient info", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(JSONObject response) throws JSONException {
+                            ArrayList<NinjaIngredient> ninjaIngredients = apiJson.parseNinjaIngredients(
+                                    response.getJSONArray("items"), mealIngredients, mealMeasures
+                            );
+                            for (NinjaIngredient i: ninjaIngredients) {
+                                Log.v("Meal", String.valueOf(i.getCalories()));
+                            }
+                            ApiIngredientsAdapter adapter = new ApiIngredientsAdapter(ninjaIngredients, mContext, new IngredientClickListener() {
+                                @Override
+                                public void onItemClick(NinjaIngredient ingredient) {
+                                    Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
+                                    intent.putExtra("ingredient", ingredient); // Send NinjaIngredient object to IngredientPopup
+                                    startActivity(intent);
+//                            overridePendingTransition(R.anim.slide_in_up, 0);
+                                }
+                            });
+
+                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+
+                            // setting ingredients recycler view
+                            ingredientsRV.setLayoutManager(mLayoutManager);
+                            ingredientsRV.setItemAnimator(new DefaultItemAnimator());
+                            ingredientsRV.setAdapter(adapter);
+                        }
+                    });
+
+                    // embedding youtube videos
+                    youtubeVideos.add(new YoutubeVideo(meal.getStrYoutube()));
+                    YoutubeAdapter videoAdapter = new YoutubeAdapter(youtubeVideos);
+                    ytRecyclerView.setAdapter(videoAdapter);
+
+                    // if user clicks on View Source button, it will lead user to the source website.
+                    sourceLinkButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String url = meal.getStrSource();
+                            if (url.startsWith("https://") || url.startsWith("http://")) {
+                                Uri uri = Uri.parse(url);
+                                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                            }
+
+                            else {
+                                Toast.makeText(mContext, "Source Not Found", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                    if (user != null) {
+                        reference = FirebaseDatabase.getInstance().getReference("Users");
+                        userID = user.getUid();
+
+                        addToShoppingList.setEnabled(true);
+                        findViewById(R.id.add_to_shopping_list_message).setVisibility(View.INVISIBLE);
+
+                        addToFavourites.setVisibility(View.VISIBLE);
+
+                        addToShoppingList.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String[] ingredients = meal.getArrIngredients();
+                                String[] measures = meal.getArrMeasures();
+                                for (int i = 0; i < ingredients.length; i++) {
+                                    Ingredient ingredient = new Ingredient(
+                                            Integer.parseInt(meal.getIdMeal()), ingredients[i], measures[i]);
+                                    dbHandler.addItemToShoppingList(userID, ingredient);
+                                }
+                                Toast.makeText(mContext, "Ingredients has been added\nto your shopping list", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        setFavouriteButtonColor(meal);
+                        addToFavourites.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                reference.child(userID).child("favouritesList").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        isFavourite = false;
+
+                                        for (DataSnapshot recipeSnapshot : snapshot.getChildren()) {
+                                            if (recipeSnapshot.getValue().toString().equals(meal.getIdMeal())) {
+                                                isFavourite = true;
+                                                isFavouriteId = recipeSnapshot.getKey();
+                                                break;
+                                            }
+                                        }
+
+                                        if (isFavourite) {
+                                            reference.child(userID).child("favouritesList").child(isFavouriteId).removeValue();
+                                            Toast.makeText(RecipeDetailsActivity.this, "Removed from Favourites", Toast.LENGTH_SHORT).show();
+                                            isFavourite = false;
+                                            addToFavourites.setColorFilter(Color.argb(255, 255, 255, 255));
+                                        }
+
+                                        else {
+                                            reference.child(userID).child("favouritesList").push().setValue(meal.getIdMeal())
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(RecipeDetailsActivity.this, "Added to Favourites", Toast.LENGTH_SHORT).show();
+                                                                isFavourite = true;
+                                                                addToFavourites.setColorFilter(Color.argb(255, 253, 62, 129));
+                                                            }
+
+                                                            else {
+                                                                Toast.makeText(RecipeDetailsActivity.this, "Failed to add to favourites", Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(RecipeDetailsActivity.this, "Could not retrieve favourites information", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
 
-                else {
-                    Toast.makeText(mContext, "Source Not Found", Toast.LENGTH_SHORT).show();
+                catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -243,6 +377,32 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
     }
 
+    private void setFavouriteButtonColor(ApiMeal meal) {
+        reference.child(userID).child("favouritesList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                isFavourite = false;
+
+                for (DataSnapshot recipeSnapshot : snapshot.getChildren()) {
+                    isFavourite = recipeSnapshot.getValue().toString().equals(meal.getIdMeal());
+                    isFavouriteId = recipeSnapshot.getKey();
+
+                    if (isFavourite) {
+                        addToFavourites.setColorFilter(Color.argb(255, 253, 62, 129));
+                        break;
+                    }
+
+                    else addToFavourites.setColorFilter(Color.argb(255, 255, 255, 255));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(RecipeDetailsActivity.this, "Could not retrieve favourites information", Toast.LENGTH_LONG).show();
+            }
+        });
+    };
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -256,7 +416,16 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), BrowseActivity.class));
+                Intent browseIntent = new Intent(getApplicationContext(), MainActivity.class);
+
+                if (getIntent().hasExtra("query")) {
+                    browseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
+                    Bundle extras = getIntent().getExtras();
+                    String query = extras.getString("query");
+                    browseIntent.putExtra("query", query);
+                }
+
+                startActivity(browseIntent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
 
