@@ -9,12 +9,21 @@ public class User {
     public String email;
     public ArrayList<Ingredient> shoppingList;
     public HashMap<String, CreatedRecipe> createdRecipesList;
+    public HashMap<String, String> favouritesList;
 
     public User () { }
 
     public User(String username, String email) {
         this.username = username;
         this.email = email;
+    }
+
+    public HashMap<String, String> getFavouritesList() {
+        return favouritesList;
+    }
+
+    public void setFavouritesList(HashMap<String, String> favouritesList) {
+        this.favouritesList = favouritesList;
     }
 
     public HashMap<String, CreatedRecipe> getCreatedRecipesList() {

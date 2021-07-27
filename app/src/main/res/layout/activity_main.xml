@@ -40,8 +40,8 @@
                 android:layout_below="@+id/main_search_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginVertical="24dp"
                 android:textSize="24sp"
                 android:text="@string/browse"
                 android:textColor="@color/black"
@@ -52,7 +52,7 @@
                 android:layout_below="@+id/main_browse_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp" />
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:id="@+id/main_community_title"
