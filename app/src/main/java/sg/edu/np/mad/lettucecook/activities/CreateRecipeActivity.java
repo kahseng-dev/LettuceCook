@@ -11,34 +11,44 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.ColorSpace;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +59,7 @@ import java.util.ArrayList;
 import sg.edu.np.mad.lettucecook.R;
 import sg.edu.np.mad.lettucecook.models.CreatedRecipe;
 import sg.edu.np.mad.lettucecook.models.NinjaIngredient;
+import sg.edu.np.mad.lettucecook.models.RecipeImage;
 import sg.edu.np.mad.lettucecook.rv.ApiIngredientsAdapter;
 import sg.edu.np.mad.lettucecook.utils.IngredientClickListener;
 import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
@@ -59,12 +70,17 @@ import sg.edu.np.mad.lettucecook.utils.ApiService;
 import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class CreateRecipeActivity extends AppCompatActivity {
-    private static final int CAMERA_ACTION_CODE = 1;
-    private static final int PERMISSION_CODE = 2;
+    private static final int GALLERY_ACTION_CODE = 2;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
     private Context mContext = CreateRecipeActivity.this;
+
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("Image");
+    private ProgressBar progressBar;
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    private Uri imageUri;
+
 
     // Initiate arrays
     ArrayList<ApiMeal> meals;
@@ -78,13 +94,13 @@ public class CreateRecipeActivity extends AppCompatActivity {
     Spinner recipeAreaSpinner, recipeCategorySpinner;
 
     LinearLayout layoutList;
-    Button buttonAdd, createRecipeButton, addRecipeImageButton;
+    Button buttonAdd, createRecipeButton, uploadRecipeButton;
     EditText recipeName, recipeInstructions;
     ImageView recipeImage;
 
-    String recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeNameValue, recipeInstructionsValue;
+    String recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeNameValue, recipeInstructionsValue, recipeImageURLValue;
 
-    ActivityResultLauncher<Intent> activityResultLauncher;
+    //ActivityResultLauncher<Intent> activityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +121,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
         createRecipeButton = findViewById(R.id.create_recipe_create_button);
 
         // Add Recipe Image IDs
-        addRecipeImageButton = findViewById(R.id.add_recipe_image_button);
+        uploadRecipeButton = findViewById(R.id.upload_recipe_image_button);
         recipeImage = findViewById(R.id.create_recipe_image);
+        progressBar = findViewById(R.id.create_recipe_progress_bar);
 
         // Get userID from Firebase
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -121,32 +138,17 @@ public class CreateRecipeActivity extends AppCompatActivity {
             userID = user.getUid();
 
             // Activity Result Launcher to add image
-            activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        // if codes all match
-                        Bundle bundle = result.getData().getExtras();
-                        Bitmap recipePhoto = (Bitmap) bundle.get("data");
-                        recipeImage.setImageBitmap(recipePhoto);
-                    }
-                }
-            });
-
-            // Add Recipe Image button click
-            addRecipeImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // If device supports camera feature
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        activityResultLauncher.launch(intent);
-                    }
-                    else {
-                        Toast.makeText(CreateRecipeActivity.this, "There is no app that supports this action", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+//            activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+//                @Override
+//                public void onActivityResult(ActivityResult result) {
+//                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+//                        // if codes all match
+//                        Bundle bundle = result.getData().getExtras();
+//                        Bitmap recipePhoto = (Bitmap) bundle.get("data");
+//                        recipeImage.setImageBitmap(recipePhoto);
+//                    }
+//                }
+//            });
 
             // Set string to call Area list for API
             String areaQuery = "list.php?a=list";
@@ -210,7 +212,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                         recipeInstructionsValue = recipeInstructions.getText().toString();
 
                         // Create new CreatedRecipe object
-                        CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, ingredientList);
+                        CreatedRecipe createdRecipe = new CreatedRecipe(recipeNameValue, recipeAreaSpinnerValue, recipeCategorySpinnerValue, recipeInstructionsValue, recipeImageURLValue, ingredientList);
 
                         String ninjaQuery = checkIfValidAndRead();
                         // Request ingredients' nutritional information
@@ -258,7 +260,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 }
             });
         }
-        
+
         // setting id of navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -296,6 +298,88 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        // Add Recipe Image button click
+        recipeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GALLERY_ACTION_CODE);
+
+                // If device supports camera feature
+//                    if (intent.resolveActivity(getPackageManager()) != null) {
+//                        //activityResultLauncher.launch(intent);
+//                        startActivityForResult(intent, CAMERA_ACTION_CODE);
+//                    }
+//                    else {
+//                        Toast.makeText(CreateRecipeActivity.this, "There is no app that supports this action", Toast.LENGTH_LONG).show();
+//                    }
+            }
+        });
+
+        uploadRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageUri != null) {
+                    uploadImageToFirebase(imageUri);
+                }
+                else {
+                    Toast.makeText(mContext, "Please select a picture from your gallery!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_ACTION_CODE && resultCode == RESULT_OK && data != null) {
+//            Bundle bundle = data.getExtras();
+//            Bitmap recipePhoto = (Bitmap) bundle.get("data");
+//            recipeImage.setImageBitmap(recipePhoto);
+            imageUri = data.getData();
+            recipeImage.setImageURI(imageUri);
+        }
+    }
+
+    private void uploadImageToFirebase(Uri uri) {
+        final StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
+        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        RecipeImage model = new RecipeImage(uri.toString());
+                        //reference.child(userID).child("createdRecipesList").child(recipeID).child("recipeImageURL").setValue(model);
+                        recipeImageURLValue = uri.toString();
+
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(mContext, "Uploaded Successfully", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(mContext, "Upload Failed!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private String getFileExtension(Uri mUri) {
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(mUri));
     }
 
     // Function to validate user input for Create Recipe form
@@ -392,4 +476,5 @@ public class CreateRecipeActivity extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
     }
+
 }
