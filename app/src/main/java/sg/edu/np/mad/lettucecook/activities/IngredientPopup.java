@@ -22,12 +22,13 @@ public class IngredientPopup extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup_ingredient);
+        overridePendingTransition(R.anim.slide_in_up, 0);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         // Full width, 80% height
-        getWindow().setLayout(dm.widthPixels, (int)(dm.heightPixels * 0.8));
+        getWindow().setLayout(dm.widthPixels, (int) (dm.heightPixels * 0.8));
 
         // Transparent background - allows corner radius to show properly
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -74,5 +75,11 @@ public class IngredientPopup extends Activity {
             protein.setText(ingredient.getProtein_g() + GRAMS);
             carbohydrates.setText(ingredient.getCarbohydrates_total_g() + GRAMS);
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.slide_out_down);
     }
 }

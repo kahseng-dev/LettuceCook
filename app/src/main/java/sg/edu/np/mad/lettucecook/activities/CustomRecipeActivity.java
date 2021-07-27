@@ -135,7 +135,6 @@ public class CustomRecipeActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
                         intent.putExtra("ingredient", ingredient); // Send NinjaIngredient object to IngredientPopup
                         startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
                     }
                 });
                 RecyclerView ingredientsRV = findViewById(R.id.custom_recipe_ingredients_rv);
