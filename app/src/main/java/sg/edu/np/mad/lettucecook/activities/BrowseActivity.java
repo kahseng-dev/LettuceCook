@@ -86,7 +86,6 @@ public class BrowseActivity extends AppCompatActivity {
         // Else: from RecipeDetails or Notification, display the same meals.
         meals = dataSingleton.getMeals();
         if (meals != null) {
-            Log.v("Meals", meals.get(0).getIdMeal());
             mAdapter.setData(meals);
             mAdapter.notifyDataSetChanged();
         } else {
