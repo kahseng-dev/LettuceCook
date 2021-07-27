@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -55,6 +58,8 @@ public class CustomRecipeActivity extends AppCompatActivity {
     TextView createdRecipeName, createdRecipeArea, createdRecipeInstructions, createdRecipeCategory;
     ImageView createdRecipeImage;
     ToggleButton publishStateButton;
+    Button deleteRecipeButton;
+
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID, recipeID;
@@ -81,6 +86,9 @@ public class CustomRecipeActivity extends AppCompatActivity {
         createdRecipeInstructions = findViewById(R.id.custom_recipe_instructions);
         createdRecipeCategory = findViewById(R.id.custom_recipe_category);
         createdRecipeImage = findViewById(R.id.custom_recipe_image);
+
+        // Delete recipe button
+        deleteRecipeButton = findViewById(R.id.delete_recipe);
 
         // Get created recipe
         CreatedRecipe createdRecipe = (CreatedRecipe) getIntent().getSerializableExtra("Recipe");
@@ -123,16 +131,13 @@ public class CustomRecipeActivity extends AppCompatActivity {
                 ArrayList<NinjaIngredient> ninjaIngredients = apiJson.parseNinjaIngredients(
                         response.getJSONArray("items"), createdRecipe.getIngredientList()
                 );
-                for (NinjaIngredient i: ninjaIngredients) {
-                    Log.v("Meal", String.valueOf(i.getCalories()));
-                }
                 NinjaIngredientAdapter adapter = new NinjaIngredientAdapter(ninjaIngredients, mContext, new IngredientClickListener() {
                     @Override
                     public void onItemClick(NinjaIngredient ingredient) {
                         Intent intent = new Intent(getApplicationContext(), IngredientPopup.class);
                         intent.putExtra("ingredient", ingredient); // Send NinjaIngredient object to IngredientPopup
                         startActivity(intent);
-//                            overridePendingTransition(R.anim.slide_in_up, 0);
+                        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
                     }
                 });
                 RecyclerView ingredientsRV = findViewById(R.id.custom_recipe_ingredients_rv);
@@ -142,6 +147,25 @@ public class CustomRecipeActivity extends AppCompatActivity {
                 ingredientsRV.setLayoutManager(mLayoutManager);
                 ingredientsRV.setItemAnimator(new DefaultItemAnimator());
                 ingredientsRV.setAdapter(adapter);
+            }
+        });
+
+        deleteRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reference.child(userID).child("createdRecipesList").child(recipeID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CustomRecipeActivity.this, "Successfully delete recipe!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CustomRecipeActivity.this, AccountRecipesActivity.class);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(CustomRecipeActivity.this, "Failed to delete recipe!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 
@@ -178,6 +202,10 @@ public class CustomRecipeActivity extends AppCompatActivity {
                 });
             }
         }
+    }
+
+    private void deleteData (String recipeName) {
+
     }
 
     // if the user clicks on the back button in the toolbar, bring them back to login activity.
