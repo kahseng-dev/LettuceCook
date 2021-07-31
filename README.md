@@ -53,58 +53,58 @@ LettuceCook is a recipe meal application which aims to assist and inspire users 
 ## Features ##
 These are the current features and pages of our mobile app as well as the additional features we plan to add in the future.
 ### Existing Features ###
-- **General**
-    - Login/Create Account
+* **General**
+    * Login/Create Account
     <p align="left">
     <img src="app/preview/Login.gif" alt="LoginGIF" width="320" height="640">
     </p>
-    - Bottom Navigation bar w/ Login/Account, Home, Create Recipe, Shopping List
+    * Bottom Navigation bar w/ Login/Account, Home, Create Recipe, Shopping List
     <p align="left">
         <img src="app/preview/NavigationBar.gif" alt="navigationbarGIF" width="320" height="640">
     </p>
-    - Notifications
+    * Notifications
     <p align="left">
         <img src="app/preview/Notifications.gif" alt="notificationsGIF" width="320" height="640">
     </p>
-    - Calories Information
-    - Shown beside ingredients when viewing recipes including custom recipes
-    - Nutritional values information
-    - Shown when user clicks on each individual ingredient
+    * Calories Information
+    * Shown beside ingredients when viewing recipes including custom recipes
+    * Nutritional values information
+    * Shown when user clicks on each individual ingredient
     <p align="left">
     <img src="app/preview/CaloriesNutritionalInfo.gif" alt="notificationsGIF" width="320" height="640">
     </p>
 <hr>
 
-- **Home**:
-    - Search Meals
+* **Home**:
+    * Search Meals
     <p align="left">
     <img src="app/preview/SearchMeals.gif" alt="searchmealsGIF" width="320" height="640">
-    - Browse Meals
-    - Community Meals - Shown when users publish their custom recipes
+    * Browse Meals
+    * Community Meals - Shown when users publish their custom recipes
     <p align="left">
     <img src="app/preview/BrowseMealsCommunityMeals.gif" alt="browsemealscommunitymealsGIF" width="320" height="640">
 <hr>
 
-- **Account**:
-    - View Favourites List
-        - Add meal recipe to favourites when viewing recipe details
+* **Account**:
+    * View Favourites List
+        * Add meal recipe to favourites when viewing recipe details
     <p align="left">
     <img src="app/preview/Favourites&CustomRecipes.gif" alt="Favourites&CustomRecipesGIF" width="320" height="640"><br>
-    - View Recipes List
-    &nbsp;• Create custom recipes with gallery images
-    &nbsp;• Add recipe name
-    &nbsp;• Add recipe ingredients
-    &nbsp;• Add recipe instructions
-    - Publish & Share custom recipe
+    * View Recipes List
+        * Create custom recipes with gallery images
+        * Add recipe name
+        * Add recipe ingredients
+        * Add recipe instructions
+        * Publish & Share custom recipe
     <p align="left">
     <img src="app/preview/CreateCustomRecipes.gif" alt="CreateCustomRecipesGIF" width="320" height="640">
-    - View Shopping List
-    - Add any meal recipe ingredients to shopping list
-    - Delete ingredients from shopping list
-    - Clear shopping list
+    * View Shopping List
+        * Add any meal recipe ingredients to shopping list
+        * Delete ingredients from shopping list
+        * Clear shopping list
     <p align="left">
     <img src="app/preview/ShoppingList.gif" alt="ShoppingListGIF" width="320" height="640">
-    - Logout
+    * Logout
 <hr>
 
 ### Features Left to Implement ###
