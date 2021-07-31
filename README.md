@@ -53,57 +53,58 @@ LettuceCook is a recipe meal application which aims to assist and inspire users 
 ## Features ##
 These are the current features and pages of our mobile app as well as the additional features we plan to add in the future.
 ### Existing Features ###
-* **General**
-    &nbsp;• Login/Create Account
-    <p align="center">
+- **General**
+    - Login/Create Account
+    <p align="left">
     <img src="app/preview/Login.gif" alt="LoginGIF" width="320" height="640">
-    &nbsp;• Bottom Navigation bar w/ Login/Account, Home, Create Recipe, Shopping List
-    <p align="center">
-    <img src="app/preview/NavigationBar.gif" alt="navigationbarGIF"     width="320" height="640">
     </p>
-    &nbsp;• Notifications
-    <p align="center">
-    <img src="app/preview/Notifications.gif" alt="notificationsGIF"     width="320" height="640">
+    - Bottom Navigation bar w/ Login/Account, Home, Create Recipe, Shopping List
+    <p align="left">
+        <img src="app/preview/NavigationBar.gif" alt="navigationbarGIF" width="320" height="640">
     </p>
-    • Calories Information<br>
-    &nbsp;• Shown beside ingredients when viewing recipes including custom recipes<br>
-    • Nutritional values information<br>
-    &nbsp;• Shown when user clicks on each individual ingredient
-    <p align="center">
+    - Notifications
+    <p align="left">
+        <img src="app/preview/Notifications.gif" alt="notificationsGIF" width="320" height="640">
+    </p>
+    - Calories Information
+    - Shown beside ingredients when viewing recipes including custom recipes
+    - Nutritional values information
+    - Shown when user clicks on each individual ingredient
+    <p align="left">
     <img src="app/preview/CaloriesNutritionalInfo.gif" alt="notificationsGIF" width="320" height="640">
     </p>
 <hr>
 
-* **Home**:
-    • Search Meals
-    <p align="center">
-    <img src="app/preview/SearchMeals.gif" alt="searchmealsGIF" width="320" height="640"><br>
-    • Browse Meals<br>
-    • Community Meals - Shown when users publish their custom recipes<br>
-    <p align="center">
+- **Home**:
+    - Search Meals
+    <p align="left">
+    <img src="app/preview/SearchMeals.gif" alt="searchmealsGIF" width="320" height="640">
+    - Browse Meals
+    - Community Meals - Shown when users publish their custom recipes
+    <p align="left">
     <img src="app/preview/BrowseMealsCommunityMeals.gif" alt="browsemealscommunitymealsGIF" width="320" height="640">
 <hr>
 
-* **Account**:
-    • View Favourites List<br>
-        • Add meal recipe to favourites when viewing recipe details<br>
-    <p align="center">
+- **Account**:
+    - View Favourites List
+        - Add meal recipe to favourites when viewing recipe details
+    <p align="left">
     <img src="app/preview/Favourites&CustomRecipes.gif" alt="Favourites&CustomRecipesGIF" width="320" height="640"><br>
-    • View Recipes List<br>
-    &nbsp;• Create custom recipes with gallery images<br>
-    &nbsp;• Add recipe name<br>
-    &nbsp;• Add recipe ingredients<br>
-    &nbsp;• Add recipe instructions<br>
-    • Publish & Share custom recipe<br>
-    <p align="center">
-    <img src="app/preview/CreateCustomRecipes.gif" alt="CreateCustomRecipesGIF" width="320" height="640"><br>
-    • View Shopping List<br>
-    &nbsp;• Add any meal recipe ingredients to shopping list<br>
-    &nbsp;• Delete ingredients from shopping list<br>
-    &nbsp;• Clear shopping list<br>
-    <p align="center">
-    <img src="app/preview/ShoppingList.gif" alt="ShoppingListGIF" width="320" height="640"><br>
-    • Logout
+    - View Recipes List
+    &nbsp;• Create custom recipes with gallery images
+    &nbsp;• Add recipe name
+    &nbsp;• Add recipe ingredients
+    &nbsp;• Add recipe instructions
+    - Publish & Share custom recipe
+    <p align="left">
+    <img src="app/preview/CreateCustomRecipes.gif" alt="CreateCustomRecipesGIF" width="320" height="640">
+    - View Shopping List
+    - Add any meal recipe ingredients to shopping list
+    - Delete ingredients from shopping list
+    - Clear shopping list
+    <p align="left">
+    <img src="app/preview/ShoppingList.gif" alt="ShoppingListGIF" width="320" height="640">
+    - Logout
 <hr>
 
 ### Features Left to Implement ###
@@ -141,4 +142,5 @@ These are the current features and pages of our mobile app as well as the additi
 * [Send volley request with headers](https://www.youtube.com/watch?v=wzK19AaEgzk&t=690s)
 * [Caching data inspiration](https://www.youtube.com/watch?v=GBeN74Xuk2M&)
 * [Set up a Spinner](https://stackoverflow.com/a/2784312/16504104)
-* [IngredientPopup](https://stackoverflow.com/a/5945332/16504104)
+* [IngredientPopup #1](https://stackoverflow.com/a/5945332/16504104)
+* [IngredientPopup #2](https://www.youtube.com/watch?v=eX-TdY6bLdg)
