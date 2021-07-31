@@ -27,10 +27,9 @@ LettuceCook is a recipe meal application which aims to assist and inspire users 
     * Creative Cooks may want to share and publish their recipes with the LettuceCook community.
 
 ## Roles & Contributions ##
-**Ee Jun Kai Julian** - Custom Recipes & Widget
-* Custom Recipes per Account
+**Ee Jun Kai Julian** - Custom Recipes
+* Create Custom Recipes
 * Featured Meal
-* Widget
 * Favourites List
 
 **Xavier Ang Yan Jun** - API Integrator
@@ -52,8 +51,63 @@ LettuceCook is a recipe meal application which aims to assist and inspire users 
 * Firebase integration
 
 ## Features ##
-To be added
+These are the current features and pages of our mobile app as well as the additional features we plan to add in the future.
+### Existing Features ###
+* **General**
+    * Login/Create Account
+    <p align="center">
+    <img src="app/preview/Login.gif" alt="LoginGIF" width="568" height="270">
+    * Bottom Navigation bar w/ Login/Account, Home, Create Recipe, Shopping List
+    <p align="center">
+    <img src="app/preview/NavigationBar.gif" alt="navigationbarGIF"     width="568" height="270">
+    </p>
+    * Notifications
+    <p align="center">
+    <img src="app/preview/Notifications.gif" alt="notificationsGIF"     width="568" height="270">
+    </p>
+    * Calories Information
+        * Shown beside ingredients when viewing recipes including custom recipes
+    * Nutritional values information
+        * Shown when user clicks on each individual ingredient
+    <p align="center">
+    <img src="app/preview/CaloriesNutritionalInfo.gif" alt="notificationsGIF" width="568" height="270">
+    </p>
+<hr>
 
+* **Home**:
+    * Search Meals
+    <p align="center">
+    <img src="app/preview/SearchMeals.gif" alt="searchmealsGIF" width="568" height="270">
+    * Browse Meals
+    * Community Meals - Shown when users publish their custom recipes
+    <p align="center">
+    <img src="app/preview/BrowseMealsCommunityMeals.gif" alt="browsemealscommunitymealsGIF" width="568" height="270">
+<hr>
+
+* **Account**:
+    * View Favourites List
+        * Add meal recipe to favourites when viewing recipe details
+    <p align="center">
+    <img src="app/preview/Favourites&CustomRecipes.gif" alt="Favourites&CustomRecipesGIF" width="568" height="270">
+    * View Recipes List
+        * Create custom recipes with gallery images
+        * Add recipe name
+        * Add recipe ingredients
+        * Add recipe instructions
+    * Publish & Share custom recipe
+    <p align="center">
+    <img src="app/preview/CreateCustomRecipes.gif" alt="CreateCustomRecipesGIF" width="568" height="270">
+    * View Shopping List
+        * Add any meal recipe ingredients to shopping list
+        * Delete ingredients from shopping list
+        * Clear shopping list
+    <p align="center">
+    <img src="app/preview/ShoppingList.gif" alt="ShoppingListGIF" width="568" height="270">
+    * Logout
+<hr>
+
+### Features Left to Implement ###
+* Completed all intended features as of (31/07/2021)
 ## Technologies Used ##
 **Tools**
 * [Android Studio](https://developer.android.com/studio/) → Used to create and test our app.
@@ -61,7 +115,6 @@ To be added
 
 **Languages**
 * Java
-
 ## Credits ##
 **Content**
 * [TheMealDB](https://themealdb.com/) → Meal Recipes Database API
@@ -77,3 +130,15 @@ To be added
 * [Custom Toolbar Tutorial](https://www.youtube.com/watch?v=TIgiExaBbLg) → Used for custom toolbar
 * [Parsing JSON using Volley](https://www.youtube.com/watch?v=y2xtLqP8dSQ) → Used for parising JSON data from MealDB and CalorieNinjas APIs
 * [Slide Animation Between Activites Tutorial](https://www.youtube.com/watch?v=0s6x3Sn4eYo) → Used for slide animations between activities
+* [Upload Image To Firebase Storage & add URL to Realtime Database](https://www.youtube.com/watch?v=9-oa4OS7lUQ) → Used for Account Recipes thumbnails
+* [Delete data from Firebase Realtime Database](https://www.youtube.com/watch?v=L3u6T8uzT58) → Used to delete Account Recipes
+* [Get Child of Child value from Firebase](https://stackoverflow.com/questions/43293935/how-to-get-child-of-child-value-from-firebase-in-android) → Used to retrieve data from data tree
+* [Java Type Casting](https://www.baeldung.com/java-type-casting) → Used to understand more about java type casting
+* [Filter RecyclerView with SearchView](https://stackoverflow.com/a/37562572/16504104)
+* [Show Ellipses on TextView if great than 1](https://stackoverflow.com/a/6393730/16504104)
+* [Percentage width in RelativeLayout](https://stackoverflow.com/a/4961467/16504104)
+* [Volley Documentation](https://developer.android.com/training/volley/requestqueue.html?authuser=2#singleton)
+* [Send volley request with headers](https://www.youtube.com/watch?v=wzK19AaEgzk&t=690s)
+* [Caching data inspiration](https://www.youtube.com/watch?v=GBeN74Xuk2M&)
+* [Set up a Spinner](https://stackoverflow.com/a/2784312/16504104)
+* [IngredientPopup](https://stackoverflow.com/a/5945332/16504104)
