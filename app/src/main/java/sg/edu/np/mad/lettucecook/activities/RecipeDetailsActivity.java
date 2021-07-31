@@ -3,10 +3,12 @@ package sg.edu.np.mad.lettucecook.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -57,7 +59,6 @@ import sg.edu.np.mad.lettucecook.rv.YoutubeVideo;
 import sg.edu.np.mad.lettucecook.rv.NinjaIngredientAdapter;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
     Context mContext = this;
@@ -68,11 +69,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
     private DBHandler dbHandler = new DBHandler(this , null, null, 1);
     private ImageView mealThumbnail, addToFavourites;
-    private TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText;
+    private TextView mealName, mealCategory, areaText, instructionsText, dateModifiedText, viewSourceText;
     private RecyclerView ytRecyclerView;
     private ArrayList<NinjaIngredient> ninjaIngredients;
     private NinjaIngredientAdapter ingredientAdapter;
-    private Button addToShoppingList, sourceLinkButton;
+    private CardView viewSourceCard;
+    private Button addToShoppingList;
     private Vector<YoutubeVideo> youtubeVideos = new Vector<>();
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -123,9 +125,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         ytRecyclerView.setHasFixedSize(true);
         ytRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Setting ViewById for buttons
+        // Setting ViewById for View Source
+        viewSourceCard = findViewById(R.id.recipe_details_view_source_card);
+        viewSourceText = findViewById(R.id.recipe_details_view_source_text);
+
+        // Setting ViewById for shopping lis button
         addToShoppingList = findViewById(R.id.recipe_details_add_to_shopping_list_button);
-        sourceLinkButton = findViewById(R.id.recipe_details_source_button);
 
         // Setting ViewById for favourites
         addToFavourites = findViewById(R.id.add_to_favourites);
@@ -138,7 +143,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         } else {
             // get the mealId to be viewed
             String mealId = getIntent().getStringExtra("mealId");
-            apiService.get(ApiURL.MealDB, "lookup.php?i=" + mealId, new VolleyResponseListener() {
+            apiService.get("lookup.php?i=" + mealId, new VolleyResponseListener() {
                 @Override
                 public void onError(String message) { }
 
@@ -194,7 +199,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         // Remove the trailing ", "
         ninjaQuery = ninjaQuery.substring(0, ninjaQuery.length() - 2);
 
-        apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
+        apiService.getIngredient(ninjaQuery, new VolleyResponseListener() {
 
             @Override
             public void onError(String message) {
@@ -214,11 +219,14 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         YoutubeAdapter videoAdapter = new YoutubeAdapter(youtubeVideos);
         ytRecyclerView.setAdapter(videoAdapter);
 
-        // if user clicks on View Source button, it will lead user to the source website.
-        sourceLinkButton.setOnClickListener(new View.OnClickListener() {
+        // View Source
+        String url = meal.getStrSource();
+        if (url != null || !url.isEmpty()) viewSourceText.setText(url);
+
+        // if user clicks on View Source card, it will lead user to the source website.
+        viewSourceCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = meal.getStrSource();
                 if (url.startsWith("https://") || url.startsWith("http://")) {
                     Uri uri = Uri.parse(url);
                     startActivity(new Intent(Intent.ACTION_VIEW, uri));
@@ -247,7 +255,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                                 Integer.parseInt(meal.getIdMeal()), ingredients[i], measures[i]);
                         dbHandler.addItemToShoppingList(userID, ingredient);
                     }
-                    Toast.makeText(mContext, "Ingredients has been added\nto your shopping list", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Ingredients have been added\nto your shopping list", Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -337,7 +345,21 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), BrowseActivity.class));
+                Class activity;
+                int returnTo = dataSingleton.getReturnTo();
+
+                // Opened from notification
+                if (returnTo == 0 || getIntent().hasExtra("notification"))
+                    activity = MainActivity.class;
+                else if (returnTo == 1) // Opened from Browse
+                    activity = BrowseActivity.class;
+                else if (returnTo == 2) // Opened from AccountFavourites
+                    activity = AccountFavouritesActivity.class;
+                else
+                    activity = ShoppingListActivity.class;
+
+                // Go back to the activity it was opened from
+                startActivity(new Intent(mContext, activity));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
 

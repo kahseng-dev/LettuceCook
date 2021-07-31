@@ -21,7 +21,6 @@ public class NinjaIngredientAdapter extends RecyclerView.Adapter<NinjaIngredient
     Context mContext;
     ApiService apiService;
     private final IngredientClickListener listener;
-    double totalCalories = 0;
 
     public NinjaIngredientAdapter(ArrayList<NinjaIngredient> input, Context mContext, IngredientClickListener ingredientClickListener) {
         this.data = input;

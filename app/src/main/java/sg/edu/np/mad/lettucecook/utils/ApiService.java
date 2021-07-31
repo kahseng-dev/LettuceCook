@@ -22,9 +22,9 @@ public class ApiService {
     }
 
     // ApiURL is an enum with two variants: MealDB and CalorieNinjas
-    public void get(ApiURL URL, String query, VolleyResponseListener listener) {
+    public void get(String query, VolleyResponseListener listener) {
         JsonObjectRequest request = new JsonObjectRequest
-                (URL.toString() + query, null, new Response.Listener<JSONObject>() {
+                (ApiURL.MealDB + query, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -46,11 +46,11 @@ public class ApiService {
 
     // This method sends request with a headers
     // ApiURL is an enum.
-    public void getIngredient(ApiURL URL, String query, VolleyResponseListener listener) {
+    public void getIngredient(String query, VolleyResponseListener listener) {
         // Remove clove(s) from the name, as it doesn't work with CalorieNinjas API
         query = query.replaceAll(" cloves?", "");
         JsonObjectRequest request = new JsonObjectRequest
-                (URL.toString() + query, null, new Response.Listener<JSONObject>() {
+                (ApiURL.CalorieNinjas + query, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {

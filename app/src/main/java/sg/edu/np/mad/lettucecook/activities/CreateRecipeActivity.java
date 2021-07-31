@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -53,7 +52,6 @@ import sg.edu.np.mad.lettucecook.utils.VolleyResponseListener;
 import sg.edu.np.mad.lettucecook.models.CreatedIngredient;
 import sg.edu.np.mad.lettucecook.utils.ApiJsonSingleton;
 import sg.edu.np.mad.lettucecook.utils.ApiService;
-import sg.edu.np.mad.lettucecook.utils.ApiURL;
 
 public class CreateRecipeActivity extends AppCompatActivity {
     private static final int GALLERY_ACTION_CODE = 2;
@@ -126,7 +124,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             // Set string to call Area list for API
             String areaQuery = "list.php?a=list";
-            apiService.get(ApiURL.MealDB, areaQuery, new VolleyResponseListener() {
+            apiService.get(areaQuery, new VolleyResponseListener() {
                 @Override
                 public void onError(String message) {
 
@@ -148,7 +146,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             // Set string to call Category list for API
             String categoryQuery = "list.php?c=list";
-            apiService.get(ApiURL.MealDB, categoryQuery, new VolleyResponseListener() {
+            apiService.get(categoryQuery, new VolleyResponseListener() {
                 @Override
                 public void onError(String message) { }
 
@@ -190,7 +188,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                         String ninjaQuery = checkIfValidAndRead();
                         // Request ingredients' nutritional information
-                        apiService.getIngredient(ApiURL.CalorieNinjas, ninjaQuery, new VolleyResponseListener() {
+                        apiService.getIngredient(ninjaQuery, new VolleyResponseListener() {
 
                             @Override
                             public void onError(String message) {

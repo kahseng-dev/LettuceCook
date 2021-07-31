@@ -24,11 +24,6 @@
         <item name="colorAccent">@color/dark_green</item>
     </style>
 
-    <style name="ThemeOverlay.LettuceCook.AppWidgetContainer" parent="">
-        <item name="appWidgetBackgroundColor">@color/dark_green</item>
-        <item name="appWidgetTextColor">@color/white</item>
-    </style>
-
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
@@ -44,10 +39,10 @@
     </style>
 
     <style name="NutritionalInformationLabel">
+        <item name="android:textColor">@color/black</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:layout_marginTop">12dp</item>
     </style>
@@ -56,6 +51,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_marginEnd">24dp</item>
         <item name="android:layout_marginTop">12dp</item>
     </style>

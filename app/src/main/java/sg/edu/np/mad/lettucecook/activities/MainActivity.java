@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set DataSingleton meals to null so that Browse will make a new request
-        dataSingleton.setMeals(null);
+        dataSingleton.setMeals(null); // so that Browse will make a new request
+        dataSingleton.setReturnTo(0);
 
         // setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -64,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (query.length() == 0) query = "Random";
                 dataSingleton.setMealQuery(query);
+                startActivity(new Intent(mContext, BrowseActivity.class));
                 return false;
             }
 
@@ -77,40 +79,6 @@ public class MainActivity extends AppCompatActivity {
         // setup recycler view
         browseRV = findViewById(R.id.main_browse_rv); // Browse recycler view
         communityRV = findViewById(R.id.main_community_rv);
-
-//        String query = "random.php";
-//        apiService.get(ApiURL.MealDB, query, new VolleyResponseListener() {
-//
-//            @Override
-//            public void onError(String message) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                try {
-//                    JSONArray _meals = response.getJSONArray("meals");
-//
-//                    // Make arrays from the flat JSON structure
-//                    meals = apiJson.mergeIntoJSONArray(_meals);
-//
-//                    Picasso.with(mContext)
-//                            .load(meals.get(0).getStrMealThumb())
-//                            .into(featuredImage);
-//                    featuredName.setText(meals.get(0).getStrMeal());
-//
-//                    featuredImage.setOnClickListener(view -> {
-//                        Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
-//                        intent.putExtra("mealId", meals.get(0).getIdMeal());
-//                        startActivity(intent);
-//                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//                    });
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
         // setup browse recycler view
         BrowseAdapter mAdapter = new BrowseAdapter(mContext);

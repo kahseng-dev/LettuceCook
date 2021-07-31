@@ -3,20 +3,19 @@ package sg.edu.np.mad.lettucecook.rv;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import sg.edu.np.mad.lettucecook.models.ApiMeal;
 import sg.edu.np.mad.lettucecook.R;
@@ -25,11 +24,15 @@ import sg.edu.np.mad.lettucecook.utils.DataSingleton;
 
 public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     ArrayList<ApiMeal> data;
+    ArrayList<ApiMeal> dataCopy;
+    HashSet<String> mealIdHashSet; // For checking duplicates
     Context mContext;
     DataSingleton dataSingleton = DataSingleton.getInstance();
 
-    public ApiMealAdapter(ArrayList<ApiMeal> input, Context mContext) {
-        this.data = input;
+    public ApiMealAdapter(Context mContext) {
+        this.data = new ArrayList<>();
+        this.dataCopy = new ArrayList<>();
+        this.mealIdHashSet = new HashSet<>();
         this.mContext = mContext;
     }
 
@@ -59,8 +62,14 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
         holder.name.setText(meal.getStrMeal());
 
         // Show the category and area if they are not null
-        if (area != null) holder.area.setText(area);
-        if (category != null) holder.category.setText(category);
+        // If area is null, then category is null
+        if (area != null) {
+            holder.area.setText(area);
+            holder.category.setText(category);
+        } else {
+            holder.area.setVisibility(View.GONE);
+            holder.category.setVisibility(View.GONE);
+        }
 
         // Make view clickable, show recipe details page when clicked
         holder.itemView.setOnClickListener(view -> {
@@ -77,6 +86,57 @@ public class ApiMealAdapter extends RecyclerView.Adapter<ApiMealViewHolder>{
     }
 
     public void setData(ArrayList<ApiMeal> data) {
-        this.data = data;
+        this.data.addAll(data);
+
+        // Used as a comparison list when searching
+        // Data in this list should not be modified
+        this.dataCopy.addAll(data);
+    }
+
+    public void addData(ApiMeal meal) {
+        this.data.add(meal);
+    }
+
+    public void addData(ArrayList<ApiMeal> data) {
+        for (ApiMeal meal : data) {
+            // Check for duplicates
+            if (mealIdHashSet.add(meal.getIdMeal())) {
+                this.data.add(meal);
+                this.dataCopy.add(meal);
+                dataSingleton.addMeal(meal);
+            }
+        }
+    }
+    public void filter(String query) {
+        // Clear data, meals will be added when user searches
+        data.clear();
+
+        if (query.isEmpty()) {
+            data.addAll(dataCopy);
+        } else {
+            query = query.toLowerCase();
+
+            // Do checks for each meal in dataCopy
+            for (ApiMeal meal: dataCopy) {
+                String[] checks = new String[] {
+                        meal.getIdMeal(),
+                        meal.getStrMeal(),
+                        meal.getStrArea(),
+                        meal.getStrCategory(),
+                        meal.getStrDrinkAlternate(),
+                        meal.getStrTags(),
+                        meal.getDateModified()
+                };
+
+                // If query meets check criteria, add to data and break loop
+                 for (String check : checks) {
+                     if (check != null && !check.isEmpty() && check.toLowerCase().contains(query)) {
+                         data.add(meal);
+                         break;
+                     }
+                 }
+            }
+        }
+        notifyDataSetChanged();
     }
 }
