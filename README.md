@@ -55,17 +55,17 @@ These are the current features and pages of our mobile app as well as the additi
 ### Existing Features ###
 * **General**
     * Login/Create Account
-    <p align="left">
+    <p align="center">
     <img src="app/preview/Login.gif" alt="LoginGIF" width="320" height="640">
     </p>
     
     * Bottom Navigation bar w/ Login/Account, Home, Create Recipe, Shopping List
-    <p align="left">
+    <p align="center">
         <img src="app/preview/NavigationBar.gif" alt="navigationbarGIF" width="320" height="640">
     </p>
     
     * Notifications
-    <p align="left">
+    <p align="center">
         <img src="app/preview/Notifications.gif" alt="notificationsGIF" width="320" height="640">
     </p>
     
@@ -73,26 +73,26 @@ These are the current features and pages of our mobile app as well as the additi
     * Shown beside ingredients when viewing recipes including custom recipes
     * Nutritional values information
     * Shown when user clicks on each individual ingredient
-    <p align="left">
+    <p align="center">
     <img src="app/preview/CaloriesNutritionalInfo.gif" alt="notificationsGIF" width="320" height="640">
     </p>
 <hr>
 
 * **Home**:
     * Search Meals
-    <p align="left">
+    <p align="center">
     <img src="app/preview/SearchMeals.gif" alt="searchmealsGIF" width="320" height="640"></p>
     
     * Browse Meals
     * Community Meals - Shown when users publish their custom recipes
-    <p align="left">
+    <p align="center">
     <img src="app/preview/BrowseMealsCommunityMeals.gif" alt="browsemealscommunitymealsGIF" width="320" height="640"></p>
 <hr>
 
 * **Account**:
     * View Favourites List
         * Add meal recipe to favourites when viewing recipe details
-    <p align="left">
+    <p align="center">
     <img src="app/preview/Favourites&CustomRecipes.gif" alt="Favourites&CustomRecipesGIF" width="320" height="640"></p>
     
     * View Recipes List
@@ -101,14 +101,14 @@ These are the current features and pages of our mobile app as well as the additi
         * Add recipe ingredients
         * Add recipe instructions
         * Publish & Share custom recipe
-    <p align="left">
+    <p align="center">
     <img src="app/preview/CreateCustomRecipes.gif" alt="CreateCustomRecipesGIF" width="320" height="640"></p>
     
     * View Shopping List
         * Add any meal recipe ingredients to shopping list
         * Delete ingredients from shopping list
         * Clear shopping list
-    <p align="left">
+    <p align="center">
     <img src="app/preview/ShoppingList.gif" alt="ShoppingListGIF" width="320" height="640"></p>
     
     * Logout
