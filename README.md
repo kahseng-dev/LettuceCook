@@ -31,6 +31,7 @@ LettuceCook is a recipe meal application which aims to assist and inspire users 
 * Create Custom Recipes
 * Featured Meal
 * Favourites List
+* User Recipes
 
 **Xavier Ang Yan Jun** - API Integrator
 * Implement Meal API
